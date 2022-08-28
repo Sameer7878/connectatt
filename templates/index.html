@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+      crossorigin="anonymous"
+    />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="keywords" content="Attendance nbkr, nbkristattendance, nbkrist, nbkr, attnbkr, attnbkrist,att nbkr,att nbkrist,nbkr student portal, student portal,att.nbkrist,att nbkr heroku">
+    <meta name="description" content="Check Your Attendance here.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
+    <link rel="apple-touch-icon" sizes="180x180" href="../static/img/apple-touch-icon.png">
+    <link rel="icon" type="image/x-icon" sizes="32x32" href="../static/img/favicon-32x32.png">
+    <link rel="icon" type="image/x-icon" sizes="16x16" href="../static/img/favicon-16x16.png">
+    <!--<meta http-equiv="X-UA-Compatible" content="ie=edge" />-->
+    <link rel="stylesheet" type="text/css" href="../static/css/main.css" />
+      <link rel="stylesheet" type="text/css" href="../static/css/home.css" />
+    <title>Att | Nbkrist</title>
+
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg" id="header" >
+      <a class="navbar-brand" id="logo" href="">
+        <img src="../static/img/android-chrome-192x192.png" class="img-responsive"/>CONNECT ATT</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span><img src="../static/img/menu.png"></span>
+      </button>
+
+      <div  class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+        <div class="form-inline menu-items">
+         <a href="">Home</a>
+          <a href="">Admin</a>
+          <a href="">Contact</a>
+             <a href="">About Us</a>
+        </div>
+      </div>
+    </nav>
+    <div class="main-container">
+    <div class="container" style="padding: 10px; border: #4b4c4d solid 2px;" id="notice">
+    <h4 style="font-weight: bold; text-decoration: underline">Notice Board</h4>
+    <h5 style="font-weight: bold; color: #f85757; margin-top:0; text-decoration: underline;font-family: Copperplate, Papyrus, fantasy;">New Feature Alert</h5>
+    <p style="font-size: 17px;text-indent: 15px;text-align:center; font-family: Copperplate, Papyrus, fantasy;">We Added AttAPI For Our Att Site.It Is Open For All Web Developers, You Can Use Our API To Get Our Site Data.</p>
+    <p style="font-size: 15px;"><b>API-</b><span style="cursor: pointer">  https://attnbkrist1.herokuapp.com/attapi?roll=EnterRollNO</span></p>
+    <p style="font-size: 17px;text-indent: 15px;text-align:center; font-family: Copperplate, Papyrus, fantasy;">For Slow Internet Connections Use This Link <br><br> <b>Note: </b><span style="font-size: 15px;">Just click the link to copy and paste on browser, add your RollNo at end of url.</span> </p>
+    <p style="font-size: 15px;"><b>Link-</b><span onclick="Copy()" id="link" style="cursor: copy">https://attnbkrist1.herokuapp.com/api/{{ rollno }}</span></p>
+    <!--<p style="font-size: 17px;text-indent: 15px;text-align:center; font-family: Copperplate, Papyrus, fantasy;">2. It will also show how many classes you can bunk (Safe Bunk) to maintain 75% attendance.</p>
+    <p style="font-size: 14px;text-align: center;text-indent: 10px; font-family: Copperplate, Papyrus, fantasy; border: black solid 1px; border-radius: 5px;"><span style="font-weight: bold;font-size: 16px;">Note : </span>'1' is only for those who have below 75% Attendance and '2' is only for those who have above 75% Attendance.</p>-->
+    <p style='font-family:Comic Sans MS, Comic Sans, cursive; font-size: 13px;'>Implemented by:<br> <strong><a href="https://www.instagram.com/attnbkrist_tk/" style="text-decoration: none; color: black;">ADSV</a>, IT</strong>
+        <!--<br><strong>S. Sivakumar Reddy, 3<sup>rd</sup> Year IT (Idea For 65%)</strong>-->
+        </p>
+    <!--<img src="../static/post1.png" alt="post1" class="img-responsive">
+    <h6 style="font-weight: bold; color: #f85757; margin-top:0;">Release Alert:-   <span style="color: black; text-decoration: underline; font-family: 'Ubuntu', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', sans-serif">"AttBot Beta Version Released on instagram"</span></h6>
+
+    <div class="steps">
+    <p><span style="font-weight: bold">Step-1:</span> Follow AttBot <a style="text-decoration: none;" href="https://www.instagram.com/attnbkrist_tk/" target="_blank" title="Follow">attnbkrist_tk</a>.</p>
+        <p><span style="font-weight: bold">Step-2:</span> Send "hello" message. </p>
+        <p><span style="font-weight: bold">Step-3:</span> Wait until it accepts your request.</p>
+        <p><span style="font-weight: bold">Step-4:</span> It asked you to enter your Roll No to Register yours InstaID. </p>
+        <p><span style="font-weight: bold">Step-5:</span> Follows the instructions given by AttBot</p>
+        <p style="font-size: smaller; font-family:'Noto Sans Hanifi Rohingya';"><span style="font-weight: bold; font-size: smaller;">Note:</span> This Beta Version Only</p>
+        <p><span style="float: right; font-family:'Bodoni 72 Smallcaps';">-@attnbkrist_tk</span></p>
+        <br>
+    </div>-->
+</div>
+    <div class="container" id="main-container">
+
+<form action="" method="post" id="formbody">
+       {% with messages = get_flashed_messages(warning) %}
+         {% if messages %}
+               {% for message in messages %}
+                   <div class="flash"><p>{{ message }}</p></div><br>
+               {% endfor %}
+         {% endif %}
+      {% endwith %}
+    <label>
+        Enter Your RollNo:
+    </label>
+    <label>
+        <input id="rolno" type="text" name="rollno" value="{{ rollno }}" placeholder="Enter RollNo..." maxlength="10" title="Enter Complete RollNo" required/><br>
+    </label><br>
+    <input type="checkbox" id="remember" name="rememberme" value="True"/>
+    <label for="remember">Remember me!</label><br>
+    <button id="button" title="Get attendance" onclick="mysubmit()">Show</button>
+   <!-- <p>Your Attendance Till Now : <b style="color: {{ color }}">{{ att }}</b> </p>
+    {% if inc %}
+    <div style="border: solid 1px black; border-radius: 10px; background-color: white; color: black; font-family: Copperplate, Papyrus, fantasy;">
+        <p>Attendance Increase Rate Per One Class :  <strong>{{ inc }}%</strong></p>
+        <p>Attendance Decrease Rate Per One Class :  <strong>{{ dec }}%</strong></p>
+    </div>
+    {% endif %}
+    {% if tot_cal %}
+        <br>
+        <div style="border: solid 1px black; border-radius: 10px; background-color: {{ color }}; color: white; font-family: Copperplate, Papyrus, fantasy;">
+        {% if tot_cal_65 %}
+        <p>Classes Need To Be Attend To Get 65% : <strong>{{ tot_cal_65 }}</strong></p>
+            {% endif %}
+        <p>Classes Need To Be Attend To Get 75% : <strong>{{ tot_cal }}</strong></p>
+        </div>
+    {% endif %}
+    {% if tot_safe_bunks %}
+        <p style="border: solid 1px black; border-radius: 10px; background-color:white;color: black; font-family: 'Courier New', monospace;">Safe Class Bunks To Maintain 75% : <strong>{{ tot_safe_bunks }}</strong></p>
+    {% endif %}-->
+</form>
+    </div>
+    <div class="container">
+        <div class="collapsible">Basic Details</div>
+        <div class="content">
+        <table class="table table-borderless table-striped ml-auto mr-auto w-auto">
+            <tr>
+                <th style="text-align: left">
+                    Name :
+                </th>
+                <td style="text-align: left">
+                    Sameer
+                </td>
+            </tr>
+            <tr>
+                <th style="text-align: left">
+                    Roll No:
+                </th>
+                <td style="text-align: left">
+                    19KB1A1244
+                </td>
+            </tr>
+            <tr>
+                <th style="text-align: left">
+                    Mail Id:
+                </th>
+                <td style="text-align: left">
+                    19KB1A1244@NBKRIST.ORG
+                </td>
+            </tr>
+             <tr>
+                <th style="text-align: left">
+                    Class:
+                </th>
+                <td style="text-align: left">
+                    4th Year
+                </td>
+            </tr>
+             <tr>
+                <th style="text-align: left">
+                    Section:
+                </th>
+                <td style="text-align: left">
+                    -
+                </td>
+            <tr>
+                <th style="text-align: left">
+                    Attendance Till Now:
+                </th>
+                <td style="text-align: left">
+                    -
+                </td>
+            </tr>
+            <tr>
+                <th style="text-align: left">
+                    Attendance Increase Rate Per One Class :
+                </th>
+                <td style="text-align: left">
+                    -
+                </td>
+            </tr>
+            <tr>
+                <th style="text-align: left">
+                    Attendance Decrease Rate Per One Class :
+                </th>
+                <td style="text-align: left">
+                    -
+                </td>
+            </tr>
+            <tr>
+                <th style="text-align: left">
+                    Classes Need To Be Attend To Get 65% :
+                </th>
+                <td style="text-align: left">
+                    -
+                </td>
+            </tr>
+            <tr>
+                <th style="text-align: left">
+                    Classes Need To Be Attend To Get 75% :
+                </th>
+                <td style="text-align: left">
+                    -
+                </td>
+            </tr>
+            <tr>
+
+                <th style="text-align: left">
+                    Current Period:
+                </th>
+                <td style="text-align: left">
+                    -
+                </td>
+            </tr>
+        </table>
+        </div>
+    </div>
+    <div class="container">
+        <button class="collapsible">Time Table</button>
+        <div class="content">
+            <table class="table table-responsive-lg">
+                <tr>
+                    <th>
+                        Day/Hour
+                    </th>
+                    <th>
+                        8:30-9:30
+                    </th>
+                    <th>
+                        9:30-10:30
+                    </th>
+                    <th>
+                        10:30-11:30
+                    </th>
+                    <th>
+                        11:30-12:30
+                    </th>
+                    <th>
+                        12:30-1:30
+                    </th>
+                    <th>
+                        1:30-2:30
+                    </th>
+                    <th>
+                        2:30-3:30
+                    </th>
+                    <th>
+                        3:30-4:30
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        Mon
+                    </th>
+                    <td>
+                        {{ ttjson['mon1'] | safe}}
+                    </td>
+                    <td>
+                        {{ ttjson['mon2']  | safe}}
+                    </td>
+                    <td>
+                        {{ ttjson['mon3'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['mon4'] | safe }}
+                    </td>
+                    <td>
+
+                    </td>
+                    <td>
+                        {{ ttjson['mon5'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['mon6'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['mon7']  | safe}}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Tue
+                    </th>
+                    <td>
+                        {{ ttjson['tue1'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['tue2'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['tue3'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['tue4'] | safe }}
+                    </td>
+                    <td>
+
+                    </td>
+                    <td>
+                        {{ ttjson['tue5'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['tue6'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['tue7'] | safe }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Wed
+                    </th>
+                    <td>
+                        {{ ttjson['wed1'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['wed2'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['wed3'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['wed4'] | safe }}
+                    </td>
+                    <td>
+
+                    </td>
+                    <td>
+                        {{ ttjson['wed5'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['wed6'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['wed7'] | safe }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Thu
+                    </th>
+                    <td>
+                        {{ ttjson['thu1'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['thu2'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['thu3'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['thu4'] | safe }}
+                    </td>
+                    <td>
+
+                    </td>
+                    <td>
+                        {{ ttjson['thu5'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['thu6'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['thu7'] | safe }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Fri
+                    </th>
+                    <td>
+                        {{ ttjson['fri1'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['fri2'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['fri3'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['fri4'] | safe }}
+                    </td>
+                    <td>
+
+                    </td>
+                    <td>
+                        {{ ttjson['fri5'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['fri6'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['fri7'] | safe }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Sat
+                    </th>
+                    <td>
+                        {{ ttjson['sat1'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['sat2'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['sat3'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['sat4'] | safe }}
+                    </td>
+                    <td>
+
+                    </td>
+                    <td>
+                        {{ ttjson['sat5'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['sat6'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['sat7'] | safe }}
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+    <div class="container">
+        <button class="collapsible">Mid Marks</button>
+        <div class="content">
+        </div>
+    </div>
+    <div class="container">
+        <button class="collapsible">Syllabus</button>
+        <div class="content">
+        </div>
+    </div>
+    <div class="container">
+        <h3>Admin</h3>
+        <form action="" method="post">
+    {% with messages = get_flashed_messages(warning) %}
+         {% if messages %}
+               {% for message in messages %}
+                   <div class="flash"><p>{{ message }}</p></div><br>
+               {% endfor %}
+         {% endif %}
+      {% endwith %}
+    <label>Enter password:</label>
+    <input type="password" placeholder="Enter password..." title="admin only" name="adminpass"><br>
+    <input type="submit" value="Login">
+</form>
+    </div>
+    <div class="container" style="text-align: inherit">
+        <h3>
+            About Us
+        </h3>
+        <ul>
+            <li>
+            <p>We are an unrevealed graduate of your institute who has good knowledge of programming stuff and we work for the benefit of the student committee and ensure that every student gets benefits within an organization.</p>
+            </li>
+            <li>
+            <p>We also provide solutions for all the student predicaments, student-raised issues, and difficulties faced by students.</p>
+            </li>
+            <li>
+            <p>We develop the best services which are required for students to mitigate their effort in finding solutions for the issue.</p>
+            </li>
+            <li>
+            <p>We are unprejudiced developers who work on any issue raised by any student within the institute.</p>
+            </li>
+            <li>
+            <p>We are innominate persons and we don’t like to reveal ourselves.</p>
+            </li>
+            <li>
+            <p>We also tutor students who are passionate to work with us.</p>
+            </li>
+        </ul>
+        <h3>
+            How does our website work?
+        </h3>
+        <h4>
+            What is a website, anyhow?
+        </h4>
+        <p>A web page is a way to display information on the internet. It’s made up of elements like text, images, links, videos, or buttons.</p>
+        <p>Based on the information those pages contain, they are organized into an information hierarchy– this allows navigation from one page to another. The overall collection of those related web pages is a website.</p>
+        <p>A website isn’t an application. It’s not a search engine. (Though a website might contain those things.) A website, at its heart, is just a way to publicly collect and display information. No matter how complicated a website gets, it all boils down to that basic purpose.</p>
+        <h4>What is a website made of? How does a web browser work?</h4>
+        <ul>
+            <li>
+                HTML(Hypertext Markup Language)code is a programming language that allows a web developer to design a web page. All of those pages contain elements like text, images, links, videos, or buttons., which are all written in code.</li>
+            <li>When you access a website on your computer using a browser. There are several different kinds of web browsers… Safari, Firefox, and Chrome are probably the most popular.</li>
+            <li>Regardless of which browser you use, It takes the code that the web developer has written out and decodes it into what you see when you type in a web address.</li>
+            <li>If your browser is too old to understand the code, it doesn’t translate the website properly. This is why new websites can look different or fail to work entirely on old computers.</li></ul>
+        <h4>Where is a website stored? What is web hosting?</h4>
+    <ul>
+        <li>This is where the concept of server comes as all the data related to a website is being stored on the servers which may contain all the required files in it and predefined code.</li>
+        <li>We have been using Selenium which is an open source tool that is used for automating the test cases carried out on web browsers or the web applications that are being tested using any web browser.</li>
+        <li>Using automation we extract the required information from the college website and this information is stored in an attribute at the back-end of our website.</li>
+        <li>We have been using flask as the web framework which renders the relevant information to a website and acts like the back-end for our web application.</li>
+<li>When coming to web hosting we have chosen Heroku as the cloud where we have deployed our website because It is a free cloud provider maintained by salesforce.</li>
+        </ul>
+    </div>
+    <div class="container">
+        <h3>Contact</h3>
+        <div class="form-group">
+        <label>Gmail: </label>
+        <a href="mailto:attnbkrist@gmail.com?subject=Feedback {{ rollno }}" target="_blank" >attnbkrist@gmail.com</a>
+        </div>
+        <div class="form-group">
+        <label>Instagram:</label>
+        <a href="https://www.instagram.com/attnbkrist_tk/">attnbkrist_tk</a>
+        </div>
+    </div>
+    </div>
+
+<script>
+    {{ script }}
+</script>
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    content.style.padding='10px';
+    if (content.style.maxHeight){
+      content.style.maxHeight = null;
+      content.style.padding='0';
+    } else {
+      content.style.maxHeight = content.scrollHeight + "px";
+    }
+  });
+}
+</script>
+    <!-- JS, Popper.js, and jQuery -->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+      integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+      integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+<div class="footer-basic" id="footer">
+        <footer>
+            <ul class="list-inline">
+                <li class="list-inline-item"><a>Follow Us</a></li>
+                <!--<li class="list-inline-item"><a href="">Home</a></li>
+                <li class="list-inline-item"><del>Services</del></li>
+                <li class="list-inline-item"><a href="#">About</a></li>-->
+            </ul>
+            <div class="social">
+                <!--<a><img src="https://img.icons8.com/fluency/48/000000/facebook-new.png"/></a>
+                <a><img src="https://img.icons8.com/color/48/000000/youtube-play.png"/></a>
+                <a><img src="https://img.icons8.com/fluency/48/000000/twitter.png"/></a>-->
+                <a href="https://www.instagram.com/attnbkrist_tk/" target="_blank"><img src="https://img.icons8.com/color/50/000000/instagram-new.png" alt="instagram"/></a>
+            </div>
+           <p class="copyright">ADSV © 2022</p>
+        </footer>
+    </div>
+</html>
