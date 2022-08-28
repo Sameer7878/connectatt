@@ -211,7 +211,10 @@
     <div class="container">
         <button class="collapsible">Time Table</button>
         <div class="content">
-            <table class="table table-responsive-lg">
+        <table name='tblTT' id='tblTT' class="table table-responsive-lg table-bordered">
+	   <tr><td name='x'> Day \ Hour</td><td class='th' id=1>8:30 - 9:30</td><td class='th'  id=2>9:30 - 10:30</td><td class='th'  id=3>10:30 - 11:30</td><td class='th'  id=4 name=e4>11:30 - 12:30</td><td class='th'  id=5>12:30 - 1:30</td><td class='th'  id=6>1:30 - 2:30</td><td class='th'  id=7>2:30 - 3:30</td><td class='th'  id=8>3:30 - 4:30</td></tr><tr id=mon name='mon'><td class='tdSideHead'>Mon</td><td id=mon1   nowrap=true >&nbsp;<br>&nbsp;</td><td id=mon2   nowrap=true >&nbsp;<br>&nbsp;</td><td id=mon3   nowrap=true >&nbsp;<br>&nbsp;</td><td id=mon4   nowrap=true >&nbsp;<br>&nbsp;</td><td id=mon5  valign=middle align=center><font size=5><b> L</b></font></td><td id=mon6   nowrap=true >&nbsp;<br>&nbsp;</td><td id=mon7   nowrap=true >&nbsp;<br>&nbsp;</td><td id=mon8   nowrap=true >&nbsp;<br>&nbsp;</td></tr><tr id=tue name='tue'><td class='tdSideHead'>Tue</td><td id=tue1   nowrap=true >&nbsp;<br>&nbsp;</td><td id=tue2   nowrap=true >&nbsp;<br>&nbsp;</td><td id=tue3   nowrap=true >&nbsp;<br>&nbsp;</td><td id=tue4   nowrap=true >&nbsp;<br>&nbsp;</td><td id=tue5  valign=middle align=center><font size=5><b> U</b></font></td><td id=tue6   nowrap=true >&nbsp;<br>&nbsp;</td><td id=tue7   nowrap=true >&nbsp;<br>&nbsp;</td><td id=tue8   nowrap=true >&nbsp;<br>&nbsp;</td></tr><tr id=wed name='wed'><td class='tdSideHead'>Wed</td><td id=wed1   nowrap=true >&nbsp;<br>&nbsp;</td><td id=wed2   nowrap=true >&nbsp;<br>&nbsp;</td><td id=wed3   nowrap=true >&nbsp;<br>&nbsp;</td><td id=wed4   nowrap=true >&nbsp;<br>&nbsp;</td><td id=wed5  valign=middle align=center><font size=5><b> N</b></font></td><td id=wed6   nowrap=true >&nbsp;<br>&nbsp;</td><td id=wed7   nowrap=true >&nbsp;<br>&nbsp;</td><td id=wed8   nowrap=true >&nbsp;<br>&nbsp;</td></tr><tr id=thu name='thu'><td class='tdSideHead'>Thu</td><td id=thu1   nowrap=true >&nbsp;<br>&nbsp;</td><td id=thu2   nowrap=true >&nbsp;<br>&nbsp;</td><td id=thu3   nowrap=true >&nbsp;<br>&nbsp;</td><td id=thu4   nowrap=true >&nbsp;<br>&nbsp;</td><td id=thu5  valign=middle align=center><font size=5><b> C</b></font></td><td id=thu6   nowrap=true >&nbsp;<br>&nbsp;</td><td id=thu7   nowrap=true >&nbsp;<br>&nbsp;</td><td id=thu8   nowrap=true >&nbsp;<br>&nbsp;</td></tr><tr id=fri name='fri'><td class='tdSideHead'>Fri</td><td id=fri1   nowrap=true >&nbsp;<br>&nbsp;</td><td id=fri2   nowrap=true >&nbsp;<br>&nbsp;</td><td id=fri3   nowrap=true >&nbsp;<br>&nbsp;</td><td id=fri4   nowrap=true >&nbsp;<br>&nbsp;</td><td id=fri5  valign=middle align=center><font size=5><b> H</b></font></td><td id=fri6   nowrap=true >&nbsp;<br>&nbsp;</td><td id=fri7   nowrap=true >&nbsp;<br>&nbsp;</td><td id=fri8   nowrap=true >&nbsp;<br>&nbsp;</td></tr><tr id=sat name='sat'><td class='tdSideHead'>Sat</td><td id=sat1   nowrap=true >&nbsp;<br>&nbsp;</td><td id=sat2   nowrap=true >&nbsp;<br>&nbsp;</td><td id=sat3   nowrap=true >&nbsp;<br>&nbsp;</td><td id=sat4   nowrap=true >&nbsp;<br>&nbsp;</td><td id=sat5  valign=middle align=center><font size=5><b> BREAK</b></font></td><td id=sat6   nowrap=true >&nbsp;<br>&nbsp;</td><td id=sat7   nowrap=true >&nbsp;<br>&nbsp;</td><td id=sat8   nowrap=true >&nbsp;<br>&nbsp;</td></tr></table>
+        {{ ttvalue }}
+           <!-- <table class="table table-responsive-lg table-bordered">
                 <tr>
                     <th>
                         Day/Hour
@@ -241,10 +244,16 @@
                         3:30-4:30
                     </th>
                 </tr>
-                <tr>
+            </table>
+            <tr>
                     <th>
                         Mon
                     </th>
+                    {% if 'LAB' in ttjson['mon1'] %}
+                    <td colspan="3">
+                        {{ ttjson['mon1'] | safe}}
+                    </td>
+                    {% else %}
                     <td>
                         {{ ttjson['mon1'] | safe}}
                     </td>
@@ -254,20 +263,21 @@
                     <td>
                         {{ ttjson['mon3'] | safe }}
                     </td>
+                    {% endif %}
                     <td>
                         {{ ttjson['mon4'] | safe }}
                     </td>
                     <td>
-
-                    </td>
-                    <td>
-                        {{ ttjson['mon5'] | safe }}
+                        <span class="font-weight-bold">L</span>
                     </td>
                     <td>
                         {{ ttjson['mon6'] | safe }}
                     </td>
                     <td>
-                        {{ ttjson['mon7']  | safe}}
+                        {{ ttjson['mon7'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['mon8']  | safe}}
                     </td>
                 </tr>
                 <tr>
@@ -287,17 +297,21 @@
                         {{ ttjson['tue4'] | safe }}
                     </td>
                     <td>
-
+                        <span class="font-weight-bold">U</span>
                     </td>
-                    <td>
-                        {{ ttjson['tue5'] | safe }}
-                    </td>
+                    {% if 'LAB' in ttjson['tue6'] %}
+                    <td colspan="3">{{ ttjson['tue6'] | safe }}</td>
+                    {% else %}
                     <td>
                         {{ ttjson['tue6'] | safe }}
                     </td>
                     <td>
                         {{ ttjson['tue7'] | safe }}
                     </td>
+                    <td>
+                        {{ ttjson['tue8'] | safe }}
+                    </td>
+                    {% endif %}
                 </tr>
                 <tr>
                     <th>
@@ -316,16 +330,16 @@
                         {{ ttjson['wed4'] | safe }}
                     </td>
                     <td>
-
-                    </td>
-                    <td>
-                        {{ ttjson['wed5'] | safe }}
+                            <span class="font-weight-bold">N</span>
                     </td>
                     <td>
                         {{ ttjson['wed6'] | safe }}
                     </td>
                     <td>
                         {{ ttjson['wed7'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['wed8'] | safe }}
                     </td>
                 </tr>
                 <tr>
@@ -345,16 +359,16 @@
                         {{ ttjson['thu4'] | safe }}
                     </td>
                     <td>
-
-                    </td>
-                    <td>
-                        {{ ttjson['thu5'] | safe }}
+                        <span class="font-weight-bold">C</span>
                     </td>
                     <td>
                         {{ ttjson['thu6'] | safe }}
                     </td>
                     <td>
                         {{ ttjson['thu7'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['thu8'] | safe }}
                     </td>
                 </tr>
                 <tr>
@@ -374,16 +388,16 @@
                         {{ ttjson['fri4'] | safe }}
                     </td>
                     <td>
-
-                    </td>
-                    <td>
-                        {{ ttjson['fri5'] | safe }}
+                            <span class="font-weight-bold">N</span>
                     </td>
                     <td>
                         {{ ttjson['fri6'] | safe }}
                     </td>
                     <td>
                         {{ ttjson['fri7'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['fri8'] | safe }}
                     </td>
                 </tr>
                 <tr>
@@ -403,10 +417,7 @@
                         {{ ttjson['sat4'] | safe }}
                     </td>
                     <td>
-
-                    </td>
-                    <td>
-                        {{ ttjson['sat5'] | safe }}
+                        <span class="font-weight-bold">BREAK</span>
                     </td>
                     <td>
                         {{ ttjson['sat6'] | safe }}
@@ -414,9 +425,10 @@
                     <td>
                         {{ ttjson['sat7'] | safe }}
                     </td>
-                </tr>
-
-            </table>
+                    <td>
+                        {{ ttjson['sat8'] | safe }}
+                    </td>
+                </tr>-->
         </div>
     </div>
     <div class="container">
@@ -426,7 +438,15 @@
     </div>
     <div class="container">
         <button class="collapsible">Syllabus</button>
-        <div class="content">
+        <div class="content" id="parent">
+            {% for item in syllabus['1941'] %}
+            <button class="collapsible" id="docview" onclick="loaddoc({{ item[1] | safe }})">{{ item[1] | safe }}</button>
+            <div class="content" id="child">
+            <input type="hidden" src="https://docs.google.com/viewer?url={{ item[0] |safe }}&embedded=true" id="{{ item[1] |safe }}in">
+            <iframe frameborder="0" id="{{ item[1] | safe }}if">
+            </iframe>
+            </div>
+            {% endfor %}
         </div>
     </div>
     <div class="container">
@@ -507,9 +527,10 @@
     </div>
 
 <script>
-    {{ script }}
-</script>
-<script>
+    function loaddoc(a){
+       var link= document.getElementById(a+'in').src;
+       document.getElementById(a+'if').src=link;
+    }
 var coll = document.getElementsByClassName("collapsible");
 var i;
 
@@ -517,12 +538,15 @@ for (i = 0; i < coll.length; i++) {
   coll[i].addEventListener("click", function() {
     this.classList.toggle("active");
     var content = this.nextElementSibling;
-    content.style.padding='10px';
     if (content.style.maxHeight){
       content.style.maxHeight = null;
-      content.style.padding='0';
     } else {
-      content.style.maxHeight = content.scrollHeight + "px";
+        if(content.id==='child'){
+            console.log(document.getElementById('parent').scrollHeight +'px')
+            document.getElementById('parent').style.maxHeight=document.getElementById('parent').scrollHeight+500 +'px';
+        }
+
+      content.style.maxHeight = content.scrollHeight +'px';
     }
   });
 }
