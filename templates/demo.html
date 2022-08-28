@@ -455,7 +455,221 @@ if((cnt4==6 && cnt5==0 && cnt6==0 && cnt7==0 && cnt8==0)||(cnt4==0 && cnt5==6 &&
 	
 }
 	
-
+<!-- <table class="table table-responsive-lg table-bordered">
+                <tr>
+                    <th>
+                        Day/Hour
+                    </th>
+                    <th>
+                        8:30-9:30
+                    </th>
+                    <th>
+                        9:30-10:30
+                    </th>
+                    <th>
+                        10:30-11:30
+                    </th>
+                    <th>
+                        11:30-12:30
+                    </th>
+                    <th>
+                        12:30-1:30
+                    </th>
+                    <th>
+                        1:30-2:30
+                    </th>
+                    <th>
+                        2:30-3:30
+                    </th>
+                    <th>
+                        3:30-4:30
+                    </th>
+                </tr>
+            </table>
+            <tr>
+                    <th>
+                        Mon
+                    </th>
+                    {% if 'LAB' in ttjson['mon1'] %}
+                    <td colspan="3">
+                        {{ ttjson['mon1'] | safe}}
+                    </td>
+                    {% else %}
+                    <td>
+                        {{ ttjson['mon1'] | safe}}
+                    </td>
+                    <td>
+                        {{ ttjson['mon2']  | safe}}
+                    </td>
+                    <td>
+                        {{ ttjson['mon3'] | safe }}
+                    </td>
+                    {% endif %}
+                    <td>
+                        {{ ttjson['mon4'] | safe }}
+                    </td>
+                    <td>
+                        <span class="font-weight-bold">L</span>
+                    </td>
+                    <td>
+                        {{ ttjson['mon6'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['mon7'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['mon8']  | safe}}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Tue
+                    </th>
+                    <td>
+                        {{ ttjson['tue1'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['tue2'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['tue3'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['tue4'] | safe }}
+                    </td>
+                    <td>
+                        <span class="font-weight-bold">U</span>
+                    </td>
+                    {% if 'LAB' in ttjson['tue6'] %}
+                    <td colspan="3">{{ ttjson['tue6'] | safe }}</td>
+                    {% else %}
+                    <td>
+                        {{ ttjson['tue6'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['tue7'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['tue8'] | safe }}
+                    </td>
+                    {% endif %}
+                </tr>
+                <tr>
+                    <th>
+                        Wed
+                    </th>
+                    <td>
+                        {{ ttjson['wed1'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['wed2'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['wed3'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['wed4'] | safe }}
+                    </td>
+                    <td>
+                            <span class="font-weight-bold">N</span>
+                    </td>
+                    <td>
+                        {{ ttjson['wed6'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['wed7'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['wed8'] | safe }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Thu
+                    </th>
+                    <td>
+                        {{ ttjson['thu1'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['thu2'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['thu3'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['thu4'] | safe }}
+                    </td>
+                    <td>
+                        <span class="font-weight-bold">C</span>
+                    </td>
+                    <td>
+                        {{ ttjson['thu6'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['thu7'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['thu8'] | safe }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Fri
+                    </th>
+                    <td>
+                        {{ ttjson['fri1'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['fri2'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['fri3'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['fri4'] | safe }}
+                    </td>
+                    <td>
+                            <span class="font-weight-bold">N</span>
+                    </td>
+                    <td>
+                        {{ ttjson['fri6'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['fri7'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['fri8'] | safe }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Sat
+                    </th>
+                    <td>
+                        {{ ttjson['sat1'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['sat2'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['sat3'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['sat4'] | safe }}
+                    </td>
+                    <td>
+                        <span class="font-weight-bold">BREAK</span>
+                    </td>
+                    <td>
+                        {{ ttjson['sat6'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['sat7'] | safe }}
+                    </td>
+                    <td>
+                        {{ ttjson['sat8'] | safe }}
+                    </td>
+                </tr>-->
 </script>
 
 

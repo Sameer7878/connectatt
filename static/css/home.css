@@ -15,7 +15,16 @@ html{
   -webkit-animation: spin 2s linear infinite;
   animation: spin 2s linear infinite;
 }
-
+button , input[type=submit]{
+       background-color: DodgerBlue;
+     font-size: 23px;
+  border:none;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+    display:inline;
+    margin: 20px;
+ }
 @-webkit-keyframes spin {
   0% { -webkit-transform: rotate(0deg); }
   100% { -webkit-transform: rotate(360deg); }
@@ -49,9 +58,15 @@ html{
         height: 30px;
         width: 30px;
     }
-    #navbarSupportedContent a{
-        font-size: 15px;
+    .menu-items a{
+        font-size: 14px;
     }
+     #navbarSupportedContent .dropdown-toggle {
+    font-size: 14px;
+}
+     #navbarSupportedContent .dropdown-menu li a{
+         font-size: 10px;
+     }
     .container{
         padding: 15px;
     }
