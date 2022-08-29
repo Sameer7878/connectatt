@@ -13,7 +13,7 @@ djson={
 '''r=session.post('http://182.66.240.229/TimeTables/viewTTByClass.php',data=djson)
 r.html.render()
 print(r.text)'''
-data=requests.post('http://182.66.240.229/TimeTables/viewTTByClass.php',data=djson)
+'''data=requests.post('http://182.66.240.229/TimeTables/viewTTByClass.php',data=djson)
 soup=sp(data.content,'html.parser')
 value=''
 ttjson={'tue1': '', 'wed2': '', 'thu3': '', 'fri4': '', 'sat5': '', 'mon1': '', 'mon2': '', 'mon3': '', 'mon4': '', 'mon5': '', 'mon6': '', 'mon7': '', 'tue2': '', 'tue3': '', 'tue4': '', 'tue5': '', 'tue6': '', 'tue7': '', 'wed1': '', 'wed3': '', 'wed4': '', 'wed5': '', 'wed6': '', 'wed7': '', 'thu1': '', 'thu2': '', 'thu4': '', 'thu5': '', 'thu6': '', 'thu7': '', 'fri1': '', 'fri2': '', 'fri3': '', 'fri5': '', 'fri6': '', 'fri7': '', 'sat1': '', 'sat2': '', 'sat3': '', 'sat4': '', 'sat6': '', 'sat7': ''}
@@ -22,7 +22,7 @@ for i in soup.findAll('script'):
         for j in str(i).strip('</script><script language="JavaScript">').split(';'):
             if 'innerHTML' in j:
                 ttjson[j[25:30].strip("'")]=j[43:].strip('"')
-print(ttjson)
+print(ttjson)'''
 '''data=requests.get('http://182.66.240.229/Syllabi/showSyllabi.php?dept=CSE')
 soup=sp(data.content,'html.parser')
 d=soup.findAll('script')
@@ -37,9 +37,19 @@ for i in alldata:
     syllabus_cse[i.strip('<a href="').split('/')[0][2:4]+i.strip('<a href="').split('/')[3]].append(temp)
 print(syllabus_cse)
 '''
+data1 = {
+        "acadYear": "2020-21",
+        "yearSem": "21",
+        "branch": "22",
+        "section": "-",
+        "midsChosen": "mid1, mid2, mid3"
+    }
 
+d=requests.post('http://182.66.240.229/mid_marks/marksConsolidateReport.php',data=data1)
+soup=sp(d.content,'html.parser')
+dat={i.text : j.text for i,j in zip(soup.findAll('td',attrs={'valign':'top'}),soup.find('tr', attrs={'id': '19KB1A1244'}).findAll('td',attrs={'align':'right'}))}
 
-
+print(dat)
 
 
 

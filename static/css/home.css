@@ -49,7 +49,7 @@ button , input[type=submit]{
      padding: 1px;
      font-size: 18px;
  }
-@media only screen and (max-width: 620px) {
+@media only screen and (max-width: 720px) {
     #logo{
         font-size: 18px;
         font-weight: 570;
@@ -58,7 +58,7 @@ button , input[type=submit]{
         height: 30px;
         width: 30px;
     }
-    .menu-items a{
+    .menu-item{
         font-size: 14px;
     }
      #navbarSupportedContent .dropdown-toggle {

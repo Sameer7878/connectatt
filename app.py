@@ -1,15 +1,27 @@
+import random
+
 from bs4 import BeautifulSoup as sp
 from markupsafe import Markup
+from flask_mail import Mail, Message
 import datetime
 import time
 import math
 from flask import *
 import requests
+import jsonify
 from bs4 import BeautifulSoup as sp
 import json
 import re,ast
+msg=None
 app = Flask(__name__)
-
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = '19kb1a1244@nbkrist.org'
+app.config['MAIL_PASSWORD'] = 'sameer7878'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+mail = Mail(app)
+app.extensions['mail'].debug = 0
 app.secret_key = 'thisismysiteforattendance12121@#2143432543645732432@!@42mlkdnvkjdsnvdsdskjbgkjdsb'
 fdata = dict()
 sdata = dict()
@@ -1544,7 +1556,6 @@ def ttable(y,b,s):
     for i in soup.findAll('script'):
         if i.get('language') == 'JavaScript':
             value+=Markup(i)
-    print(value)
     for i in soup.findAll('script'):
         if i.get('language') == 'JavaScript':
             for j in str(i).strip('</script><script language="JavaScript">').split(';'):
@@ -1552,27 +1563,38 @@ def ttable(y,b,s):
                     ttjson[j[25:30].strip("'")]=j[43:].strip('"')
     return value
 
-def midMarks(roll, year, bran, sec):
+def midMarks(roll, year, bran, sec,reqy='0'):
     yearSem = {'1': '11', '2': '12', '3': '21', '4': '22', '5': '31', '6': '32', '7': '41', '8': '42'}
     branch = {'1': '7', '2': '5', '3': '4', '4': '2', '5': '12', '6': '11', '7': '17', '8': '18', '9': '19', '10': '22',
               '11': '23'}
     section = {'1': '-', '2': 'A', '3': 'B', '4': 'C'}
-    data = {
-        "acadYear": "2021-22",
-        "yearSem": "32",
-        "branch": "22",
-        "section": "-",
-        "dateOfAttendance": "12-07-2022",
+    if reqy == '0':
+        reqy=yearSem[str(year)]
+        acay='2022-23'
+    else:
+        acay='-'.join([str(2022-(int(yearSem[str(year)][0])-int(reqy[0]))), str(23-(int(yearSem[str(year)][0])-int(reqy[0])))])
+    data1 = {
+        "acadYear": acay,
+        "yearSem": reqy,
+        "branch": branch[str(bran)],
+        "section": section[str(sec)],
         "midsChosen": "mid1, mid2, mid3"
     }
+    try:
+        d=requests.post('http://182.66.240.229/mid_marks/marksConsolidateReport.php',data=data1)
+        soup=sp(d.content,'html.parser')
+        dat={i.text : j.text for i,j in zip(soup.findAll('td',attrs={'valign':'top'}),soup.find('tr', attrs={'id': roll}).findAll('td',attrs={'align':'right'}))}
 
+    except:
+        dat=None
+    return dat
 
-@app.errorhandler(404)
+#@app.errorhandler(404)
 def handle_404(e):
     return redirect('/')
 
 
-@app.errorhandler(500)
+#@app.errorhandler(500)
 def handle_500(e):
     flash("Check Your RollNO Number")
     return redirect('/')
@@ -1632,10 +1654,10 @@ def get_data(rollno, year, bran, sec):
     datt = datt2 = []
     try:
         payload = {
-            "acadYear": "2021-22",
-            "yearSem": "32",
-            "branch": "22",
-            "section": "-",
+            "acadYear": "2022-23",
+            "yearSem": yearSem[str(year)],
+            "branch": branch[str(bran)],
+            "section": section[str(sec)],
             'dateOfAttendance': time.strftime('%d-%m-%Y')
         }
         a = requests.post('http://182.66.240.229/attendance/attendanceTillTodayReport.php', data=payload)
@@ -1669,7 +1691,7 @@ def home():
 @app.route('/attshow', methods=['POST', 'GET'])
 def attshow():
     try:
-        global att
+        global att,msg
         if request.method == 'POST':
             rollno = request.form['rollno']
             rollno = rollno.upper()
@@ -1742,10 +1764,10 @@ def attshow():
             roll_data = student_data[rollno].split(' ')
             name = student_names[rollno]
             adyear = int(roll_data[0])
-            if adyear == 4 and month1 >= 11:
-                adyear += 1
-            elif adyear == 6 and month1 >= 11:
-                adyear = adyear + 1
+            if adyear == 4 and month1 <= 11:
+                adyear -= 1
+            elif adyear == 6 and month1 <= 11:
+                adyear = adyear - 1
             elif adyear == 8 and month1 <= 11:
                 adyear = adyear - 1
             #elif adyear == 6 and month1 >= 11:
@@ -1771,15 +1793,16 @@ def attshow():
                 else:
                     color = '#BC2765'
             else:
-                flash('Error occured with your number')
-                return redirect('/home/')
-            if (adyear == 2 or adyear == 3) and not rollno in fdata:
+                color='#C49BF9'
+                att=inc=tot_cal=tot_cal_65=tot_safe_bunks=dec=0
+                msg='Sem is not start yet'
+            if (adyear == 1 or adyear == 2) and not rollno in fdata:
                 fdata[rollno] = name
-            elif (adyear == 4 or adyear == 5) and not rollno in sdata:
+            elif (adyear == 3 or adyear == 4) and not rollno in sdata:
                 sdata[rollno] = name
-            elif (adyear == 6 or adyear == 7) and not rollno in tdata:
+            elif (adyear == 5 or adyear == 6) and not rollno in tdata:
                 tdata[rollno] = name
-            elif adyear == 8 or adyear == 9 and not rollno in fr_data:
+            elif adyear == 7 or adyear == 8 and not rollno in fr_data:
                 fr_data[rollno] = name
             '''if adyear==2 or adyear==4:
                 if adyear==2:
@@ -1797,14 +1820,20 @@ def attshow():
                 h -=12
             for i,j in timeno.items():
                 if int(str(h)+str(m)) in range(int(i.split('-')[0]), int(i.split('-')[1])):
-                    cur_prd=ttjson[weekday[str(datetime.datetime.today().weekday())]+j]
-                else:
-                    cur_prd='No Period'
-            cur_sem='19'+yearSem[str(adyear)]
+                    cur_prd=ttjson[weekday[str(datetime.datetime.today().weekday()+1)]+j]
+                    break
+            else:
+                cur_prd='No Period'
+            if adyear>=7:
+                cur_sem='19'+yearSem[str(adyear)]
+            else:
+                cur_sem='20'+yearSem[str(adyear)]
+            reqs=yearSem[str(adyear)]
+            mid=midMarks(rollno,adyear,branch,section,reqs)
             rasp = make_response(
                 render_template('index.html', att=att, rollno=session['rollno'], name=name, color=color,
                                 count=count, tot_cal=tot_cal, tot_cal_65=tot_cal_65, tot_safe_bunks=tot_safe_bunks,
-                                inc=inc, dec=dec,bdata=True,syllabi=syllabus_t,class1=yearSem[str(adyear)],section=section_s[str(section)],cur_prd=cur_prd,ttvalue=value,cur_sem=cur_sem))  # sub=sub,sub2=datt,datt2=datt2,subsize=len(datt)-1)#data=data
+                                inc=inc, dec=dec,bdata=True,syllabi=syllabus_t,class1=yearSem[str(adyear)],section=section_s[str(section)],cur_prd=cur_prd,ttvalue=value,cur_sem=cur_sem,midjson=mid,reqs=reqs,msg=msg,adyear=adyear,bra=branch,sect=section))  # sub=sub,sub2=datt,datt2=datt2,subsize=len(datt)-1)#data=data
             if request.form.get('rememberme'):
                 rasp.set_cookie('rollno', rollno, max_age=COOKIE_TIME_OUT)
             return rasp
@@ -1875,7 +1904,32 @@ def attapi():
     json_data = jsonify(name=name, attendance=att, incRate=inc, decRate=dec, to75=tot_cal, to65=tot_cal_65,
                         safe_bunks=tot_safe_bunks)
     return json_data
+otps={}
+@app.route('/otpapi/',methods=['POST','GET'])
+def send_otp():
 
+    if request.method=='POST':
+        otp=random.randrange(1000,9999)
+        jsond=request.data
+        print(type(jsond))
+        jsond=json.loads(jsond)
+        print(type(jsond))
+        otps[jsond.get('rollno')]=otp
+        msg=Message(
+            'OTP for Key Setting',
+            sender='19kb1a1244@nbkrist.org',
+            recipients=['sameer.shaik.062002@gmail.com']
+        )
+        msg.body=f'Hello,\n This is your OTP {otp} for Key Setting\nThis valid upto 5 mins\nThank You'
+        mail.send(msg)
+        return {'status':'success','otp':str(otp)}
+@app.route('/otpverify/',methods=['POST','GET'])
+def otp_verify():
+    if request.method == 'POST':
+        jsond=request.data
+        print(type(jsond))
+        jsond=json.loads(jsond)
+        print(type(jsond))
 
 @app.route('/admindata/')
 def adminadata():

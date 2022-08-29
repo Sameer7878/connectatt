@@ -4,15 +4,17 @@
 }
 .menu-items{
     font-size: 25px;
+    color: tomato;
 }
-.menu-items a{
+.menu-item{
+    padding: 10px;
     color: tomato;
     font-weight: 550;
     border-bottom: 2px solid transparent;
   transition-duration: .5s;
   transition-property: color, border-bottom;
 }
-.menu-items a:hover{
+.menu-item:hover{
     border-bottom: 3px solid tomato;
     color: #353F48;
 }
@@ -70,7 +72,17 @@ table .tdSideHead{
             max-height: 80px;
             max-width: 200px;
 }
-
+#bdata h4{
+  color:black;
+  padding: 18px;
+    font-weight: bold;
+  border: none;
+  text-align: left;
+  font-size: 20px;
+}
+#bdata{
+    transition: height 0.2s ease-out ;
+}
 .collapsible {
     border-radius: 10px;
   color:black;

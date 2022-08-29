@@ -19,7 +19,6 @@
     <link rel="stylesheet" type="text/css" href="../static/css/main.css" />
       <link rel="stylesheet" type="text/css" href="../static/css/home.css" />
     <title>Att | Nbkrist</title>
-
   </head>
   <body>
     <nav class="navbar navbar-expand-lg" id="header" >
@@ -39,23 +38,24 @@
 
       <div  class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
         <div class="form-inline menu-items">
-         <a href="#main-container">Home</a>
+            <div class="menu-item" onclick="scrolldiv('main-conatiner')">Home</div>
             <div class="dropdown">
-            <div class="btn  dropdown-toggle" type="button" data-toggle="dropdown">Services
+            <div class="btn  dropdown-toggle menu-item" type="button" data-toggle="dropdown">Services
             <span class="caret"></span></div>
             <ul class="dropdown-menu">
-             <li><a href="#">Time Table</a></li>
-            <li><a href="#">Syllabus</a></li>
-            <li><a href="#">Attendance</a></li>
-                <li><a href="#">Mid Marks</a></li>
+                <li><div class="menu-item" onclick="scrolldiv('bdata')">Attendance</div></li>
+                <li><div class="menu-item" onclick="scrolldiv('ttable')">Time Table</div></li>
+                <li><div class="menu-item" onclick="scrolldiv('syllabus')">Syllabus</div></li>
+                <li><div class="menu-item" onclick="scrolldiv('midmarks')">Mid Marks</div></li>
             </ul>
             </div>
-          <a href="#admin">Admin</a>
-            <a href="#aboutus">About Us</a>
-          <a href="#contact">Contact</a>
+            <div class="menu-item" onclick="scrolldiv('admin')">Admin</div>
+            <div class="menu-item" onclick="scrolldiv('aboutus')">About Us</div>
+          <div class="menu-item" onclick="scrolldiv('contact')">Contact</div>
 
         </div>
       </div>
+
     </nav>
     <div class="main-container">
     <div class="container" style="padding: 10px; border: #4b4c4d solid 2px;" id="notice">
@@ -103,8 +103,11 @@
     <input type="checkbox" id="remember" name="rememberme" value="True"/>
     <label for="remember">Remember me!</label><br>
     <button id="button" title="Get attendance" onclick="mysubmit()">Show</button>
-   <!-- <p>Your Attendance Till Now : <b style="color: {{ color }}">{{ att }}</b> </p>
-    {% if inc %}
+   <p>Your Attendance Till Now : <b style="color: {{ color }}">{{ att }}</b> </p>
+    {% if att %}
+    <div class="btn btn-link" onclick="scrolldiv('bdata')">View More</div>
+    {% endif %}
+    <!--{% if inc %}
     <div style="border: solid 1px black; border-radius: 10px; background-color: white; color: black; font-family: Copperplate, Papyrus, fantasy;">
         <p>Attendance Increase Rate Per One Class :  <strong>{{ inc }}%</strong></p>
         <p>Attendance Decrease Rate Per One Class :  <strong>{{ dec }}%</strong></p>
@@ -124,11 +127,15 @@
     {% endif %}-->
 </form>
     </div>
-    <div class="container" id="bdata">
-        <div class="collapsible">Basic Details</div>
+    <div class="container">
+        <div class="collapsible" id="bdata">Basic Details</div>
         <div class="content">
-            {% if bdata %}
         <table class="table table-borderless table-striped ml-auto mr-auto w-auto">
+            {% if bdata %}
+                <input type="hidden" value="{{ adyear }}" id="adyear">
+                <input type="hidden" value="{{ bra }}" id="branch">
+                <input type="hidden" value="{{ sect }}" id="section">
+                <input type="hidden" value="{{ rollno }}" id="rollno">
             <tr>
                 <th style="text-align: left">
                     Name :
@@ -208,34 +215,72 @@
                     {{ tot_cal }}
                 </td>
             </tr>
+                <tr>
+                <th style="text-align: left">
+                    Safe Bunks :
+                </th>
+                <td style="text-align: left">
+                    {{ tot_safe_bunks }}
+                </td>
+                </tr>
             <tr>
-
                 <th style="text-align: left">
                     Current Period:
                 </th>
                 <td style="text-align: left">
-                    {{ cur_prd }}
+                    {{ cur_prd | safe }}
                 </td>
             </tr>
-        </table>
+                <tr style="display: none"><th style="text-align: left">Protect Your Data From Others</th>
+                <td style="text-align: left"><a href="#" >Set Key</a></td>
+                </tr>
+            {% else %}
+
+            <tr><td rowspan="3"><h4>First Enter Your Roll No.</h4></td></tr>
             {% endif %}
+            </table>
         </div>
     </div>
-    <div class="container" id="ttable">
-        <div class="collapsible">Time Table</div>
+    <div class="container">
+        <div class="collapsible" id="ttable">Time Table</div>
         <div class="content">
         <table name='tblTT' id='tblTT' class="table table-responsive-lg table-bordered">
 	   <tr><td name='x'> Day \ Hour</td><td class='th' id=1>8:30 - 9:30</td><td class='th'  id=2>9:30 - 10:30</td><td class='th'  id=3>10:30 - 11:30</td><td class='th'  id=4 name=e4>11:30 - 12:30</td><td class='th'  id=5>12:30 - 1:30</td><td class='th'  id=6>1:30 - 2:30</td><td class='th'  id=7>2:30 - 3:30</td><td class='th'  id=8>3:30 - 4:30</td></tr><tr id=mon name='mon'><td class='tdSideHead'>Mon</td><td id=mon1   nowrap=true >&nbsp;<br>&nbsp;</td><td id=mon2   nowrap=true >&nbsp;<br>&nbsp;</td><td id=mon3   nowrap=true >&nbsp;<br>&nbsp;</td><td id=mon4   nowrap=true >&nbsp;<br>&nbsp;</td><td id=mon5  valign=middle align=center><font size=5><b> L</b></font></td><td id=mon6   nowrap=true >&nbsp;<br>&nbsp;</td><td id=mon7   nowrap=true >&nbsp;<br>&nbsp;</td><td id=mon8   nowrap=true >&nbsp;<br>&nbsp;</td></tr><tr id=tue name='tue'><td class='tdSideHead'>Tue</td><td id=tue1   nowrap=true >&nbsp;<br>&nbsp;</td><td id=tue2   nowrap=true >&nbsp;<br>&nbsp;</td><td id=tue3   nowrap=true >&nbsp;<br>&nbsp;</td><td id=tue4   nowrap=true >&nbsp;<br>&nbsp;</td><td id=tue5  valign=middle align=center><font size=5><b> U</b></font></td><td id=tue6   nowrap=true >&nbsp;<br>&nbsp;</td><td id=tue7   nowrap=true >&nbsp;<br>&nbsp;</td><td id=tue8   nowrap=true >&nbsp;<br>&nbsp;</td></tr><tr id=wed name='wed'><td class='tdSideHead'>Wed</td><td id=wed1   nowrap=true >&nbsp;<br>&nbsp;</td><td id=wed2   nowrap=true >&nbsp;<br>&nbsp;</td><td id=wed3   nowrap=true >&nbsp;<br>&nbsp;</td><td id=wed4   nowrap=true >&nbsp;<br>&nbsp;</td><td id=wed5  valign=middle align=center><font size=5><b> N</b></font></td><td id=wed6   nowrap=true >&nbsp;<br>&nbsp;</td><td id=wed7   nowrap=true >&nbsp;<br>&nbsp;</td><td id=wed8   nowrap=true >&nbsp;<br>&nbsp;</td></tr><tr id=thu name='thu'><td class='tdSideHead'>Thu</td><td id=thu1   nowrap=true >&nbsp;<br>&nbsp;</td><td id=thu2   nowrap=true >&nbsp;<br>&nbsp;</td><td id=thu3   nowrap=true >&nbsp;<br>&nbsp;</td><td id=thu4   nowrap=true >&nbsp;<br>&nbsp;</td><td id=thu5  valign=middle align=center><font size=5><b> C</b></font></td><td id=thu6   nowrap=true >&nbsp;<br>&nbsp;</td><td id=thu7   nowrap=true >&nbsp;<br>&nbsp;</td><td id=thu8   nowrap=true >&nbsp;<br>&nbsp;</td></tr><tr id=fri name='fri'><td class='tdSideHead'>Fri</td><td id=fri1   nowrap=true >&nbsp;<br>&nbsp;</td><td id=fri2   nowrap=true >&nbsp;<br>&nbsp;</td><td id=fri3   nowrap=true >&nbsp;<br>&nbsp;</td><td id=fri4   nowrap=true >&nbsp;<br>&nbsp;</td><td id=fri5  valign=middle align=center><font size=5><b> H</b></font></td><td id=fri6   nowrap=true >&nbsp;<br>&nbsp;</td><td id=fri7   nowrap=true >&nbsp;<br>&nbsp;</td><td id=fri8   nowrap=true >&nbsp;<br>&nbsp;</td></tr><tr id=sat name='sat'><td class='tdSideHead'>Sat</td><td id=sat1   nowrap=true >&nbsp;<br>&nbsp;</td><td id=sat2   nowrap=true >&nbsp;<br>&nbsp;</td><td id=sat3   nowrap=true >&nbsp;<br>&nbsp;</td><td id=sat4   nowrap=true >&nbsp;<br>&nbsp;</td><td id=sat5  valign=middle align=center><font size=5><b> BREAK</b></font></td><td id=sat6   nowrap=true >&nbsp;<br>&nbsp;</td><td id=sat7   nowrap=true >&nbsp;<br>&nbsp;</td><td id=sat8   nowrap=true >&nbsp;<br>&nbsp;</td></tr></table>
         {{ ttvalue }}
         </div>
     </div>
-    <div class="container" id="midmarks">
-        <div class="collapsible">Mid Marks</div>
+    <div class="container">
+        <div class="collapsible" id="midmarks">Mid Marks</div>
         <div class="content">
+            <h3 class="font-weight-bold">Mid Marks - {{ reqs }}</h3><br>
+            <table class="table table-striped table-responsive-lg">
+                <tr class="table-primary">
+                    <th>Subjects</th>
+                    <th>Mid-I</th>
+                    <th>Mid-II</th>
+                    <th>Aggregate(Final)</th>
+                </tr>
+            {% if midjson and midjson!=None %}
+                {% for i,j in midjson.items() %}
+                <tr>
+                    <th>{{ i }}</th>
+                    <th>{{ j[0:2] }}</th>
+                    <th>{{ j[3:5] }}</th>
+                    <th>{{ j[6:8] }}</th>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr><th colspan="4">
+                <h4>NO DATA FOUND</h4></th>
+                </tr>
+            {% endif %}
+            </table>
+        <div class="btn btn-outline-success float-left" id="presem">Previous Semester</div>
+        <div class="btn btn-outline-success float-right" id="nextsem">Next Semester</div>
         </div>
     </div>
-    <div class="container" id="syllabus">
-        <div class="collapsible">Syllabus</div>
+    <div class="container">
+        <div class="collapsible" id="syllabus">Syllabus</div>
         <div class="content" id="parent">
         {%  if syllabi %}
             {% for item in syllabi[cur_sem]%}
@@ -249,9 +294,36 @@
         {% endif %}
         </div>
     </div>
-    <div class="container" id="admin">
-        <h3>Admin Login</h3>
-    <br>
+    <div class="container">
+        <div class="collapsible">Set Key</div>
+        <div class="content" style="display: none">
+            <div>
+            Enter Roll No:
+            <div class="form-group">
+                <input type="text" maxlength="10" value="{{ rollno }}" name="rolno" placeholder="Enter RollNo" readonly>
+            </div>
+            Enter Key:
+            <div class="form-group">
+                <input type="password" name="key" placeholder="Enter key...">
+            </div>
+            Email:
+            <div class="form-group">
+                <input type="email" name="email" value="{{ email }}"  readonly>
+                <div class="form-group">
+                <button name="otp" id="otp">Request OTP</button>
+                </div>
+            </div>
+                Enter OTP:
+                <div class="form-group">
+                    <input type="number" name="otpvalue" max="9999" min="1000" style="width: 20%">
+                </div>
+
+        </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="collapsible" id="admin">Admin Login</div>
+        <div class="content">
         <form action="{{ url_for('adminsuccess') }}" method="post">
     {% with messages = get_flashed_messages(warning) %}
          {% if messages %}
@@ -264,6 +336,7 @@
     <input type="password" placeholder="Enter password..." title="admin only" name="adminpass"><br>
     <input type="submit" value="Login">
 </form>
+        </div>
     </div>
     <div class="container" style="text-align: inherit" id="aboutus">
         <h3>
@@ -326,7 +399,72 @@
         </div>
     </div>
     </div>
+    <script>
 
+        var otp=document.getElementById('otp')
+        otp.addEventListener('click',sendotp);
+        function sendotp() {
+            console.log('user is authenticated, sending data')
+            var email="{{ rollno }}"+"@nbkrist.org";
+            var rollno="{{ rollno }}";
+            var url = '/otpapi/';
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({'rollno': rollno, 'email': email})
+            })
+            .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            console.log('Data:', data)
+        });
+        }
+
+        var =document.getElementById('otp')
+        otp.addEventListener('click',sendotp);
+        function sendotp() {
+            console.log('user is authenticated, sending data')
+            var email="{{ rollno }}"+"@nbkrist.org";
+            var rollno="{{ rollno }}";
+            var url = '/otpapi/';
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({'rollno': rollno, 'email': email})
+            })
+            .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            console.log('Data:', data)
+        });
+        }
+    </script>
+<script>
+            function scrolldiv(a) {
+                window.scroll(0,
+         findPosition(document.getElementById(a))-150);
+                if(document.getElementById(a).className==='collapsible'){
+                    document.getElementById(a).click();
+                }
+            }
+            function findPosition(obj) {
+                var currenttop = 0;
+                if (obj.offsetParent) {
+                    do {
+                        currenttop += obj.offsetTop;
+                    } while ((obj = obj.offsetParent));
+                    return [currenttop];
+                }
+            }
+        </script>
 <script>
     function loaddoc(a){
        var linkid= a+'in';
@@ -334,7 +472,6 @@
         var link=document.getElementById(linkid).src;
         if (document.getElementById(iframeid).src===''){
         document.getElementById(iframeid).src=link;}
-
     }
 var coll = document.getElementsByClassName("collapsible");
 var i;
@@ -350,7 +487,7 @@ for (i = 0; i < coll.length; i++) {
             document.getElementById('parent').style.maxHeight=document.getElementById('parent').scrollHeight+500 +'px';
         }
 
-      content.style.maxHeight = content.scrollHeight +'px';
+      content.style.maxHeight = content.scrollHeight+2 +'px';
     }
   });
 }
