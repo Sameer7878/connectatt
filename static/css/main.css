@@ -26,7 +26,9 @@ table .tdSideHead{
      font-weight: bold;
 }
 
-
+#notice{
+    padding: 10px; border: #4b4c4d solid 2px;
+}
 #navbarSupportedContent .dropdown-toggle{
     color: tomato;
     font-size: 25px;
@@ -52,11 +54,12 @@ table .tdSideHead{
   border-radius: 4px;
 }
 #logo{
+    padding-left: 10px;
 	font-size: 2em;
   font-weight: 700;
   text-transform: uppercase;
     overflow: hidden;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   color: tomato;
   cursor: pointer;
 }
@@ -71,6 +74,36 @@ table .tdSideHead{
             width: auto;
             max-height: 80px;
             max-width: 200px;
+}
+#aboutclg p{
+    text-align: left;
+    text-indent: 80px;
+    font-family: "Times New Roman", serif;
+}
+#notice h4{
+    font-weight: bold;
+    text-decoration: underline
+}
+#notice h5{
+    font-weight: bold;
+    color: #f85757;
+    margin-top:0;
+    text-decoration: underline;
+    font-family: Copperplate, Papyrus, fantasy;
+}
+#p2{
+    font-size: 19px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+#p1{
+   font-size: 22px;
+    text-indent: 15px;
+    text-align:center;
+    font-family: Copperplate, Papyrus, fantasy;
+}
+#p3{
+    font-family:Comic Sans MS, Comic Sans, cursive;
+    font-size: 15px;
 }
 #bdata h4{
   color:black;

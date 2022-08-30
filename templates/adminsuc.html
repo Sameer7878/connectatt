@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="google-site-verification" content="yvF7XLG_qSMm67vKZjdTbkHaoz8B4CG41SBSxVswoAQ" />
+    <meta charset="UTF-8">
+    <meta name="keywords" content="Attendance, nbkristattendance, nbkrist, nbkr, attnbkr, attnbkrist">
+    <meta name="description" content="Check Your Attendance here.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
+    <link rel="apple-touch-icon" sizes="180x180" href="../static/img/apple-touch-icon.png">
+    <link rel="icon" type="image/x-icon" sizes="32x32" href="../static/img/favicon-32x32.png">
+    <link rel="icon" type="image/x-icon" sizes="16x16" href="../static/img/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="stylesheet" type="text/css" href="../static/css/home.css">
+    <title>Att | Admin</title>
+</head>
+
+<header>
+    <div class="header">
+        <a href="{{ url_for('home') }}" class="logo" > ATT | ADMIN</a>
+        <div class="header-right">
+            <a class="name" href="{{ url_for('adminsuccess') }}">Hello, Admin</a>
+        </div>
+    </div>
+</header>
+<body>
+<h2 style="text-align: center">Welcome to Admin page</h2>
+<table>
+    <tr>
+        <th colspan="2" style="text-align: center;">Total</th>
+        <td colspan="2" style="text-align: center;"> {{ tdsize }}</td>
+    </tr>
+    
+    
+    <tr>
+        <th colspan="2" style="text-align: center;">Total Requests </th>
+        <td colspan="2" style="text-align: center;">{{ count_sum }}</td>
+    </tr>
+  	<tr>
+		<th>1st Year</th>
+		<th>2nd Year</th>
+		<th>3rd Year</th>
+		<th>4th Year</th>
+	<tr>
+		<td style="text-align: center;">{{ fsize }}</td>
+		<td style="text-align: center;">{{ ssize }}</td>
+		<td style="text-align: center;">{{ tsize }}</td>
+		<td style="text-align: center;">{{ frsize }}</td>
+    		</tr>
+    
+    </table>
+
+<marquee> more</marquee>
+
+    <table>
+    <tr>
+        <th>Total Count </th>
+        <td>Total Requests: {{ count_sum }}</td>
+        <td>{{ count_data }}</td>
+    </tr>
+    
+    
+    <tr>
+        <th>First Year</th>
+        <td>Total: {{ fsize }}</td>
+        <td>{{ fdata }}</td>
+
+    </tr>
+
+    
+    <tr>
+        <th>Second Year</th>
+        <td>Total: {{ ssize }}</td>
+        <td>{{ sdata }}</td>
+    </tr>
+
+    
+    <tr>
+        <th>Third Year</th>
+        <td>Total: {{ tsize }}</td>
+
+        <td>{{ tdata }}</td>
+    </tr>
+
+    
+    <tr>
+        <th>Fourth Year</th>
+        <td>Total: {{ frsize }}</td>
+        <td>{{ frdata }}</td>
+    </tr>
+</table>
+</body>
+</html>

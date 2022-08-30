@@ -50,9 +50,34 @@ button , input[type=submit]{
      font-size: 18px;
  }
 @media only screen and (max-width: 720px) {
+    #notice{
+        padding: 3px;
+    }
+    #notice h4{
+    font-size: 18px;
+}
+#notice h5{
+    font-size: 16px;
+}
+#p2{
+    font-size: 13px;
+}
+#p1{
+   font-size: 13px;
+}
+#p3{
+    font-size: 13px;
+}
+#dummy1{
+    font-size: 15px;
+}
+button,input[type='submit']{
+    font-size: 18px;
+}
     #logo{
-        font-size: 18px;
+        font-size: 20px;
         font-weight: 570;
+        letter-spacing: 1px;
     }
     #logo img{
         height: 30px;
@@ -61,6 +86,10 @@ button , input[type=submit]{
     .menu-item{
         font-size: 14px;
     }
+    .collapsible{
+        font-size: 17px;
+    }
+
      #navbarSupportedContent .dropdown-toggle {
     font-size: 14px;
 }
@@ -68,12 +97,51 @@ button , input[type=submit]{
          font-size: 10px;
      }
     .container{
+        font-size: 17px;
         padding: 15px;
     }
     table tr td,th{
-        font-size: 16px;
+        font-size: 15px;
+        padding: 0 1px 0 1px;
     }
-
+    #midh{
+        font-size: 15px;
+    }
+    #parent .collapsible{
+        font-size: 14px;
+    }
+    #presem,#nextsem{
+        font-size: 12px;
+    }
+    #aboutus h3{
+        font-size: 18px;
+        font-weight: bold;
+    }
+    #aboutus h4{
+        font-size: 17px;
+        font-weight: bold;
+    }
+    #aboutus p{
+        font-size: 15px;
+    }
+    #aboutclg h3{
+        font-size: 19px;
+        font-weight: bold;
+    }
+    #aboutclg h4{
+        font-size: 17px;
+        font-weight: bold;
+    }
+    #aboutclg p{
+        font-size: 15px;
+    }
+    #aboutclg img{
+        width: 150px;
+    }
+    #contact h3{
+        font-size: 18px;
+        font-weight: bold;
+    }
     .footer-basic{
         padding-bottom: 5px;
     }
