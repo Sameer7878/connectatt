@@ -45,11 +45,19 @@ data1 = {
         "midsChosen": "mid1, mid2, mid3"
     }
 
-d=requests.post('http://182.66.240.229/mid_marks/marksConsolidateReport.php',data=data1)
+'''d=requests.post('http://182.66.240.229/mid_marks/marksConsolidateReport.php',data=data1)
 soup=sp(d.content,'html.parser')
 dat={i.text : j.text for i,j in zip(soup.findAll('td',attrs={'valign':'top'}),soup.find('tr', attrs={'id': '19KB1A1244'}).findAll('td',attrs={'align':'right'}))}
 
-print(dat)
+print(dat)'''
+import psycopg2
+
+con = psycopg2.connect(database = "postgres", host = "127.0.0.1", port = "5432")
+cur=con.cursor()
+rol='19KB1A1244'
+cur.execute(f"select count from main where rollno='{rol}';")
+d=cur.fetchall()
+print(d)
 
 
 

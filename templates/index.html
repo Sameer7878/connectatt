@@ -9,7 +9,7 @@
     />
     <meta charset="UTF-8" />
     <meta name="keywords" content="Attendance nbkr,nbkristattendance,nbkrist,nbkr,attnbkr,attnbkrist,att nbkr,att,student portal,att.nbkrist,ADSV">
-    <meta name="description" content="This Att | Nbkrist Website allows to check your Nbkrist college attendance,midmarks,syllabus and time tables of all section by just entering your rollno. Created ADSV">
+    <meta name="description" content="This Att | Nbkrist Website allows to check your Nbkrist college attendance,midmarks,syllabus and time tables of all section by just entering your rollno. Created by ADSV">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static',filename='img/apple-touch-icon.png')}}">
     <link rel="icon" type="image/x-icon" sizes="32x32" href="{{ url_for('static',filename='img/favicon-32x32.png')}}">
@@ -17,6 +17,8 @@
     <!--<meta http-equiv="X-UA-Compatible" content="ie=edge" />-->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/main.css') }}" />
       <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/home.css') }}" />
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4640999261594123"
+     crossorigin="anonymous"></script>
       <title>Att | Nbkrist</title>
   </head>
   <body>
@@ -75,10 +77,10 @@
         <p id="p1">Time Table</p>
         <p id="p2">This section contains present semester Time Table.</p>
         <p id="p1">Mid Marks</p>
-    <p id="p2">This section allows you to check all semester mid marks upto now.</p>
+    <p id="p2">This section allows you to check all semester mid marks upto now, for that you need to set key.</p>
         <p id="p1">Syllabus</p>
     <p id="p2">This section contains present semester syllabus with on preview option.</p>
-        <p id="p1">Set Key (Coming Soon)</p>
+        <p id="p1">Set Key</p>
     <p id="p2">This section allows to set private key for your rollno which prevent from other to access. </p>
     <p id="p3">Design & Implemented by:<br> <strong><a href="https://www.instagram.com/attnbkrist_tk/" style="text-decoration: none; color: black;">ADSV</a>, IT</strong>
         <!--<br><strong>S. Sivakumar Reddy, 3<sup>rd</sup> Year IT (Idea For 65%)</strong>-->
@@ -173,6 +175,14 @@
                     {{ rollno }}
                 </td>
             </tr>
+                <tr>
+                <th style="text-align: left">
+                    Count:
+                </th>
+                <td style="text-align: left">
+                    {{ count }}
+                </td>
+            </tr>
             <tr>
                 <th style="text-align: left">
                     Mail Id:
@@ -186,7 +196,7 @@
                     Class:
                 </th>
                 <td style="text-align: left">
-                    {{ class1[0] }} - {{ class1[1] }}
+                    {{ branch_alpha }} ({{ class1[0] }} - {{ class1[1] }})
                 </td>
             </tr>
              <tr>
@@ -292,7 +302,7 @@
                 {% endfor %}
             {% else %}
                 <tr id="dummy" class="{{ class1 }}"> <th colspan="4">
-                <h4 id="midh">NO DATA FOUND</h4></th>
+                <h4 id="midh1">NO DATA FOUND</h4></th>
                 </tr>
             {% endif %}
             </table>
@@ -490,15 +500,23 @@ I Gopal Reddy, Founder Principal, Former Vice Chancellor<p>V Vijaya Kumar Reddy 
                     console.log(data)
                     if (data['status'] === 1) {
                         status=1;
+                        document.getElementById('midh1').innerText='NO DATA FOUND';
+                        document.getElementById('presem').style.display='';
                         var et=document.getElementById('etable');
+                        if(et.rows.length===1){
                         var row=et.insertRow(1);
                         var cel1=row.insertCell(0);
                         var cel2=row.insertCell(1);
                         cel1.innerHTML='<label for="rolno">Enter Key: </label>';
                         cel2.innerHTML='<input id="ekey" type="password" name="ekey" value="" placeholder="Enter Key..." title="Enter Correct Key"/>';
+                        }
 
-                    } else {
+                    }
+
+                    else {
                         status=2;
+                        document.getElementById('midh1').innerText='Set Key First';
+                        document.getElementById('presem').style.display='none';
                         var et=document.getElementById('etable');
                         console.log(et.rows.length);
                         if(et.rows.length>1){
@@ -546,6 +564,7 @@ I Gopal Reddy, Founder Principal, Former Vice Chancellor<p>V Vijaya Kumar Reddy 
                         keybtn.style.border='2px solid green';
                         document.getElementById('setkeyform').style.display='none';
                         document.getElementById('formcon').style.maxHeight=document.getElementById('formcon').scrollHeight+2+'px';
+                        document.getElementById('e')
                     }
                     else{
                         keybtn.innerText='OTP Incorrrect'
@@ -771,10 +790,10 @@ for (i = 0; i < coll.length; i++) {
       content.style.maxHeight = null;
     } else {
         if(content.id==='child'){
-            document.getElementById('parent').style.maxHeight=document.getElementById('parent').scrollHeight+500 +'px';
+            document.getElementById('parent').style.maxHeight=document.getElementById('parent').scrollHeight+550 +'px';
         }
 
-      content.style.maxHeight = content.scrollHeight+2 +'px';
+      content.style.maxHeight = content.scrollHeight+2+'px';
     }
   });
 }
