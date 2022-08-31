@@ -266,8 +266,7 @@
                 <td style="text-align: left"><a href="#" >Set Key</a></td>
                 </tr>
             {% else %}
-
-            <tr><td rowspan="3"><h4 id="dummy1">First Enter Your Roll No.</h4></td></tr>
+            <tr><td rowspan="3"><h4 id="dummy1" onclick="scrolldiv('main-container')">Please Enter Your Roll No</h4></td></tr>
             {% endif %}
             </table>
         </div>
@@ -283,7 +282,7 @@
     <div class="container">
         <div class="collapsible" id="midmarks">Mid Marks</div>
         <div class="content" id="marksco">
-            <h3 class="font-weight-bold" id="midh">Mid Marks - <span id="semy">{{ reqs }}</span></h3><br>
+            <h3 class="font-weight-bold" id="midh">Mid Marks : <span id="semy"> {{reqs}}</span></h3><br>
             <table class="table table-striped table-responsive-lg mr-auto ml-auto" id="midtable">
                 <tr class="table-primary">
                     <th>Subjects</th>
@@ -428,7 +427,7 @@
         <li><p>We have been using Selenium which is an open source tool that is used for automating the test cases carried out on web browsers or the web applications that are being tested using any web browser.</p></li>
         <li><p>Using automation we extract the required information from the college website and this information is stored in an attribute at the back-end of our website.</p></li>
         <li><p>We have been using flask as the web framework which renders the relevant information to a website and acts like the back-end for our web application.</p></li>
-        <li><p>When coming to web hosting we have chosen Heroku as the cloud where we have deployed our website because It is a free cloud provider maintained by salesforce.</p></li>
+        <li><p>When coming to web hosting we have choosen Heroku as the cloud where we have deployed our website because It is a free cloud provider maintained by salesforce.</p></li>
         </ul>
     </div>
     <div class="container" id="aboutclg">
