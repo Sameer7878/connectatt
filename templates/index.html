@@ -470,7 +470,7 @@ I Gopal Reddy, Founder Principal, Former Vice Chancellor<p>V Vijaya Kumar Reddy 
     if (rentry.value.length===10){
         checksub();
     }
-
+        var status;
         rentry.addEventListener('input', checksub)
     function checksub(){
         console.log(rentry.value)
@@ -489,6 +489,7 @@ I Gopal Reddy, Founder Principal, Former Vice Chancellor<p>V Vijaya Kumar Reddy 
                 .then((data) => {
                     console.log(data)
                     if (data['status'] === 1) {
+                        status=1;
                         var et=document.getElementById('etable');
                         var row=et.insertRow(1);
                         var cel1=row.insertCell(0);
@@ -497,6 +498,7 @@ I Gopal Reddy, Founder Principal, Former Vice Chancellor<p>V Vijaya Kumar Reddy 
                         cel2.innerHTML='<input id="ekey" type="password" name="ekey" value="" placeholder="Enter Key..." title="Enter Correct Key"/>';
 
                     } else {
+                        status=2;
                         var et=document.getElementById('etable');
                         console.log(et.rows.length);
                         if(et.rows.length>1){
@@ -749,9 +751,6 @@ I Gopal Reddy, Founder Principal, Former Vice Chancellor<p>V Vijaya Kumar Reddy 
                 }
             }
             document.body.addEventListener('load',scrolldiv('main-container'));
-            {% if att %}
-            scrolldiv('bdata');
-            {% endif %}
         </script>
 <script>
     function loaddoc(a){
