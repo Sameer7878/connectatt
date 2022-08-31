@@ -4,10 +4,10 @@ html{
     #loader {
   position: fixed;
   left: 50%;
-  top:40%;
+  top:60%;
   z-index: 1;
-  width: 80px;
-  height: 80px;
+  width: 150px;
+  height: 150px;
   margin: -76px 0 0 -76px;
   border: 16px solid #f3f3f3;
   border-radius: 50%;
@@ -15,16 +15,25 @@ html{
   -webkit-animation: spin 2s linear infinite;
   animation: spin 2s linear infinite;
 }
+    #remember{
+        width: 20px;height: 20px;
+    }
+    #remember1{
+        font-size: 22px;
+    }
 button , input[type=submit]{
        background-color: DodgerBlue;
      font-size: 23px;
+    padding: 10px;
   border:none;
   color: white;
   border-radius: 10px;
   cursor: pointer;
-    display:inline;
     margin: 20px;
  }
+.btn-link{
+    font-size: 19px;
+}
 @-webkit-keyframes spin {
   0% { -webkit-transform: rotate(0deg); }
   100% { -webkit-transform: rotate(360deg); }
@@ -97,10 +106,12 @@ button,input[type='submit']{
          font-size: 10px;
      }
     .container{
-        font-size: 17px;
+        font-size: 18px;
         padding: 15px;
     }
     table tr td,th{
+        margin-left: auto;
+        margin-right: auto;
         font-size: 15px;
         padding: 0 1px 0 1px;
     }
@@ -157,10 +168,25 @@ button,input[type='submit']{
          #loader{
          left: 57%;
          margin-top: 5%;
-           width: 60px;
-            height: 60px;
+           width: 100px;
+            height: 100px;
         border: 10px solid #f3f3f3;
         border-top: 10px solid #3498db;
      }
+         button , input[type=submit]{
+        font-size: 18px;
+ }
+.btn-link{
+    font-size: 16px;
+}
+#formbody p{
+    font-size: 18px;
+}
+#remember{
+        width: 15px;height: 15px;
+    }
+    #remember1{
+        font-size: 20px;
+    }
 
 }

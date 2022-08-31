@@ -18,7 +18,7 @@
     <!--<meta http-equiv="X-UA-Compatible" content="ie=edge" />-->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/main.css') }}" />
       <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/home.css') }}" />
-    <title>Att | Nbkrist</title>
+      <title>Att | Nbkrist</title>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg" id="header" >
@@ -99,25 +99,35 @@
     </div>-->
 </div>
     <div class="container" id="main-container">
+    <div id="loader" style="display: none;">
+    </div>
 
 <form action="{{ url_for('attshow') }}" method="post" id="formbody">
        {% with messages = get_flashed_messages(warning) %}
          {% if messages %}
                {% for message in messages %}
-                   <div class="flash"><p>{{ message }}</p></div><br>
+                   <div class="flash" id="fmsg"><p>{{ message }}</p></div><br>
                {% endfor %}
          {% endif %}
       {% endwith %}
-    <label>
+<table class="mr-auto ml-auto"><tr>
+    <td><label for="rolno">
         Enter Your RollNo:
-    </label>
-    <label>
-        <input id="rolno" type="text" name="rollno" value="{{ rollno }}" placeholder="Enter RollNo..." maxlength="10" title="Enter Complete RollNo" required/><br>
-    </label><br>
-    <input type="checkbox" id="remember" name="rememberme" value="True"/>
-    <label for="remember">Remember me!</label><br>
+    </label></td>
+    <td><input id="rolno" type="text" name="rollno" value="{{ rollno }}" placeholder="Enter RollNo..." maxlength="10" title="Enter Complete RollNo" required/></td>
+        <tr id="keyen" hidden><td class="float-left">
+    <label for="rolno">
+        Enter Key:
+    </label></td>
+    <td><input id="ekey" type="password" name="ekey" value="" placeholder="Enter Key..." title="Enter Correct Key"/></td>
+</tr>
+</table>
+<br><input type="checkbox" id="remember" name="rememberme" value="True"/>
+    <label for="remember" id="remember1">Remember me!</label><br>
     <button id="button" title="Get attendance" onclick="mysubmit()">Show</button>
-   <p>Your Attendance Till Now : <b style="color: {{ color }}">{{ att }}</b> </p>
+   <p>Your Attendance Till Now : <b style="color: {{ color }}">{{ att }}</b><!--<button disabled class="js-push-btn btn btn-outline-success">
+                Subscribe
+            </button>--></p>
     {% if att %}
     <div class="btn btn-link" onclick="scrolldiv('bdata')">View More</div>
     {% endif %}
@@ -271,7 +281,7 @@
         <div class="collapsible" id="midmarks">Mid Marks</div>
         <div class="content" id="marksco">
             <h3 class="font-weight-bold" id="midh">Mid Marks - <span id="semy">{{ reqs }}</span></h3><br>
-            <table class="table table-striped table-responsive-lg" id="midtable">
+            <table class="table table-striped table-responsive-lg mr-auto ml-auto" id="midtable">
                 <tr class="table-primary">
                     <th>Subjects</th>
                     <th>Mid-I</th>
@@ -319,28 +329,37 @@
     </div>
     <div class="container">
         <div class="collapsible">Set Key</div>
-        <div class="content" style="display: none">
-            <div>
-            Enter Roll No:
+        {% if rollno %}
+        <div class="content" id="formcon">
+            <br>
+            <span id="respmsg"></span>
+            <div id="setkeyform">
+            Roll No:
             <div class="form-group">
                 <input type="text" maxlength="10" value="{{ rollno }}" name="rolno" placeholder="Enter RollNo" readonly>
             </div>
             Enter Key:
             <div class="form-group">
-                <input type="password" name="key" placeholder="Enter key...">
+                <input type="password" name="key" placeholder="Enter key..." id="key">
             </div>
             Email:
+            {% set email=rollno | lower+'@nbkrist.org' %}
             <div class="form-group">
                 <input type="email" name="email" value="{{ email }}"  readonly>
                 <div class="form-group">
                 <button name="otp" id="otp">Request OTP</button>
                 </div>
             </div>
+            <div id="otpsec" style="display: none">
                 Enter OTP:
                 <div class="form-group">
-                    <input type="number" name="otpvalue" max="9999" min="1000" style="width: 20%">
+                    <input type="number" name="otpvalue" max="9999" min="1000" style="width: 20%" id="otpval">
                 </div>
-
+            <div class="form-group">
+            <button name="submit" id="submit">Submit</button>
+            </div>
+            </div>
+            {% endif %}
         </div>
         </div>
     </div>
@@ -454,28 +473,126 @@ I Gopal Reddy, Founder Principal, Former Vice Chancellor<p>V Vijaya Kumar Reddy 
     </div>
     </div>
     <script>
-        let greqy=0;
-        const div = document.querySelector('div');
-        var otp=document.getElementById('otp')
-        otp.addEventListener('click',sendotp);
-        function sendotp() {
-            var email="{{ rollno }}"+"@nbkrist.org";
-            var rollno="{{ rollno }}";
-            var url = '/otpapi/';
+    var rentry=document.getElementById('rolno');
+    if (rentry.value.length===10){
+        checksub();
+    }
 
+        rentry.addEventListener('input', checksub)
+    function checksub(){
+        console.log(rentry.value)
+        if (rentry.value.length===10) {
+            var url = '/checkkey/';
             fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({'rollno': rollno, 'email': email})
+                body: JSON.stringify({'roll': rentry.value})
             })
-            .then((response) => {
-            return response.json();
-        })
-        .then((data) => {
-        });
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    console.log(data)
+                    if (data['status'] === 1) {
+                        document.getElementById('keyen').hidden=false;
+                    } else {
+                        document.getElementById('keyen').hidden=true;
+                    }
+                });
         }
+    }
+    function mysubmit(){
+        console.log('button pressed')
+                document.getElementById('button').style.cursor='not-allowed';
+                document.getElementById('button').disabled=true;
+                document.getElementById('formbody').style.opacity='0.5';
+                document.getElementById('loader').style.display='block';
+                document.getElementById('formbody').submit();
+            }
+        let greqy=0;
+        const div = document.querySelector('div');
+        {% if rollno %}
+        var keybtn=document.getElementById('respmsg');
+        var otp=document.getElementById('otp')
+        var setbtn=document.getElementById('submit');
+        setbtn.addEventListener('click',checkotp);
+        function checkotp(){
+            var rollno = "{{ rollno }}";
+            var key = document.getElementById('key').value;
+            let otpvalue=document.getElementById('otpval').value;
+            var url = '/otpverify/';
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({'rollno': rollno, 'otp': otpvalue,'key':key})
+            })
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    if (data['status']===1){
+                        keybtn.innerText='OTP Verified'
+                        keybtn.style.display='block';
+                        keybtn.style.color='green';
+                        keybtn.style.border='2px solid green';
+                        document.getElementById('setkeyform').style.display='none';
+                        document.getElementById('formcon').style.maxHeight=document.getElementById('formcon').scrollHeight+2+'px';
+                    }
+                    else{
+                        keybtn.innerText='OTP Incorrrect'
+                        keybtn.style.display='block';
+                        keybtn.style.color='red';
+                        keybtn.style.border='2px solid red';
+                        document.getElementById('formcon').style.maxHeight=document.getElementById('formcon').scrollHeight+2+'px';
+                        otpvalue.clear;
+                    }
+                });
+
+        }
+        otp.addEventListener('click',sendotp);
+        function sendotp() {
+            var key = document.getElementById('key').value;
+            document.getElementById('respmsg').style.display='none';
+            if (key) {
+                var email = "{{ email }}";
+                var rollno = "{{ rollno }}";
+                var url = '/otpapi/';
+
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({'rollno': rollno, 'email': email})
+                })
+                    .then((response) => {
+                        return response.json();
+                    })
+                    .then((data) => {
+                        if(data['status']==='success'){
+                            keybtn.innerText='OTP Sent';
+                            keybtn.style.display='block';
+                            keybtn.style.color='green';
+                            keybtn.style.border='2px solid green';
+                            document.getElementById('otpsec').style.display='block';
+                            document.getElementById('formcon').style.maxHeight=document.getElementById('formcon').scrollHeight+2+'px';
+                        }
+                    });
+            }
+            else {
+                console.log('start')
+                keybtn.innerText='Enter Key.';
+                keybtn.style.display='block';
+                keybtn.style.color='red';
+                keybtn.style.border='2px solid red';
+                document.getElementById('formcon').style.maxHeight=document.getElementById('formcon').scrollHeight+2+'px';
+            }
+        }
+        {% endif %}
         {% if rollno %}
         var prev=document.getElementById('presem');
         var nxt=document.getElementById('nextsem');

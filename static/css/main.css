@@ -53,6 +53,17 @@ table .tdSideHead{
   line-height: 25px;
   border-radius: 4px;
 }
+#formbody p{
+    font-size: 20px;
+}
+#respmsg{
+    padding: 5px;
+    border: 2px solid #23e823;
+    font-weight: bold;
+    font-family: "Times New Roman", serif;
+    border-radius: 10px;
+    display: none;
+}
 #logo{
     padding-left: 10px;
 	font-size: 2em;
