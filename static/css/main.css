@@ -3,7 +3,7 @@
  font-family: Arial, Helvetica, sans-serif;
 }
 .menu-items{
-    font-size: 25px;
+    font-size: 22px;
     color: tomato;
 }
 .menu-item{
@@ -27,16 +27,16 @@ table .tdSideHead{
 }
 
 #notice{
-    padding: 10px; border: #4b4c4d solid 2px;
+    padding: 5px; border: #4b4c4d solid 2px;
 }
 #navbarSupportedContent .dropdown-toggle{
     color: tomato;
-    font-size: 25px;
+    font-size: 20px;
     font-weight: bold;
 }
 #navbarSupportedContent .dropdown-menu li a{
     font-weight: bold;
-    font-size: 20px;
+    font-size: 19px;
     border: none;
 }
 #header{
@@ -54,7 +54,7 @@ table .tdSideHead{
   border-radius: 4px;
 }
 #formbody p{
-    font-size: 20px;
+    font-size: 18px;
 }
 #respmsg{
     padding: 5px;
@@ -66,7 +66,7 @@ table .tdSideHead{
 }
 #logo{
     padding-left: 10px;
-	font-size: 2em;
+	font-size: 25px;
   font-weight: 700;
   text-transform: uppercase;
     overflow: hidden;
@@ -83,8 +83,8 @@ table .tdSideHead{
  {
             height: auto;
             width: auto;
-            max-height: 80px;
-            max-width: 200px;
+            max-height: 65px;
+            max-width: 150px;
 }
 #aboutclg p{
     text-align: left;
@@ -104,10 +104,12 @@ table .tdSideHead{
 }
 #p2{
     font-size: 19px;
+
     font-family: Arial, Helvetica, sans-serif;
 }
 #p1{
-   font-size: 22px;
+   font-size: 20px;
+    text-decoration: underline;
     text-indent: 15px;
     text-align:center;
     font-family: Copperplate, Papyrus, fantasy;
@@ -122,7 +124,7 @@ table .tdSideHead{
     font-weight: bold;
   border: none;
   text-align: left;
-  font-size: 20px;
+  font-size: 18px;
 }
 #bdata{
     transition: height 0.2s ease-out ;
@@ -138,7 +140,7 @@ table .tdSideHead{
   border: none;
   text-align: left;
   outline: none;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .collapsible:hover {
