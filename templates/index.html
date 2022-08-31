@@ -7,7 +7,6 @@
       integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
       crossorigin="anonymous"
     />
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <meta charset="UTF-8" />
     <meta name="keywords" content="Attendance nbkr,nbkristattendance,nbkrist,nbkr,attnbkr,attnbkrist,att nbkr,att,student portal,att.nbkrist,ADSV">
     <meta name="description" content="This Att | Nbkrist Website allows to check your Nbkrist college attendance,midmarks,syllabus and time tables of all section by just entering your rollno. Created ADSV">
@@ -110,17 +109,11 @@
                {% endfor %}
          {% endif %}
       {% endwith %}
-<table class="mr-auto ml-auto"><tr>
+<table class="mr-auto ml-auto" id="etable"><tr>
     <td><label for="rolno">
         Enter Your RollNo:
     </label></td>
     <td><input id="rolno" type="text" name="rollno" value="{{ rollno }}" placeholder="Enter RollNo..." maxlength="10" title="Enter Complete RollNo" required/></td>
-        <tr id="keyen" hidden><td class="float-left">
-    <label for="rolno">
-        Enter Key:
-    </label></td>
-    <td><input id="ekey" type="password" name="ekey" value="" placeholder="Enter Key..." title="Enter Correct Key"/></td>
-</tr>
 </table>
 <br><input type="checkbox" id="remember" name="rememberme" value="True"/>
     <label for="remember" id="remember1">Remember me!</label><br>
@@ -496,9 +489,19 @@ I Gopal Reddy, Founder Principal, Former Vice Chancellor<p>V Vijaya Kumar Reddy 
                 .then((data) => {
                     console.log(data)
                     if (data['status'] === 1) {
-                        document.getElementById('keyen').hidden=false;
+                        var et=document.getElementById('etable');
+                        var row=et.insertRow(1);
+                        var cel1=row.insertCell(0);
+                        var cel2=row.insertCell(1);
+                        cel1.innerHTML='<label for="rolno">Enter Key: </label>';
+                        cel2.innerHTML='<input id="ekey" type="password" name="ekey" value="" placeholder="Enter Key..." title="Enter Correct Key"/>';
+
                     } else {
-                        document.getElementById('keyen').hidden=true;
+                        var et=document.getElementById('etable');
+                        console.log(et.rows.length);
+                        if(et.rows.length>1){
+                            et.deleteRow(1);
+                        }
                     }
                 });
         }
@@ -745,6 +748,10 @@ I Gopal Reddy, Founder Principal, Former Vice Chancellor<p>V Vijaya Kumar Reddy 
                     return [currenttop];
                 }
             }
+            document.body.addEventListener('load',scrolldiv('main-container'));
+            {% if att %}
+            scrolldiv('bdata');
+            {% endif %}
         </script>
 <script>
     function loaddoc(a){

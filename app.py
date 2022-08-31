@@ -1588,7 +1588,6 @@ def midMarks(roll, year, bran, sec,reqy='0'):
     branch = {'1': '7', '2': '5', '3': '4', '4': '2', '5': '12', '6': '11', '7': '17', '8': '18', '9': '19', '10': '22',
               '11': '23'}
     section = {'1': '-', '2': 'A', '3': 'B', '4': 'C'}
-    print(roll,year,bran,sec,reqy)
     if reqy == '0':
         reqy=yearSem[str(year)]
         acay='2022-23'
@@ -1715,18 +1714,16 @@ def attshow():
         global att,msg
         if request.method == 'POST':
             rollno = request.form['rollno']
-            print(request.form['ekey'])
-            if request.form['ekey']:
-                if sub_data[rollno]!=request.form['ekey']:
-                    flash('Incorrect Key')
-                    return redirect('/')
             rollno = rollno.upper()
-            if rollno == '':
-                return flash('Enter Rollno.')
+            if 'ekey' in request.form:
+               if sub_data[rollno]!=request.form['ekey']:
+                   flash('Incorrect Key')
+                   return redirect('/')
+            if not rollno in student_data or rollno=='':
+                flash('Check Your Roll No.')
+                return redirect('/')
             session['rollno'] = rollno
 
-            if not rollno in student_data:
-                flash('Check Your Roll No.')
             # data = [(rollno[i:i + 2]) for i in range(0, len(rollno), 2)]
             month1 = datetime.datetime.today().month
             roll_data = student_data[rollno].split(' ')
@@ -1781,12 +1778,15 @@ def attshow():
 
             if h in range(13,17):
                 h -=12
-            for i,j in timeno.items():
-                if int(str(h)+str(m)) in range(int(i.split('-')[0]), int(i.split('-')[1])):
-                    cur_prd=ttjson[weekday[str(datetime.datetime.today().weekday()+1)]+j]
-                    break
+            if h>17:
+                cur_prd='No Class'
             else:
-                cur_prd='No Period'
+                for i,j in timeno.items():
+                    if int(str(h)+str(m)) in range(int(i.split('-')[0]), int(i.split('-')[1])):
+                        cur_prd=ttjson[weekday[str(datetime.datetime.today().weekday()+1)]+j]
+                        break
+                else:
+                    cur_prd='No Class'
             if adyear>=7:
                 cur_sem='19'+yearSem[str(adyear)]
             else:
@@ -1799,7 +1799,6 @@ def attshow():
                                 inc=inc, dec=dec,bdata=True,syllabi=syllabus_t,class1=yearSem[str(adyear)],section=section_s[str(section)],cur_prd=cur_prd,ttvalue=value,cur_sem=cur_sem,midjson=mid,reqs=reqs,msg=msg,adyear=adyear,bra=branch,sect=section,sub=sub_data.keys()))  # sub=sub,sub2=datt,datt2=datt2,subsize=len(datt)-1)#data=data
             if request.form.get('rememberme'):
                 rasp.set_cookie('rollno', rollno, max_age=COOKIE_TIME_OUT)
-            print(rasp)
             return rasp
     except Exception as error:
         return redirect('/')
@@ -1885,7 +1884,6 @@ def send_otp():
         otp=random.randrange(1000,9999)
         jsond=request.data
         jsond=json.loads(jsond)
-        print(jsond)
         otps[jsond.get('rollno')]=otp
         msg=Message(
             'OTP for Key Setting',
@@ -1900,10 +1898,7 @@ def send_otp():
 def otp_verify():
     if request.method == 'POST':
         jsont=request.data
-        print(type(jsont))
         jsont=json.loads(jsont)
-        print(type(jsont))
-        print(jsont)
         if otps[jsont['rollno']]==int(jsont['otp']):
             sub_data[jsont['rollno']]=jsont['key']
             print(sub_data)
@@ -1915,8 +1910,6 @@ def checkkey():
     if request.method=='POST':
         cdata=request.data
         cdata=json.loads(cdata)
-        print(cdata)
-        print(sub_data.keys())
         if cdata['roll'].upper() in sub_data.keys():
             return {'status':1}
         else:
