@@ -25,13 +25,12 @@ DATABASE_URL = os.environ['DATABASE_URL']
 conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 cur=conn.cursor()
 try:
-    cur.execute("create table main(rollno varchar(10) not null primary key,name varchar(50),password  varchar(20),count     integer,status    varchar(5) default '0',join_date timestamp  default CURRENT_TIMESTAMP not null,recent_t  timestamp  default CURRENT_TIMESTAMP not null,sec_det varchar(10));")
+    cur.execute("create table main(rollno varchar(10) not null primary key,name varchar(50),password  varchar(20),count     integer,status    varchar(5) default '0',join_date timestamp  default CURRENT_TIMESTAMP not null,recent_t  timestamp  default CURRENT_TIMESTAMP not null,sec_det varchar(10),otp integer);")
     conn.commit()
     conn.close()
     print('created')
 except:
     print('pass')
-    pass
 mail = Mail(app)
 app.extensions['mail'].debug = 0
 app.secret_key = 'thisismysiteforattendance12121@#2143432543645732432@!@42mlkdnvkjdsnvdsdskjbgkjdsb'
@@ -1933,15 +1932,18 @@ def attapi():
     json_data = jsonify(name=name, attendance=att, incRate=inc, decRate=dec, to75=tot_cal, to65=tot_cal_65,
                         safe_bunks=tot_safe_bunks)
     return json_data
-otps={}
+
 @app.route('/otpapi/',methods=['POST','GET'])
 def send_otp():
-
+    conn=psycopg2.connect(DATABASE_URL, sslmode='require')
+    cur=conn.cursor()
     if request.method=='POST':
         otp=random.randrange(1000,9999)
         jsond=request.data
         jsond=json.loads(jsond)
-        otps[jsond.get('rollno')]=otp
+        cur.execute(f"update main set otp='{otp}' where rollno='{jsond.get('rollno')}';")
+        conn.commit()
+        conn.close()
         msg=Message(
             'OTP for Key Setting',
             sender='attnbkrist@gmail.com',
@@ -1949,7 +1951,7 @@ def send_otp():
         )
         msg.html=render_template('otpemail.html',rollno=jsond['rollno'],name=student_names[jsond['rollno']],otp=otp)
         mail.send(msg)
-        print(otps)
+        print(jsond.get('rollno'),otp)
         return {'status':'success'}
 @app.route('/otpverify/',methods=['POST','GET'])
 def otp_verify():
@@ -1958,7 +1960,11 @@ def otp_verify():
     if request.method == 'POST':
         jsont=request.data
         jsont=json.loads(jsont)
-        if otps[jsont['rollno']]==int(jsont['otp']):
+        cur.execute(f"select otp from main where rollno='{jsont['rollno']}';")
+        otp=cur.fetchone()
+        if otp:
+            otp=otp[0]
+        if otp==int(jsont['otp']):
             cur.execute(f"update main set password='{jsont['key']}' where rollno='{jsont['rollno']}';")
             conn.commit()
             conn.close()
