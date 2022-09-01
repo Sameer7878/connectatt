@@ -1811,7 +1811,7 @@ def attshow():
                 att=inc=tot_cal=tot_cal_65=tot_safe_bunks=dec=0
                 msg='Error Occured Please Try Some Time'
             # data=ttime(adyear,branch,section)
-            cur.execute(f"select syllabi,tvalue,ttable from main where rollno='{rollno}'")
+            cur.execute(f"select syllabi from main where rollno='{rollno}'")
             syl=cur.fetchone()
             if adyear>=7:
                 cur_sem='19'+yearSem[str(adyear)]
@@ -1833,15 +1833,8 @@ def attshow():
                 conn.commit()
             h=datetime.datetime.now(pytz.timezone('Asia/Kolkata')).hour
             m=datetime.datetime.now(pytz.timezone('Asia/Kolkata')).minute
-            if syl[1]:
-                value=syl[1]
-                ttjson=syl[2]
-            else:
-                print('realtime')
-                value,ttjson=ttable(adyear,branch,section)
-                cur.execute(f"update main set tvalue='{value}',ttable='{json.dumps(ttjson)}' where rollno='{rollno}'")
-                conn.commit()
-            print(value,ttjson)
+            print('realtime')
+            value,ttjson=ttable(adyear,branch,section)
             if h>17:
                 cur_prd='No Class'
                 if h in range(13, 17):
