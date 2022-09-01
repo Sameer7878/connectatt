@@ -282,7 +282,7 @@
     <div class="container">
         <div class="collapsible" id="midmarks">Mid Marks</div>
         <div class="content" id="marksco">
-            <h3 class="font-weight-bold" id="midh">Mid Marks : <span id="semy"> {{reqs}}</span></h3><br>
+            <h3 class="font-weight-bold" id="midh">Mid Marks : <span id="semy"> {{reqs[0]}} - {{ reqs[1] }}</span></h3><br>
             <table class="table table-striped table-responsive-lg mr-auto ml-auto" id="midtable">
                 <tr class="table-primary">
                     <th>Subjects</th>
@@ -475,6 +475,23 @@ I Gopal Reddy, Founder Principal, Former Vice Chancellor<p>V Vijaya Kumar Reddy 
     </div>
     </div>
     <script>
+    function scrolldiv(a) {
+                window.scroll(0,
+         findPosition(document.getElementById(a))-150);
+                if(document.getElementById(a).className==='collapsible'){
+                    document.getElementById(a).click();
+                }
+            }
+            function findPosition(obj) {
+                var currenttop = 0;
+                if (obj.offsetParent) {
+                    do {
+                        currenttop += obj.offsetTop;
+                    } while ((obj = obj.offsetParent));
+                    return [currenttop];
+                }
+            }
+    document.body.addEventListener('load',scrolldiv('main-container'));
     var rentry=document.getElementById('rolno');
     if (rentry.value.length===10){
         checksub();
@@ -515,6 +532,7 @@ I Gopal Reddy, Founder Principal, Former Vice Chancellor<p>V Vijaya Kumar Reddy 
                     else {
                         status=2;
                         document.getElementById('midh1').innerText='Set Key First';
+                        document.getElementById('midh1').addEventListener('click',scrolldiv('formcon'))
                         document.getElementById('presem').style.display='none';
                         var et=document.getElementById('etable');
                         console.log(et.rows.length);
@@ -722,7 +740,7 @@ I Gopal Reddy, Founder Principal, Former Vice Chancellor<p>V Vijaya Kumar Reddy 
                             else{
                                document.getElementById('nextsem').style.display = ''
                             }
-                            document.getElementById('semy').innerText = greqy;
+                            document.getElementById('semy').innerText = greqy[0]+' - '+greqy[1];
                             document.getElementById('marksco').style.maxHeight = document.getElementById('marksco').scrollHeight + 2 + 'px';
                         }
                     });
@@ -745,31 +763,12 @@ I Gopal Reddy, Founder Principal, Former Vice Chancellor<p>V Vijaya Kumar Reddy 
                             else{
                                document.getElementById('nextsem').style.display = ''
                             }
-                            document.getElementById('semy').innerText = greqy;
+                            document.getElementById('semy').innerText = greqy[0]+' - '+greqy[1];
                             document.getElementById('marksco').style.maxHeight = document.getElementById('marksco').scrollHeight + 2 + 'px';
 
             }
         }
     </script>
-<script>
-            function scrolldiv(a) {
-                window.scroll(0,
-         findPosition(document.getElementById(a))-150);
-                if(document.getElementById(a).className==='collapsible'){
-                    document.getElementById(a).click();
-                }
-            }
-            function findPosition(obj) {
-                var currenttop = 0;
-                if (obj.offsetParent) {
-                    do {
-                        currenttop += obj.offsetTop;
-                    } while ((obj = obj.offsetParent));
-                    return [currenttop];
-                }
-            }
-            document.body.addEventListener('load',scrolldiv('main-container'));
-        </script>
 <script>
     function loaddoc(a){
        var linkid= a+'in';

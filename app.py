@@ -24,13 +24,13 @@ DATABASE_URL = os.environ['DATABASE_URL']
 #conn = psycopg2.connect(database = "postgres", host = "127.0.0.1", port = "5432")
 conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 cur=conn.cursor()
-try:
+'''try:
     cur.execute("create table main(rollno varchar(10) not null primary key,name varchar(50),password  varchar(20),count     integer,status    varchar(5) default '0',join_date timestamp  default CURRENT_TIMESTAMP not null,recent_t  timestamp  default CURRENT_TIMESTAMP not null,sec_det varchar(10),otp integer);")
     conn.commit()
     conn.close()
     print('created')
 except:
-    print('pass')
+    print('pass')'''
 mail = Mail(app)
 app.extensions['mail'].debug = 0
 app.secret_key = 'thisismysiteforattendance12121@#2143432543645732432@!@42mlkdnvkjdsnvdsdskjbgkjdsb'
@@ -1736,6 +1736,9 @@ def attshow():
                if pass1!=request.form['ekey']:
                    flash('Incorrect Key')
                    return redirect('/')
+            elif pass1:
+                flash('Enter Key First')
+                return redirect('/')
             cur.execute('select rollno from main;')
             stu_data=cur.fetchall()
             print(stu_data)
@@ -1863,10 +1866,11 @@ def api(roll):
     rollno = roll.upper()
     month1 = datetime.datetime.today().month
     cur.execute(f"select name , sec_det from main where rollno='{rollno}'")
-    if cur.fetchone():
+    d=cur.fetchone()
+    if d:
         print('db')
-        roll_data=cur.fetchone()[1]
-        name=cur.fetchone()[0]
+        roll_data=d[1]
+        name=d[0]
     else:
         roll_data = student_data[rollno].split(' ')
         name = student_names[rollno]
@@ -1907,10 +1911,11 @@ def attapi():
     rollno = roll.upper()
     month1 = datetime.datetime.today().month
     cur.execute(f"select name , sec_det from main where rollno='{rollno}'")
-    if cur.fetchone():
+    d=cur.fetchone()
+    if d:
         print('db')
-        roll_data=cur.fetchone()[1]
-        name=cur.fetchone()[0]
+        roll_data=d[1]
+        name=d[0]
     else:
         roll_data=student_data[rollno].split(' ')
         name=student_names[rollno]
