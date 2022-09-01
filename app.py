@@ -1,5 +1,7 @@
 import os
 import random
+
+import pytz
 from bs4 import BeautifulSoup as sp
 from markupsafe import Markup
 from flask_mail import Mail, Message
@@ -1806,8 +1808,8 @@ def attshow():
             # data=ttime(adyear,branch,section)
             syllabus_t=syllabus[branch_in_alpha[branch_s[str(branch)]]]
             syllabus_t=ast.literal_eval(syllabus_t)
-            h=datetime.datetime.today().hour
-            m=datetime.datetime.today().minute
+            h=datetime.datetime.now(pytz.timezone('Asia/Kolkata')).hour
+            m=datetime.datetime.now(pytz.timezone('Asia/Kolkata')).minute
             value,ttjson=ttable(adyear,branch,section)
             if h>17:
                 cur_prd='No Class'
