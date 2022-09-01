@@ -55,7 +55,7 @@ import psycopg2
 con = psycopg2.connect(database = "postgres", host = "127.0.0.1", port = "5432")
 cur=con.cursor()
 rol='19KB1A1244'
-cur.execute(f"select count from main where rollno='{rol}';")
+cur.execute(f"select tvalue from main where rollno='21KB1A1205';")
 d=cur.fetchall()
 print(d)
 

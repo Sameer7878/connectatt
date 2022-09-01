@@ -26,13 +26,16 @@ DATABASE_URL = os.environ['DATABASE_URL']
 #conn = psycopg2.connect(database = "postgres", host = "127.0.0.1", port = "5432")
 conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 cur=conn.cursor()
-'''try:
-    cur.execute("create table main(rollno varchar(10) not null primary key,name varchar(50),password  varchar(20),count     integer,status    varchar(5) default '0',join_date timestamp  default CURRENT_TIMESTAMP not null,recent_t  timestamp  default CURRENT_TIMESTAMP not null,sec_det varchar(10),otp integer);")
+try:
+    cur.execute("alter table main add syllabi varchar(3000);")
+    cur.execute("alter table main add ttable varchar(3000);")
+    cur.execute("alter table main add tvalue varchar(3000);")
+    cur.execute("alter table main add midmarks varchar(3000);")
     conn.commit()
     conn.close()
-    print('created')
+    print('updated')
 except:
-    print('pass')'''
+    print('pass')
 mail = Mail(app)
 app.extensions['mail'].debug = 0
 app.secret_key = 'thisismysiteforattendance12121@#2143432543645732432@!@42mlkdnvkjdsnvdsdskjbgkjdsb'
@@ -1636,7 +1639,7 @@ def handle_500(e):
 
 
 
-@app.before_request
+#@app.before_request
 def before_request():
     if not request.is_secure:
         url = request.url.replace('http://', 'https://', 1)
@@ -1724,7 +1727,7 @@ def home():
 @app.route('/attshow', methods=['POST', 'GET'])
 def attshow():
     try:
-        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+        conn=psycopg2.connect(DATABASE_URL, sslmode='require')
         cur=conn.cursor()
         global att,msg
         if request.method == 'POST':
@@ -1741,6 +1744,8 @@ def attshow():
             elif pass1:
                 flash('Enter Key First')
                 return redirect('/')
+            else:
+                pass1=''
             cur.execute('select rollno from main;')
             stu_data=cur.fetchall()
             print(stu_data)
@@ -1806,11 +1811,37 @@ def attshow():
                 att=inc=tot_cal=tot_cal_65=tot_safe_bunks=dec=0
                 msg='Error Occured Please Try Some Time'
             # data=ttime(adyear,branch,section)
-            syllabus_t=syllabus[branch_in_alpha[branch_s[str(branch)]]]
-            syllabus_t=ast.literal_eval(syllabus_t)
+            cur.execute(f"select syllabi,tvalue,ttable from main where rollno='{rollno}'")
+            syl=cur.fetchone()
+            if adyear>=7:
+                cur_sem='19'+yearSem[str(adyear)]
+            else:
+                cur_sem='20'+yearSem[str(adyear)]
+            if syl[0]:
+                syllabus_t=syl[0]
+                syllabus_t=ast.literal_eval(syllabus_t)
+            else:
+                print('else2')
+                syllabus_t=syllabus[branch_in_alpha[branch_s[str(branch)]]]
+                syllabus_t=ast.literal_eval(syllabus_t)
+                if cur_sem in syllabus_t:
+                    syllabus_t=syllabus_t[cur_sem]
+                else:
+                    syllabus_t=None
+                print(len(json.dumps(syllabus_t)))
+                cur.execute(f"update main set syllabi='{json.dumps(syllabus_t)}' where rollno='{rollno}'")
+                conn.commit()
             h=datetime.datetime.now(pytz.timezone('Asia/Kolkata')).hour
             m=datetime.datetime.now(pytz.timezone('Asia/Kolkata')).minute
-            value,ttjson=ttable(adyear,branch,section)
+            if syl[1]:
+                value=syl[1]
+                ttjson=syl[2]
+            else:
+                print('realtime')
+                value,ttjson=ttable(adyear,branch,section)
+                cur.execute(f"update main set tvalue='{value}',ttable='{json.dumps(ttjson)}' where rollno='{rollno}'")
+                conn.commit()
+            print(value,ttjson)
             if h>17:
                 cur_prd='No Class'
                 if h in range(13, 17):
@@ -1822,10 +1853,6 @@ def attshow():
                         break
                 else:
                     cur_prd='No Class'
-            if adyear>=7:
-                cur_sem='19'+yearSem[str(adyear)]
-            else:
-                cur_sem='20'+yearSem[str(adyear)]
             reqs=yearSem[str(adyear)]
             mid=midMarks(rollno,adyear,branch,section,reqs)
             conn.commit()
@@ -1833,11 +1860,12 @@ def attshow():
             rasp = make_response(
                 render_template('index.html', att=att, rollno=session['rollno'], name=name, color=color,
                                 count=count, tot_cal=tot_cal, tot_cal_65=tot_cal_65, tot_safe_bunks=tot_safe_bunks,
-                                inc=inc, dec=dec,bdata=True,syllabi=syllabus_t,class1=yearSem[str(adyear)],section=section_s[str(section)],cur_prd=cur_prd,ttvalue=value,cur_sem=cur_sem,midjson=mid,reqs=reqs,msg=msg,adyear=adyear,bra=branch,sect=section,branch_alpha=branch_in_alpha[branch_s[str(branch)]]))  # sub=sub,sub2=datt,datt2=datt2,subsize=len(datt)-1)#data=data
+                                inc=inc, dec=dec,bdata=True,syllabi=syllabus_t,class1=yearSem[str(adyear)],section=section_s[str(section)],cur_prd=cur_prd,ttvalue=value,cur_sem=cur_sem,midjson=mid,reqs=reqs,msg=msg,adyear=adyear,bra=branch,sect=section,branch_alpha=branch_in_alpha[branch_s[str(branch)]],pkey=pass1))  # sub=sub,sub2=datt,datt2=datt2,subsize=len(datt)-1)#data=data
             if request.form.get('rememberme'):
                 rasp.set_cookie('rollno', rollno, max_age=COOKIE_TIME_OUT)
             return rasp
     except Exception as error:
+        print(error)
         print('try error')
         return redirect('/')
     print('ex error')
@@ -1863,7 +1891,7 @@ def adminsuccess():
 
 @app.route('/api/<roll>/')
 def api(roll):
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    conn=psycopg2.connect(DATABASE_URL, sslmode='require')
     cur=conn.cursor()
     rollno = roll.upper()
     month1 = datetime.datetime.today().month
@@ -1871,7 +1899,7 @@ def api(roll):
     d=cur.fetchone()
     if d:
         print('db')
-        roll_data=d[1]
+        roll_data=d[1].split(' ')
         name=d[0]
     else:
         roll_data = student_data[rollno].split(' ')
@@ -1901,13 +1929,23 @@ def midapi():
     if request.method=='POST':
         reqd=request.data
         reqd=json.loads(reqd)
-        midjson=midMarks(reqd['roll'],reqd['year'],reqd['bra'],reqd['sec'],reqd['reqy'])
-        if not midjson:
-            midjson={'Nodata':'Success'}
+        conn=psycopg2.connect(DATABASE_URL, sslmode='require')
+        cur=conn.cursor()
+        cur.execute(f"select password from main where rollno='{reqd['roll']}'")
+        pass1=cur.fetchone()
+        conn.close()
+        if pass1:
+            pass1=pass1[0]
+        if pass1 and pass1==reqd['passw']:
+            midjson=midMarks(reqd['roll'],reqd['year'],reqd['bra'],reqd['sec'],reqd['reqy'])
+            if not midjson:
+                midjson={'Nodata': 'Success'}
+        else:
+            midjson={'status':'Unauthorization Activity'}
         return midjson
 @app.route('/attapi/', methods=["GET"])  # api for AttNbkrist
 def attapi():
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    conn=psycopg2.connect(DATABASE_URL, sslmode='require')
     cur=conn.cursor()
     roll = request.args.get('roll')
     rollno = roll.upper()
@@ -1916,7 +1954,7 @@ def attapi():
     d=cur.fetchone()
     if d:
         print('db')
-        roll_data=d[1]
+        roll_data=d[1].split(' ')
         name=d[0]
     else:
         roll_data=student_data[rollno].split(' ')
