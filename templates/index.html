@@ -117,7 +117,7 @@
         Enter Your RollNo:
     </label></td>
     <td><input id="rolno" type="text" name="rollno" value="{{ rollno }}" placeholder="Enter RollNo..." maxlength="10" title="Enter Complete RollNo" required/></td>
-</tr><br>
+</tr>
 </table>
 <br><input type="checkbox" id="remember" name="rememberme" value="True"/>
     <label for="remember" id="remember1">Remember me!</label><br>
@@ -160,8 +160,7 @@
                 <input type="hidden" value="{{ bra }}" id="branch">
                 <input type="hidden" value="{{ sect }}" id="section">
                 <input type="hidden" value="{{ rollno }}" id="rollno">
-                <input type="hidden" value="{{ class1 }}" id="curs">
-                <input type="hidden" value="{{ pkey }}" id="pkey">
+                <input type="hidden" value="{{ reqs }}" id="curs">
             <tr>
                 <th style="text-align: left">
                     Name :
@@ -285,8 +284,10 @@
     <div class="container">
         <div class="collapsible" id="midmarks">Mid Marks</div>
         <div class="content" id="marksco">
+        <span id="ermsg" hidden></span>
         {% if reqs %}
-            <h3 class="font-weight-bold" id="midh">Mid Marks : <span id="semy"> {{reqs[0]}} - {{ reqs[1] }}</span></h3><br>
+            {%  set reqs2= reqs[1] | int  %}
+            <h3 class="font-weight-bold" id="midh">Mid Marks : <span id="semy"> {{reqs[0]}} - {{ reqs2-1 }}</span></h3><br>
         {% else %}
         <h3 class="font-weight-bold" id="midh">Mid Marks : <span id="semy"></span></h3><br>
         {% endif %}
@@ -297,20 +298,9 @@
                     <th>Mid-II</th>
                     <th>Aggregate(Final)</th>
                 </tr>
-            {% if midjson and midjson!=None %}
-                {% for i,j in midjson.items() %}
-                <tr id="main" class="{{ class1 }}">
-                    <th>{{ i }}</th>
-                    <th>{{ j[0:2] }}</th>
-                    <th>{{ j[3:5] }}</th>
-                    <th>{{ j[6:8] }}</th>
-                </tr>
-                {% endfor %}
-            {% else %}
                 <tr id="dummy" class="{{ class1 }}"> <th colspan="4">
                 <h4 id="midh1">NO DATA FOUND</h4></th>
                 </tr>
-            {% endif %}
             </table>
         {% if class1 %}
         <div class="btn btn-outline-success float-left" id="presem">Previous Semester</div>
@@ -482,6 +472,7 @@ I Gopal Reddy, Founder Principal, Former Vice Chancellor<p>V Vijaya Kumar Reddy 
     </div>
     </div>
     <script>
+    var dmsg=document.getElementById('dummy');
     function sleep(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
    }
@@ -503,6 +494,7 @@ I Gopal Reddy, Founder Principal, Former Vice Chancellor<p>V Vijaya Kumar Reddy 
             }
     document.body.addEventListener('load',scrolldiv('main-container'));
     var prev=document.getElementById('presem')
+    prev.style.display='none';
     var nxt=document.getElementById('nextsem');
     var rentry=document.getElementById('rolno');
     if (rentry.value.length===10){
@@ -528,24 +520,43 @@ I Gopal Reddy, Founder Principal, Former Vice Chancellor<p>V Vijaya Kumar Reddy 
                     console.log(data)
                     if (data['status'] === 1) {
                         status=1;
-                        document.getElementById('midh1').innerText='NO DATA FOUND';
-                        var et=document.getElementById('etable');
-                        if(et.rows.length===1){
+                        {% if rollno %}
+                        var et=document.getElementById('midtable');
+                        console.log(et.rows.length)
+                        if(et.rows.length===2){
+                            et.deleteRow(1);
                         var row=et.insertRow(1);
+                        var row1=et.insertRow(2)
+                        row.setAttribute('id','dummy');
+                        row1.setAttribute('id','dummy')
                         var cel1=row.insertCell(0);
-                        var cel2=row.insertCell(1);
-                        cel1.innerHTML='<label for="rolno">Enter Key: </label>';
-                        cel2.innerHTML='<input id="ekey" type="password" name="ekey" value="" placeholder="Enter Key..." title="Enter Correct Key"/>';
+                        var cel2=row1.insertCell(0);
+                        cel1.colSpan=4;
+                        cel2.colSpan=4;
+                        cel1.innerHTML='<label for="rolno">Enter Key: </label><input id="ekey" type="password" name="ekey" value="" placeholder="Enter Key..." title="Enter Correct Key"/>';
+                        cel2.innerHTML='<button id="midsub" onclick="checkpass()">Show</button>';
+                        document.getElementById('marksco').style.maxHeight = document.getElementById('marksco').scrollHeight + 2 + 'px';
                         }
-
+                        {% endif %}
                     }
 
                     else {
                         status=2;
-                        {% if class1 %}
-                        document.getElementById('presem').style.display='none';
-                        {% endif %}
                         {% if rollno %}
+                        var et=document.getElementById('midtable');
+                             et.deleteRow(1);
+                             if(et.rows.length===2){
+                                 et.deleteRow(1);
+                             }
+
+                        var row=et.insertRow(1);
+                        row.setAttribute('id','dummy');
+                        var cel1=row.insertCell(0);
+                        cel1.colSpan=4;
+                        cel1.innerHTML='<h4 id="midh1">NO DATA FOUND</h4>';
+
+                        document.getElementById('presem').style.display='none';
+
                         document.getElementById('midh1').innerHTML='<button>Set Key First</button>';
                         document.getElementById('midh1').setAttribute('onclick',"scrolldiv('formc')");
                         {% endif %}
@@ -557,6 +568,38 @@ I Gopal Reddy, Founder Principal, Former Vice Chancellor<p>V Vijaya Kumar Reddy 
                     }
                 });
         }
+    }
+    function checkpass(){
+            var key1=document.getElementById('ekey').value;
+            console.log(key1)
+            var roll=document.getElementById('rolno').value;
+            if(key1==='' || roll.length!==10){
+                return 0;
+            }else{
+                var url='/checkpass/';
+
+                fetch(url,{
+                    method:'POST',
+                    headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({'rollno': roll,'key':key1})
+            })
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    if(data['status']===1){
+                        aftercheck(key1);
+                    }
+                    else{
+                        document.getElementById('ermsg').innerText='Incorrect Key';
+                        document.getElementById('ermsg').style.color='red';
+                        document.getElementById('ermsg').style.padding='5px';
+                        document.getElementById('ermsg').hidden=false;
+                    }
+                })
+            }
     }
     function mysubmit(){
         console.log('button pressed')
@@ -650,150 +693,159 @@ I Gopal Reddy, Founder Principal, Former Vice Chancellor<p>V Vijaya Kumar Reddy 
             }
         }
         {% endif %}
-        {% if rollno %}
-            prev.style.display='';
-        nxt.addEventListener('click',getmid);
-        prev.addEventListener('click',getmid);
-        {% endif %}
-        function getmid() {
-            let temp={{ class1 }};
-            var coll2 = document.getElementsByClassName(greqy);
+        function aftercheck(pass1) {
+            var et=document.getElementById('midtable');
+            if (et.rows.length===3){
+                et.deleteRow(1);
+                et.deleteRow(1);
+            }else{
+                et.deleteRow(1);
+            }
+            getmid();
+            prev.style.display = '';
+            nxt.addEventListener('click', getmid);
+            prev.addEventListener('click', getmid);
+
+            function getmid() {
+                let temp ={{ class1 }};
+                var coll2 = document.getElementsByClassName(greqy);
                 var h1;
 
                 for (h1 = 0; h1 < coll2.length; h1++) {
-                    coll2[h1].style.display='none';
+                    coll2[h1].style.display = 'none';
 
                 }
-            var roll=document.getElementById('rollno').value;
-            var year=document.getElementById('adyear').value;
-            var bran=document.getElementById('branch').value;
-            var sec=document.getElementById('section').value;
-            var curs=document.getElementById('curs').value;
+                var roll = document.getElementById('rollno').value;
+                var year = document.getElementById('adyear').value;
+                var bran = document.getElementById('branch').value;
+                var sec = document.getElementById('section').value;
+                var curs = document.getElementById('curs').value;
 
-            var url = '/midapi/';
-            if(this.id==='presem'){
-                document.getElementById('presem').style.display='none';
-                document.getElementById('nextsem').style.display='none';
-
-                if(curs[1]==='2'){
-                    greqy =curs[0]+(parseInt(curs[1])-1).toString();
-                    document.getElementById('curs').value=greqy;
+                var url = '/midapi/';
+                if(this.id==='nextsem') {
+                    document.getElementById('presem').style.display = 'none';
+                    document.getElementById('nextsem').style.display = 'none';
+                    if (curs[1] === '2') {
+                        greqy = (parseInt(curs[0]) + 1).toString() + (parseInt(curs[1]) - 1).toString();
+                        document.getElementById('curs').value = greqy;
+                    } else {
+                        greqy = curs[0] + (parseInt(curs[1]) + 1).toString();
+                        document.getElementById('curs').value = greqy;
                     }
-                else{
-                    greqy =(parseInt(curs[0])-1).toString()+(parseInt(curs[1])+1).toString();
-                    document.getElementById('curs').value=greqy;
+                }else {
+                    document.getElementById('presem').style.display = 'none';
+                    document.getElementById('nextsem').style.display = 'none';
+                    console.log('start')
+                    if (curs[1] === '2') {
+                        greqy = curs[0] + (parseInt(curs[1]) - 1).toString();
+                        document.getElementById('curs').value = greqy;
+                    } else {
+                        greqy = (parseInt(curs[0]) - 1).toString() + (parseInt(curs[1]) + 1).toString();
+                        document.getElementById('curs').value = greqy;
                     }
-                if(document.getElementById('main')){
-                    document.getElementById('main').style.display='none';
+                   // if (document.getElementById('main')) {
+                     //   document.getElementById('main').style.display = 'none';
+                    //} else {
+                     //   document.getElementById('dummy').style.display = 'none';
+                   // }
+                    console.log('2nd')
                 }
-                else{
-                    document.getElementById('dummy').style.display='none';
-                }
-
-            }
-            else {
-                document.getElementById('presem').style.display='none';
-                document.getElementById('nextsem').style.display='none';
-                if (curs[1] === '2') {
-                    greqy = (parseInt(curs[0]) + 1).toString() + (parseInt(curs[1]) - 1).toString();
-                    document.getElementById('curs').value = greqy;
-                } else {
-                    greqy = curs[0] + (parseInt(curs[1]) + 1).toString();
-                    document.getElementById('curs').value = greqy;
-                }
-            }
-            if(document.getElementsByClassName(greqy).length===0) {
-                var pass1=document.getElementById('pkey').value;
-                fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({'roll': roll, 'year': year, 'bra': bran, 'sec': sec, 'reqy': greqy,'passw':pass1})
-                })
-                    .then((response) => {
-                        return response.json();
+                console.log(greqy)
+                if (document.getElementsByClassName(greqy).length === 0) {
+                    console.log('method start')
+                    fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            'roll': roll,
+                            'year': year,
+                            'bra': bran,
+                            'sec': sec,
+                            'reqy': greqy,
+                            'passw': pass1
+                        })
                     })
-                    .then((data) => {
+                        .then((response) => {
+                            return response.json();
+                        })
+                        .then((data) => {
 
-                        let jdata = data;
-                        if (jdata) {
-                            let i = 1
-                            for (var sub in jdata) {
-                                if (sub === 'Nodata' && document.getElementsByClassName(greqy || sub==='status')) {
-                                    break;
-                                }
-                                var table = document.getElementById('midtable');
-                                var row = table.insertRow(i);
-                                row.style.display = 'none';
-                                row.className = greqy;
-                                var cel1 = row.insertCell(0);
-                                var cel2 = row.insertCell(1);
-                                var cel3 = row.insertCell(2);
-                                var cel4 = row.insertCell(3);
-                                cel1.innerHTML = sub;
-                                console.log(jdata[sub],typeof jdata[sub])
-                                if (jdata[sub].includes('/')){
-                                    let d=jdata[sub].split('/')
-                                    cel2.innerHTML=d[0];
-                                    if (d[1].includes('(')){
-                                        let e=d[1].split('(')
-                                        cel3.innerHTML =e[0];
-                                        cel4.innerHTML = e[1].slice(0,-1);
+                            let jdata = data;
+                            if (jdata) {
+                                let i = 1
+                                for (var sub in jdata) {
+                                    if (sub === 'Nodata' && document.getElementsByClassName(greqy || sub === 'status')) {
+                                        break;
                                     }
-                                    else{
-                                        cel3.innerHTML =d[1];
+                                    var table = document.getElementById('midtable');
+                                    var row = table.insertRow(i);
+                                    row.style.display = 'none';
+                                    row.className = greqy;
+                                    var cel1 = row.insertCell(0);
+                                    var cel2 = row.insertCell(1);
+                                    var cel3 = row.insertCell(2);
+                                    var cel4 = row.insertCell(3);
+                                    cel1.innerHTML = sub;
+                                    console.log(jdata[sub], typeof jdata[sub])
+                                    if (jdata[sub].includes('/')) {
+                                        let d = jdata[sub].split('/')
+                                        cel2.innerHTML = d[0];
+                                        if (d[1].includes('(')) {
+                                            let e = d[1].split('(')
+                                            cel3.innerHTML = e[0];
+                                            cel4.innerHTML = e[1].slice(0, -1);
+                                        } else {
+                                            cel3.innerHTML = d[1];
+                                        }
+                                    } else {
+                                        cel2.innerHTML = jdata[sub];
                                     }
-                                }else{
-                                    cel2.innerHTML=jdata[sub];
+                                    i++;
                                 }
-                                i++;
-                            }
-                            var coll1 = document.getElementsByClassName(greqy);
-                            var h;
+                                var coll1 = document.getElementsByClassName(greqy);
+                                var h;
 
-                            for (h = 0; h < coll1.length; h++) {
-                                coll1[h].style.display = '';
+                                for (h = 0; h < coll1.length; h++) {
+                                    coll1[h].style.display = '';
 
+                                }
+                                if (greqy === '11') {
+                                    document.getElementById('presem').style.display = 'none';
+                                } else {
+                                    document.getElementById('presem').style.display = ''
+                                }
+                                if (greqy === '42' || greqy==temp) {
+                                    document.getElementById('nextsem').style.display = 'none';
+                                } else {
+                                    document.getElementById('nextsem').style.display = ''
+                                }
+                                document.getElementById('semy').innerText = greqy[0] + ' - ' + greqy[1];
+                                document.getElementById('marksco').style.maxHeight = document.getElementById('marksco').scrollHeight + 2 + 'px';
                             }
-                            if (greqy === '11') {
-                                document.getElementById('presem').style.display = 'none';
-                            }
-                            else{
-                               document.getElementById('presem').style.display = ''
-                            }
-                            if (greqy === '42') {
-                                document.getElementById('nextsem').style.display = 'none';
-                            }
-                            else{
-                               document.getElementById('nextsem').style.display = ''
-                            }
-                            document.getElementById('semy').innerText = greqy[0]+' - '+greqy[1];
-                            document.getElementById('marksco').style.maxHeight = document.getElementById('marksco').scrollHeight + 2 + 'px';
-                        }
-                    });
-            }
-            else{
-                var coll1 = document.getElementsByClassName(greqy);
-                var h;
-                for (h = 0; h < coll1.length; h++) {
-                    coll1[h].style.display = '';
+                        });
+                } else {
+                    var coll1 = document.getElementsByClassName(greqy);
+                    var h;
+                    for (h = 0; h < coll1.length; h++) {
+                        coll1[h].style.display = '';
+                    }
+                    if (greqy === '11') {
+                        document.getElementById('presem').style.display = 'none';
+                    } else {
+                        document.getElementById('presem').style.display = ''
+                    }
+                    console.log(temp)
+                    if (greqy == 0 || greqy == temp) {
+                        document.getElementById('nextsem').style.display = 'none';
+                    } else {
+                        document.getElementById('nextsem').style.display = ''
+                    }
+                    document.getElementById('semy').innerText = greqy[0] + ' - ' + greqy[1];
+                    document.getElementById('marksco').style.maxHeight = document.getElementById('marksco').scrollHeight + 2 + 'px';
+
                 }
-                if (greqy === '11') {
-                                document.getElementById('presem').style.display = 'none';
-                            }
-                            else{
-                               document.getElementById('presem').style.display = ''
-                            }
-                            if (greqy == 0 || greqy==temp) {
-                                document.getElementById('nextsem').style.display = 'none';
-                            }
-                            else{
-                               document.getElementById('nextsem').style.display = ''
-                            }
-                            document.getElementById('semy').innerText = greqy[0]+' - '+greqy[1];
-                            document.getElementById('marksco').style.maxHeight = document.getElementById('marksco').scrollHeight + 2 + 'px';
-
             }
         }
     </script>

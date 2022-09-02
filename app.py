@@ -23,7 +23,7 @@ app.config['MAIL_PASSWORD'] = 'vajbfhkryeqtrdrq'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 DATABASE_URL = os.environ['DATABASE_URL']
-#conn = psycopg2.connect(database = "postgres", host = "127.0.0.1", port = "5432")
+#conn = psycopg2.connect(database = "dqe54aoft23do", host = "ec2-34-199-68-114.compute-1.amazonaws.com", user="cgncgmtvnnnjki", port = "5432",password="9c67b17c47ac756d8b94edf5b9a65dc71f9da48e272a73e77860aa057b20204f")
 conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 cur=conn.cursor()
 try:
@@ -1733,22 +1733,6 @@ def attshow():
         if request.method == 'POST':
             rollno = request.form['rollno']
             rollno = rollno.upper()
-            cur.execute(f"SELECT password FROM main where rollno='{rollno}';")
-            pass1=cur.fetchone()
-            if pass1:
-                pass1=pass1[0]
-            if 'ekey' in request.form:
-               if pass1!=request.form['ekey']:
-                   flash('Incorrect Key')
-                   return redirect('/')
-            elif pass1:
-                flash('Enter Key First')
-                return redirect('/')
-            else:
-                pass1=''
-            cur.execute('select rollno from main;')
-            stu_data=cur.fetchall()
-            print(stu_data)
             if not rollno in student_data or rollno=='':
                 flash('Check Your Roll No.')
                 return redirect('/')
@@ -1783,11 +1767,10 @@ def attshow():
             # sub,datt,datt2
             print('before attendance')
             att, tot_cal, tot_cal_65, tot_safe_bunks, inc, dec = get_data(rollno, adyear, branch, section)
-            cur.execute("select rollno from main;")
-            count_data=cur.fetchall()
-            print(att,count_data)
-            print((rollno,))
-            if not (rollno,) in count_data:
+            cur.execute(f"select count(*) from main where rollno='{rollno}';")
+            count_data=cur.fetchone()
+            print(count_data[0])
+            if count_data[0]==0:
                 cur.execute(f"insert into main(rollno,name,count,sec_det) values('{rollno}','{student_names[rollno]}',1,'{student_data[rollno]}');")
                 conn.commit()
                 print('db done')
@@ -1817,7 +1800,8 @@ def attshow():
                 cur_sem='19'+yearSem[str(adyear)]
             else:
                 cur_sem='20'+yearSem[str(adyear)]
-            if syl[0]:
+            if syl[0] and not syl[0]=='null':
+                print('dbs')
                 syllabus_t=syl[0]
                 syllabus_t=ast.literal_eval(syllabus_t)
             else:
@@ -1835,25 +1819,31 @@ def attshow():
             m=datetime.datetime.now(pytz.timezone('Asia/Kolkata')).minute
             print('realtime')
             value,ttjson=ttable(adyear,branch,section)
-            if h>17:
-                cur_prd='No Class'
-                if h in range(13, 17):
-                    h-=12
-            else:
-                for i,j in timeno.items():
-                    if int(str(h)+str(m)) in range(int(i.split('-')[0]), int(i.split('-')[1])):
-                        cur_prd=ttjson[weekday[str(datetime.datetime.today().weekday()+1)]+j]
-                        break
-                else:
+            try:
+                if h>17:
                     cur_prd='No Class'
+                    if h in range(13, 17):
+                        h-=12
+                else:
+                    for i,j in timeno.items():
+                        if int(str(h)+str(m)) in range(int(i.split('-')[0]), int(i.split('-')[1])):
+                            cur_prd=ttjson[weekday[str(datetime.datetime.today().weekday()+1)]+j]
+                            break
+                    else:
+                        cur_prd='No Class'
+            except:
+                cur_prd='Mo Class'
             reqs=yearSem[str(adyear)]
-            mid=midMarks(rollno,adyear,branch,section,reqs)
+            if int(reqs[1])==1:
+                reqs=reqs[0]+str(int(reqs[1])+1)
+            else:
+                reqs =str(int(reqs[0]) +1) + str(int(reqs[1])-1)
             conn.commit()
             conn.close()
             rasp = make_response(
                 render_template('index.html', att=att, rollno=session['rollno'], name=name, color=color,
                                 count=count, tot_cal=tot_cal, tot_cal_65=tot_cal_65, tot_safe_bunks=tot_safe_bunks,
-                                inc=inc, dec=dec,bdata=True,syllabi=syllabus_t,class1=yearSem[str(adyear)],section=section_s[str(section)],cur_prd=cur_prd,ttvalue=value,cur_sem=cur_sem,midjson=mid,reqs=reqs,msg=msg,adyear=adyear,bra=branch,sect=section,branch_alpha=branch_in_alpha[branch_s[str(branch)]],pkey=pass1))  # sub=sub,sub2=datt,datt2=datt2,subsize=len(datt)-1)#data=data
+                                inc=inc, dec=dec,bdata=True,syllabi=syllabus_t,class1=yearSem[str(adyear)],section=section_s[str(section)],cur_prd=cur_prd,ttvalue=value,cur_sem=cur_sem,reqs=reqs,msg=msg,adyear=adyear,bra=branch,sect=section,branch_alpha=branch_in_alpha[branch_s[str(branch)]]))  # sub=sub,sub2=datt,datt2=datt2,subsize=len(datt)-1)#data=data
             if request.form.get('rememberme'):
                 rasp.set_cookie('rollno', rollno, max_age=COOKIE_TIME_OUT)
             return rasp
@@ -1867,6 +1857,7 @@ def attshow():
 @app.route('/adminsuccess/', methods=['POST', 'GET'])
 def adminsuccess():
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+
     cur=conn.cursor()
     if request.method == 'POST':
         passw = request.form['adminpass']
@@ -1884,7 +1875,8 @@ def adminsuccess():
 
 @app.route('/api/<roll>/')
 def api(roll):
-    conn=psycopg2.connect(DATABASE_URL, sslmode='require')
+    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+
     cur=conn.cursor()
     rollno = roll.upper()
     month1 = datetime.datetime.today().month
@@ -1922,7 +1914,8 @@ def midapi():
     if request.method=='POST':
         reqd=request.data
         reqd=json.loads(reqd)
-        conn=psycopg2.connect(DATABASE_URL, sslmode='require')
+        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+
         cur=conn.cursor()
         cur.execute(f"select password from main where rollno='{reqd['roll']}'")
         pass1=cur.fetchone()
@@ -1938,13 +1931,15 @@ def midapi():
         return midjson
 @app.route('/attapi/', methods=["GET"])  # api for AttNbkrist
 def attapi():
-    conn=psycopg2.connect(DATABASE_URL, sslmode='require')
+    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+
     cur=conn.cursor()
     roll = request.args.get('roll')
     rollno = roll.upper()
     month1 = datetime.datetime.today().month
     cur.execute(f"select name , sec_det from main where rollno='{rollno}'")
     d=cur.fetchone()
+    conn.close()
     if d:
         print('db')
         roll_data=d[1].split(' ')
@@ -1973,7 +1968,8 @@ def attapi():
 
 @app.route('/otpapi/',methods=['POST','GET'])
 def send_otp():
-    conn=psycopg2.connect(DATABASE_URL, sslmode='require')
+    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+
     cur=conn.cursor()
     if request.method=='POST':
         otp=random.randrange(1000,9999)
@@ -1994,6 +1990,7 @@ def send_otp():
 @app.route('/otpverify/',methods=['POST','GET'])
 def otp_verify():
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+
     cur=conn.cursor()
     if request.method == 'POST':
         jsont=request.data
@@ -2012,6 +2009,7 @@ def otp_verify():
 @app.route('/checkkey/',methods=['GET','POST'])
 def checkkey():
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+
     cur=conn.cursor()
     if request.method=='POST':
         cdata=request.data
@@ -2023,6 +2021,23 @@ def checkkey():
             pass1=pass1[0]
         conn.close()
         if pass1:
+            return {'status':1}
+        else:
+            return {'status':2}
+@app.route('/checkpass/',methods=['POST'])
+def checkpass():
+    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+
+    cur = conn.cursor()
+    conn.close()
+    if request.method=='POST':
+        kdata=request.data
+        kdata=json.loads(kdata)
+        print(kdata)
+        cur.execute(f"select password from main where rollno='{kdata['rollno'].upper()}' ")
+        pass1=cur.fetchone()
+        print()
+        if pass1[0]==kdata['key']:
             return {'status':1}
         else:
             return {'status':2}
@@ -2086,4 +2101,4 @@ def push_v1():
             print("error",e)
             return {'failed':str(e)}'''
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0',debug=True)

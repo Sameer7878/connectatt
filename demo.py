@@ -52,11 +52,11 @@ dat={i.text : j.text for i,j in zip(soup.findAll('td',attrs={'valign':'top'}),so
 print(dat)'''
 import psycopg2
 
-con = psycopg2.connect(database = "postgres", host = "127.0.0.1", port = "5432")
+con = psycopg2.connect(database = "dqe54aoft23do", host = "ec2-34-199-68-114.compute-1.amazonaws.com", user="cgncgmtvnnnjki", port = "5432",password="9c67b17c47ac756d8b94edf5b9a65dc71f9da48e272a73e77860aa057b20204f")
 cur=con.cursor()
 rol='19KB1A1244'
-cur.execute(f"select tvalue from main where rollno='21KB1A1205';")
-d=cur.fetchall()
+cur.execute(f"select count(*) from main where rollno='19KB1A1240';")
+d=cur.fetchone()
 print(d)
 
 
