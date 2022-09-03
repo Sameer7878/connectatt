@@ -1866,40 +1866,42 @@ def adminsuccess():
 
 @app.route('/api/<roll>/')
 def api(roll):
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    try:
+        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
-    cur=conn.cursor()
-    rollno = roll.upper()
-    month1 = datetime.datetime.today().month
-    cur.execute(f"select name , sec_det from main where rollno='{rollno}'")
-    d=cur.fetchone()
-    if d:
-        print('db')
-        roll_data=d[1].split(' ')
-        name=d[0]
-    else:
-        roll_data = student_data[rollno].split(' ')
-        name = student_names[rollno]
-    adyear = int(roll_data[0])
-    if adyear == 4 and month1 <= 11:
-        adyear-=1
-    elif adyear == 6 and month1 <= 11:
-        adyear=adyear-1
-    elif adyear == 8 and month1 <= 11:
-        adyear=adyear-1
-    # elif adyear == 6 and month1 >= 11:
-    # adyear = adyear + 1
-    else:
-        pass
-    branch = int(roll_data[1])
-    section = int(roll_data[2])
-    conn.close()
-    att, tot_cal, tot_cal_65, tot_safe_bunks, inc, dec = get_data(rollno, adyear, branch, section)
-    json_data = jsonify(name=name, attendance=att, incRate=inc, decRate=dec, to75=tot_cal, to65=tot_cal_65,
-                        safe_bunks=tot_safe_bunks)
-    json_data.headers.add("Access-Control-Allow-Origin", "*")
-    return json_data
-
+        cur=conn.cursor()
+        rollno = roll.upper()
+        month1 = datetime.datetime.today().month
+        cur.execute(f"select name , sec_det from main where rollno='{rollno}'")
+        d=cur.fetchone()
+        if d:
+            print('db')
+            roll_data=d[1].split(' ')
+            name=d[0]
+        else:
+            roll_data = student_data[rollno].split(' ')
+            name = student_names[rollno]
+        adyear = int(roll_data[0])
+        if adyear == 4 and month1 <= 11:
+            adyear-=1
+        elif adyear == 6 and month1 <= 11:
+            adyear=adyear-1
+        elif adyear == 8 and month1 <= 11:
+            adyear=adyear-1
+        # elif adyear == 6 and month1 >= 11:
+        # adyear = adyear + 1
+        else:
+            pass
+        branch = int(roll_data[1])
+        section = int(roll_data[2])
+        conn.close()
+        att, tot_cal, tot_cal_65, tot_safe_bunks, inc, dec = get_data(rollno, adyear, branch, section)
+        json_data = jsonify(name=name, attendance=att, incRate=inc, decRate=dec, to75=tot_cal, to65=tot_cal_65,
+                            safe_bunks=tot_safe_bunks)
+        json_data.headers.add("Access-Control-Allow-Origin", "*")
+        return json_data
+    except:
+        return {"status":"Error"}
 
 @app.route('/midapi/',methods=['GET','POST'])
 @cross_origin()
@@ -1925,40 +1927,42 @@ def midapi():
         return midjson
 @app.route('/attapi/', methods=["GET"])  # api for AttNbkrist
 def attapi():
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-
-    cur=conn.cursor()
-    roll = request.args.get('roll')
-    rollno = roll.upper()
-    month1 = datetime.datetime.today().month
-    cur.execute(f"select name , sec_det from main where rollno='{rollno}'")
-    d=cur.fetchone()
-    conn.close()
-    if d:
-        print('db')
-        roll_data=d[1].split(' ')
-        name=d[0]
-    else:
-        roll_data=student_data[rollno].split(' ')
-        name=student_names[rollno]
-    adyear = int(roll_data[0])
-    if adyear == 4 and month1 <= 11:
-        adyear-=1
-    elif adyear == 6 and month1 <= 11:
-        adyear=adyear-1
-    elif adyear == 8 and month1 <= 11:
-        adyear=adyear-1
-    # elif adyear == 6 and month1 >= 11:
-    # adyear = adyear + 1
-    else:
-        pass
-    branch = int(roll_data[1])
-    section = int(roll_data[2])
-    conn.close()
-    att, tot_cal, tot_cal_65, tot_safe_bunks, inc, dec = get_data(rollno, adyear, branch, section)
-    json_data = jsonify(name=name, attendance=att, incRate=inc, decRate=dec, to75=tot_cal, to65=tot_cal_65,
-                        safe_bunks=tot_safe_bunks)
-    return json_data
+    try:
+        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+        cur=conn.cursor()
+        roll = request.args.get('roll')
+        rollno = roll.upper()
+        month1 = datetime.datetime.today().month
+        cur.execute(f"select name , sec_det from main where rollno='{rollno}'")
+        d=cur.fetchone()
+        conn.close()
+        if d:
+            print('db')
+            roll_data=d[1].split(' ')
+            name=d[0]
+        else:
+            roll_data=student_data[rollno].split(' ')
+            name=student_names[rollno]
+        adyear = int(roll_data[0])
+        if adyear == 4 and month1 <= 11:
+            adyear-=1
+        elif adyear == 6 and month1 <= 11:
+            adyear=adyear-1
+        elif adyear == 8 and month1 <= 11:
+            adyear=adyear-1
+        # elif adyear == 6 and month1 >= 11:
+        # adyear = adyear + 1
+        else:
+            pass
+        branch = int(roll_data[1])
+        section = int(roll_data[2])
+        conn.close()
+        att, tot_cal, tot_cal_65, tot_safe_bunks, inc, dec = get_data(rollno, adyear, branch, section)
+        json_data = jsonify(name=name, attendance=att, incRate=inc, decRate=dec, to75=tot_cal, to65=tot_cal_65,
+                            safe_bunks=tot_safe_bunks)
+        return json_data
+    except:
+        return {"status":"Error"}
 
 @app.route('/otpapi/',methods=['POST','GET'])
 def send_otp():
