@@ -17,8 +17,6 @@
     <!--<meta http-equiv="X-UA-Compatible" content="ie=edge" />-->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/main.css') }}" />
       <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/home.css') }}" />
-      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4640999261594123"
-     crossorigin="anonymous"></script>
       <meta name="google-site-verification" content="yvF7XLG_qSMm67vKZjdTbkHaoz8B4CG41SBSxVswoAQ" />
       <title>Att | Nbkrist</title>
   </head>
@@ -49,10 +47,11 @@
                 <li><div class="menu-item" onclick="scrolldiv('ttable')">Time Table</div></li>
                 <li><div class="menu-item" onclick="scrolldiv('syllabus')">Syllabus</div></li>
                 <li><div class="menu-item" onclick="scrolldiv('midmarks')">Mid Marks</div></li>
+                <li><div class="menu-item" onclick="location.href='https://www.instagram.com/attnbkrist_tk/'">Att Bot</div></li>
             </ul>
             </div>
             <div class="menu-item" onclick="scrolldiv('admin')">Admin</div>
-            <div class="menu-item" onclick="scrolldiv('aboutus')">About Us</div>
+            <div class="menu-item" onclick="scrolldiv('aboutus')">About us</div>
           <div class="menu-item" onclick="scrolldiv('contact')">Contact</div>
 
         </div>
@@ -125,7 +124,7 @@
    <p>Your Attendance Till Now : <b style="color: {{ color }}">{{ att }}</b><!--<button disabled class="js-push-btn btn btn-outline-success">
                 Subscribe
             </button>--></p>
-    {% if att %}
+    {% if rollno %}
     <div class="btn btn-link" onclick="scrolldiv('bdata')">View More</div>
     {% endif %}
     <!--{% if inc %}
@@ -535,7 +534,6 @@ I Gopal Reddy, Founder Principal, Former Vice Chancellor<p>V Vijaya Kumar Reddy 
                         cel2.colSpan=4;
                         cel1.innerHTML='<label for="rolno">Enter Key: </label><input id="ekey" type="password" name="ekey" value="" placeholder="Enter Key..." title="Enter Correct Key"/>';
                         cel2.innerHTML='<button id="midsub" onclick="checkpass()">Show</button>';
-                        document.getElementById('marksco').style.maxHeight = document.getElementById('marksco').scrollHeight + 2 + 'px';
                         }
                         {% endif %}
                     }
@@ -570,8 +568,11 @@ I Gopal Reddy, Founder Principal, Former Vice Chancellor<p>V Vijaya Kumar Reddy 
         }
     }
     function checkpass(){
+            document.getElementById('ermsg').hidden=true;
             var key1=document.getElementById('ekey').value;
             console.log(key1)
+            document.getElementById('midsub').innerText='Checking...';
+            document.getElementById('midsub').disabled=true;
             var roll=document.getElementById('rolno').value;
             if(key1==='' || roll.length!==10){
                 return 0;
@@ -597,6 +598,8 @@ I Gopal Reddy, Founder Principal, Former Vice Chancellor<p>V Vijaya Kumar Reddy 
                         document.getElementById('ermsg').style.color='red';
                         document.getElementById('ermsg').style.padding='5px';
                         document.getElementById('ermsg').hidden=false;
+                        document.getElementById('midsub').innerText='Show';
+                        document.getElementById('midsub').disabled=false;
                     }
                 })
             }

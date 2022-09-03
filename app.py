@@ -15,6 +15,7 @@ import json
 import re,ast
 import psycopg2
 msg=None
+pass1=None
 app = Flask(__name__)
 app.config['MAIL_SERVER']='smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
@@ -26,16 +27,6 @@ DATABASE_URL = os.environ['DATABASE_URL']
 #conn = psycopg2.connect(database = "dqe54aoft23do", host = "ec2-34-199-68-114.compute-1.amazonaws.com", user="cgncgmtvnnnjki", port = "5432",password="9c67b17c47ac756d8b94edf5b9a65dc71f9da48e272a73e77860aa057b20204f")
 conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 cur=conn.cursor()
-try:
-    cur.execute("alter table main add syllabi varchar(3000);")
-    cur.execute("alter table main add ttable varchar(3000);")
-    cur.execute("alter table main add tvalue varchar(3000);")
-    cur.execute("alter table main add midmarks varchar(3000);")
-    conn.commit()
-    conn.close()
-    print('updated')
-except:
-    print('pass')
 mail = Mail(app)
 app.extensions['mail'].debug = 0
 app.secret_key = 'thisismysiteforattendance12121@#2143432543645732432@!@42mlkdnvkjdsnvdsdskjbgkjdsb'
@@ -2016,10 +2007,10 @@ def checkkey():
         cdata=json.loads(cdata)
         cur.execute(f"select password from main where rollno='{cdata['roll'].upper()}';")
         pass1=cur.fetchone()
+        conn.close()
         print('ch',pass1)
         if pass1:
             pass1=pass1[0]
-        conn.close()
         if pass1:
             return {'status':1}
         else:
@@ -2029,14 +2020,12 @@ def checkpass():
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
     cur = conn.cursor()
-    conn.close()
     if request.method=='POST':
         kdata=request.data
         kdata=json.loads(kdata)
-        print(kdata)
         cur.execute(f"select password from main where rollno='{kdata['rollno'].upper()}' ")
         pass1=cur.fetchone()
-        print()
+        conn.close()
         if pass1[0]==kdata['key']:
             return {'status':1}
         else:
@@ -2101,4 +2090,4 @@ def push_v1():
             print("error",e)
             return {'failed':str(e)}'''
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',debug=True)
+    app.run(host='0.0.0.0')
