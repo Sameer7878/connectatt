@@ -506,8 +506,10 @@ I Gopal Reddy, Founder Principal, Former Vice Chancellor<p>V Vijaya Kumar Reddy 
         if (rentry.value.length===10) {
             var url = '/checkkey/';
             fetch(url, {
+                mode: 'no-cors',
                 method: 'POST',
                 headers: {
+
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({'roll': rentry.value})

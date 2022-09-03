@@ -2,6 +2,7 @@ import os
 import random
 
 import pytz
+from flask_cors import cross_origin
 from bs4 import BeautifulSoup as sp
 from markupsafe import Markup
 from flask_mail import Mail, Message
@@ -1848,7 +1849,6 @@ def attshow():
 @app.route('/adminsuccess/', methods=['POST', 'GET'])
 def adminsuccess():
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-
     cur=conn.cursor()
     if request.method == 'POST':
         passw = request.form['adminpass']
@@ -1897,11 +1897,14 @@ def api(roll):
     att, tot_cal, tot_cal_65, tot_safe_bunks, inc, dec = get_data(rollno, adyear, branch, section)
     json_data = jsonify(name=name, attendance=att, incRate=inc, decRate=dec, to75=tot_cal, to65=tot_cal_65,
                         safe_bunks=tot_safe_bunks)
+    json_data.headers.add("Access-Control-Allow-Origin", "*")
     return json_data
 
 
 @app.route('/midapi/',methods=['GET','POST'])
+@cross_origin()
 def midapi():
+
     if request.method=='POST':
         reqd=request.data
         reqd=json.loads(reqd)
