@@ -1824,7 +1824,7 @@ def attshow():
                     else:
                         cur_prd='No Class'
             except:
-                cur_prd='Mo Class'
+                cur_prd='No Class'
             reqs=yearSem[str(adyear)]
             if int(reqs[1])==1:
                 reqs=reqs[0]+str(int(reqs[1])+1)
