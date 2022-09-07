@@ -1846,24 +1846,6 @@ def attshow():
     print('ex error')
     return redirect('/')
 
-@app.route('/adminsuccess/', methods=['POST', 'GET'])
-def adminsuccess():
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-    cur=conn.cursor()
-    if request.method == 'POST':
-        passw = request.form['adminpass']
-        cur.execute("select password from main where rollno='admin';")
-        if passw == cur.fetchone()[0]:
-            session['name'] = 'adminlogin'
-            conn.close()
-            return redirect('/admindata/')
-        else:
-            flash("Wrong password")
-            return redirect('/')
-    else:
-        return redirect('/admin/')
-
-
 @app.route('/api/<roll>/')
 def api(roll):
     try:
@@ -2038,19 +2020,43 @@ def checkpass():
         else:
             return {'status':2}
 
-'''@app.route('/admindata/')
+@app.route('/adminsuccess/', methods=['POST', 'GET'])
+def adminsuccess():
+    #conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    #cur=conn.cursor()
+    if request.method == 'POST':
+        passw = request.form['adminpass']
+        #cur.execute("select password from main where rollno='admin';")
+        if passw == 'nbkr@123':
+            session['name'] = 'adminlogin'
+           # conn.close()
+            return redirect('/admindata/')
+        else:
+            flash("Wrong password")
+            return redirect('/')
+    else:
+        return redirect('/admin/')
+@app.route('/admindata/')
 def adminadata():
+    #Fetching for insta BOT DATA
+    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    cur = conn.cursor()
+    cur.execute(f'select count(rolid) from instad;')
+    reg_users=cur.fetchone()
+    cur.execute(f"SELECT count(rolid) from instad where book_req='true';")
+    booked_req=cur.fetchone()
+    cur.execute(f"select insta_username from instad where active_status='false';")
+    help=cur.fetchone()
+
+    #Fetching for ATT SITE
+    cur.execute(f"select count(rollno) from main where password !='null';")
+    keyset=cur.fetchone()
     if not session.get('name'):
         return render_template('index.html')
-    return render_template('adminsuc.html', fdata=fdata, fsize=len(fdata),
-                           sdata=sdata, ssize=len(sdata),
-                           tdata=tdata, tsize=len(tdata), frdata=fr_data,
-                           frsize=len(fr_data),
-                           tdsize=len(fdata) + len(sdata) + len(tdata) + len(fr_data), count_data=count_data,
-                        count_sum=(sum(list(count_data.values()))))'''
-
-'''#push notifications
-def send_web_push(subscription_information, message_body):
+    return render_template('adminsuc.html', reg_users=reg_users,booked_req=booked_req,help=help,keyset=keyset)
+    #return render_template('adminsuc.html', reg_users=', booked_req='2', help='h')
+#push notifications
+'''def send_web_push(subscription_information, message_body):
     return webpush(
         subscription_info=subscription_information,
         data=message_body,
