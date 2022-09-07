@@ -13,7 +13,18 @@
     <link rel="stylesheet" type="text/css" href="../static/css/home.css">
     <title>Att | Admin</title>
 </head>
+<style>
+    .header{
+        padding: 20px;
+        top: 0;
+        position: fixed;
+        width: 100%;
+        background-color: #f1f1f1;
+        display: flex;
+        justify-content: space-evenly;
 
+}
+</style>
 <header>
     <div class="header">
         <a href="{{ url_for('home') }}" class="logo" > ATT | ADMIN</a>
@@ -24,46 +35,33 @@
 </header>
 <body>
 <h2 style="text-align: center">Welcome to Admin page</h2>
+<!-- Insta BOT-->
+
 <table>
     <tr>
-        <th colspan="2" style="text-align: center;">Total</th>
-        <td colspan="2" style="text-align: center;"> {{ tdsize }}</td>
+        <th>insta_registered users</th>
+        <td>{{ reg_users }}</td>
     </tr>
-    
-    
     <tr>
-        <th colspan="2" style="text-align: center;">Total Requests </th>
-        <td colspan="2" style="text-align: center;">{{ count_sum }}</td>
+        <th>booked fo automatic attendance users</th>
+        <td>{{ booked_req }}</td>
     </tr>
-  	<tr>
-		<th>1st Year</th>
-		<th>2nd Year</th>
-		<th>3rd Year</th>
-		<th>4th Year</th>
-	<tr>
-		<td style="text-align: center;">{{ fsize }}</td>
-		<td style="text-align: center;">{{ ssize }}</td>
-		<td style="text-align: center;">{{ tsize }}</td>
-		<td style="text-align: center;">{{ frsize }}</td>
-    		</tr>
-    
-    </table>
-
-<marquee> more</marquee>
-
-    <table>
     <tr>
-        <th>Total Count </th>
-        <td>Total Requests: {{ count_sum }}</td>
-        <td>{{ count_data }}</td>
+        <th>Help</th>
+        <td>{{ help }}</td>
     </tr>
-    
-    
+</table>
+
+<!-- insta BOT-->
+<table>
+    <tr>
+        <th></th>
+        <td>key seted by</td>
+        <td>{{ keyset}}</td>
+    </tr>
     <tr>
         <th>First Year</th>
         <td>Total: {{ fsize }}</td>
-        <td>{{ fdata }}</td>
-
     </tr>
 
     
