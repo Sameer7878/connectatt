@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta name="google-site-verification" content="yvF7XLG_qSMm67vKZjdTbkHaoz8B4CG41SBSxVswoAQ" />
+
     <meta charset="UTF-8">
     <meta name="keywords" content="Attendance, nbkristattendance, nbkrist, nbkr, attnbkr, attnbkrist">
     <meta name="description" content="Check Your Attendance here.">
@@ -10,58 +11,92 @@
     <link rel="icon" type="image/x-icon" sizes="32x32" href="../static/img/favicon-32x32.png">
     <link rel="icon" type="image/x-icon" sizes="16x16" href="../static/img/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
-    <link rel="stylesheet" type="text/css" href="../static/css/home.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/main.css') }}" />
+
+      <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/home.css') }}" />
     <title>Att | Admin</title>
 </head>
 <style>
-    .header{
+    .header_ad{
         padding: 20px;
-        top: 0;
-        position: fixed;
-        width: 100%;
-        background-color: #f1f1f1;
+        position: relative;
+        width: auto;
+        background-color: aliceblue;
+        color: tomato;
+    }
+    .header_ad div{
         display: flex;
-        justify-content: space-evenly;
+        justify-content: space-between;
+    }
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
 
-}
+    }
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: center;
+      padding: 8px;
+
+    }
+    tr:nth-child(even) {
+      background-color: aliceblue;
+    }
+    a{
+        text-decoration: none;
+        color: tomato;
+    }
 </style>
-<header>
-    <div class="header">
+<div class="header_ad">
+    <div>
         <a href="{{ url_for('home') }}" class="logo" > ATT | ADMIN</a>
-        <div class="header-right">
             <a class="name" href="{{ url_for('adminsuccess') }}">Hello, Admin</a>
-        </div>
     </div>
-</header>
+</div>
 <body>
 <h2 style="text-align: center">Welcome to Admin page</h2>
 <!-- Insta BOT-->
 
 <table>
     <tr>
-        <th>insta_registered users</th>
+        <th colspan="3">INSTA BOT DETAILS</th>
+    </tr>
+    <tr>
+        <th>REG_USERS</th>
         <td>{{ reg_users }}</td>
     </tr>
     <tr>
-        <th>booked fo automatic attendance users</th>
+        <th>AUTO ATT</th>
         <td>{{ booked_req }}</td>
     </tr>
     <tr>
-        <th>Help</th>
+        <th style="color: red">ASKING HELP</th>
         <td>{{ help }}</td>
     </tr>
 </table>
 
+<br><br>
 <!-- insta BOT-->
 <table>
     <tr>
-        <th></th>
-        <td>key seted by</td>
+        <th colspan="2"></th>
+    </tr>
+    <tr>
+
+        <th>KEY SET BY</th>
         <td>{{ keyset}}</td>
+    </tr>
+</table>
+<br><br>
+<table>
+    <tr>
+        <th colspan="3">ATT DETAILS</th>
     </tr>
     <tr>
         <th>First Year</th>
         <td>Total: {{ fsize }}</td>
+        <td>{{ sdata }}</td>
     </tr>
 
     

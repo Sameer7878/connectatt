@@ -2046,8 +2046,7 @@ def adminadata():
     cur.execute(f"SELECT count(rolid) from instad where book_req='true';")
     booked_req=cur.fetchone()
     cur.execute(f"select insta_username from instad where active_status='false';")
-    help=cur.fetchone()
-
+    help=cur.fetchall()
     #Fetching for ATT SITE
     cur.execute(f"select count(rollno) from main where password !='null';")
     keyset=cur.fetchone()
