@@ -1,30 +1,35 @@
 html{
     scroll-behavior: smooth;
 }
+@keyframes spin {to {
+    transform: rotate(360deg)
+}
+}
     #loader {
-  position: fixed;
-  left: 50%;
-  top:60%;
-  z-index: 1;
-  width: 150px;
-  height: 150px;
-  margin: -76px 0 0 -76px;
-  border: 16px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 16px solid #3498db;
-  -webkit-animation: spin 2s linear infinite;
-  animation: spin 2s linear infinite;
+          position: fixed;
+          left: 50%;
+          top:60%;
+          z-index: 1;
+          width: 150px;
+          height: 150px;
+          border-radius: 50%;
+          border-top: 8px dotted white;
+            border-left: 8px dotted dodgerblue;
+            border-right: 8px dotted dodgerblue;
+            border-bottom: 8px dotted white;
+          -webkit-animation: spin 2s linear infinite;
+          animation: spin 0.575s infinite linear;
 }
     #remember{
-        width: 18px;height: 18px;
+        width: 20px;height: 20px;
     }
     #remember1{
-        font-size: 20px;
+        font-size: 22px;
     }
 button , input[type=submit]{
        background-color: DodgerBlue;
-     font-size: 18px;
-    padding: 5px 20px 5px 20px;
+     font-size: 23px;
+    padding: 10px;
   border:none;
   color: white;
   border-radius: 10px;
@@ -32,7 +37,7 @@ button , input[type=submit]{
     margin: 20px;
  }
 .btn-link{
-    font-size: 16px;
+    font-size: 19px;
 }
 @-webkit-keyframes spin {
   0% { -webkit-transform: rotate(0deg); }
@@ -47,10 +52,9 @@ button , input[type=submit]{
     margin-top: 10px;
     border-radius: 20px;
     padding: 30px;
-    width: 60%;
     background-color: aliceblue;
     text-align: center;
-    font-size: 18px;
+    font-size: 20px;
 }
  .flash{
      color: red;
@@ -109,7 +113,6 @@ button,input[type='submit']{
     .container{
         font-size: 18px;
         padding: 15px;
-        width: 100%;
     }
     table tr td,th{
         margin-left: auto;
@@ -168,12 +171,13 @@ button,input[type='submit']{
         width: 40px;
     }
          #loader{
-         left: 57%;
-         margin-top: 5%;
-           width: 100px;
-            height: 100px;
-        border: 10px solid #f3f3f3;
-        border-top: 10px solid #3498db;
+         left: 50%;
+             position: sticky;
+
+        border-left: 5px dotted dodgerblue;
+        border-top: 5px dotted aliceblue;
+             border-right: 5px dotted dodgerblue;
+        border-bottm: 5px dotted aliceblue;
      }
          button , input[type=submit]{
         font-size: 18px;
