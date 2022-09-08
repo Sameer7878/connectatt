@@ -13,11 +13,11 @@ html{
           width: 150px;
           height: 150px;
           border-radius: 50%;
-          border-top: 8px dotted white;
-            border-left: 8px dotted dodgerblue;
-            border-right: 8px dotted dodgerblue;
-            border-bottom: 8px dotted white;
-          -webkit-animation: spin 2s linear infinite;
+          border-top: 14px dotted white;
+            border-left: 5px dotted #b3d7ff;
+            border-right: 8px dotted #b3d7ff;
+            border-bottom: 11px dotted white;
+          -webkit-animation: spin 5s linear infinite;
           animation: spin 0.575s infinite linear;
 }
     #remember{
@@ -171,13 +171,12 @@ button,input[type='submit']{
         width: 40px;
     }
          #loader{
-         left: 50%;
-             position: sticky;
-
-        border-left: 5px dotted dodgerblue;
-        border-top: 5px dotted aliceblue;
-             border-right: 5px dotted dodgerblue;
-        border-bottm: 5px dotted aliceblue;
+             left:30%;
+             position: fixed;
+        border-left: 2px dotted #b3d7ff;
+        border-top: 4px dotted aliceblue;
+             border-right: 6px dotted #b3d7ff;
+        border-bottm: 10px dotted aliceblue;
      }
          button , input[type=submit]{
         font-size: 18px;
