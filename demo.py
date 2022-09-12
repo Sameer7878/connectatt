@@ -61,7 +61,7 @@ cur.execute("select * from instad where active_status=false ")
 print(cur.fetchall())
 con.close()'''
 data=requests.get('https://att.nbkrist.org/attendance/Apps_ren/getSubwiseAttAsJSONGivenRollNo.php?q=19kb1a1244')
-print(int(data.json().get('percent_breakup').split('/')[0]))
+print(int(data.json().get('percent_breakup').split('/')[1]))
 
 
 
