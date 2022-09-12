@@ -2076,22 +2076,22 @@ def adminadata():
     reg_users=cur.fetchone()
     cur.execute(f"SELECT count(rolid) from instad where book_req='true';")
     booked_req=cur.fetchone()
-    cur.execute(f"select 'instad.insta_username' from instad where active_status='false';")
+    cur.execute(f"select instad.insta_username from instad where active_status='false';")
     help=cur.fetchall()
     #Fetching for ATT SITE
-    cur.execute(f"select count('main.rollno') from main where password !='null';")
+    cur.execute(f"select count(main.rollno) from main where password !='null';")
     keyset=cur.fetchone()
     cur.execute(
-            f"select count('main.roll_id') from main where DATE(main.recent_t)=current_date and (main.sec_det like '1%' or main.sec_det like'2%');")
+            f"select count(main.rollno) from main where DATE(recent_t)=current_date and (main.sec_det like '1%' or main.sec_det like'2%');")
     first=cur.fetchone()
     cur.execute(
-        f"select count(main.roll_id) from main where DATE(main.recent_t)=current_date and (main.sec_det like '3%' or main.sec_det like '4%');")
+        f"select count(main.rollno) from main where DATE(recent_t)=current_date and (main.sec_det like '3%' or main.sec_det like '4%');")
     second=cur.fetchone()
     cur.execute(
-        f"select count(main.roll_id) from main where DATE(main.recent_t)=current_date and (main.sec_det like '5%' or main.sec_det like '6%');")
+        f"select count(main.rollno) from main where DATE(recent_t)=current_date and (main.sec_det like '5%' or main.sec_det like '6%');")
     third=cur.fetchone()
     cur.execute(
-        f"select count(main.roll_id) from main where DATE(recent_t)=current_date and (sec_det like '7%' or sec_det like '8%')")
+        f"select count(main.rollno) from main where DATE(recent_t)=current_date and (sec_det like '7%' or sec_det like '8%')")
     fourth=cur.fetchone()
     cur.execute(f"select instad.insta_username,instad.rolid,instad.book_req,instad.active_status from instad;")
     insta=cur.fetchall()
