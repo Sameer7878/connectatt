@@ -1669,10 +1669,10 @@ def cal_dec_inc(attend, total):
 
 
 def get_data(rollno, year, bran, sec):
-    yearSem = {'1': '11', '2': '12', '3': '21', '4': '22', '5': '31', '6': '32', '7': '41', '8': '42'}
+    '''yearSem = {'1': '11', '2': '12', '3': '21', '4': '22', '5': '31', '6': '32', '7': '41', '8': '42'}
     branch = {'1': '7', '2': '5', '3': '4', '4': '2', '5': '12', '6': '11', '7': '17', '8': '18', '9': '19', '10': '22',
               '11': '23'}
-    section = {'1': '-', '2': 'A', '3': 'B', '4': 'C'}
+    section = {'1': '-', '2': 'A', '3': 'B', '4': 'C'}'''
     att = None
     tot_cal_65 = None
     tot_cal = None
@@ -1681,6 +1681,7 @@ def get_data(rollno, year, bran, sec):
     sub = []
     datt = datt2 = []
     try:
+        '''
         payload = {
             "acadYear": "2022-23",
             "yearSem": yearSem[str(year)],
@@ -1693,8 +1694,15 @@ def get_data(rollno, year, bran, sec):
         att1 = data1.find('tr', attrs={'id': rollno}).find('td', attrs={'class': 'tdPercent'})
         data = att1.text.split('(')
         att = data[0]
+    
         nr = data[1].strip(')').split('/')[0]
         dr = data[1].strip(')').split('/')[1]
+        '''
+        data=requests.get('https://att.nbkrist.org/attendance/Apps_ren/getSubwiseAttAsJSONGivenRollNo.php?q=19kb1a1244')
+        data=data.json()
+        att=data.get('percent')
+        nr=int(data.json().get('percent_breakup').split('/')[0])
+        dr=int(data.json().get('percent_breakup').split('/')[1])
         if float(att) < 65.00:
             tot_cal_65 = cal_to_attend_65(nr, dr)
             tot_cal = cal_to_attend(nr, dr)
