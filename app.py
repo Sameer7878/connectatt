@@ -2083,21 +2083,21 @@ def adminadata():
     keyset=cur.fetchone()
     cur.execute(
             f"select count(main.rollno) from main where DATE(recent_t)=current_date and (main.sec_det like '1%' or main.sec_det like'2%');")
-    first=cur.fetchone()
+    first_y=cur.fetchone()
     cur.execute(
         f"select count(main.rollno) from main where DATE(recent_t)=current_date and (main.sec_det like '3%' or main.sec_det like '4%');")
-    second=cur.fetchone()
+    second_y=cur.fetchone()
     cur.execute(
         f"select count(main.rollno) from main where DATE(recent_t)=current_date and (main.sec_det like '5%' or main.sec_det like '6%');")
-    third=cur.fetchone()
+    third_y=cur.fetchone()
     cur.execute(
         f"select count(main.rollno) from main where DATE(recent_t)=current_date and (sec_det like '7%' or sec_det like '8%')")
-    fourth=cur.fetchone()
+    fourth_y=cur.fetchone()
     cur.execute(f"select instad.insta_username,instad.rolid,instad.book_req,instad.active_status from instad;")
     insta=cur.fetchall()
     if not session.get('name'):
         return render_template('index.html')
-    return render_template('adminsuc.html', reg_users=reg_users,booked_req=booked_req,help=help,keyset=keyset,first_y=first,second_y=second,third_y=third,fourth_y=fourth,insta_data=insta)
+    return render_template('adminsuc.html', reg_users=reg_users,booked_req=booked_req,help=help,keyset=keyset,first_y=first_y,second_y=second_y,third_y=third_y,fourth_y=fourth_y,insta_data=insta)
     #return render_template('adminsuc.html', reg_users=', booked_req='2', help='h')
 #push notifications
 @app.route('/activate/',methods=['GET','POST'])
