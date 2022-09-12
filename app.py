@@ -25,7 +25,7 @@ app.config['MAIL_PASSWORD'] = 'vajbfhkryeqtrdrq'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 DATABASE_URL = os.environ['DATABASE_URL']
-conn = psycopg2.connect(database = "dqe54aoft23do", host = "ec2-34-199-68-114.compute-1.amazonaws.com", user="cgncgmtvnnnjki", port = "5432",password="9c67b17c47ac756d8b94edf5b9a65dc71f9da48e272a73e77860aa057b20204f")
+#conn = psycopg2.connect(database = "dqe54aoft23do", host = "ec2-34-199-68-114.compute-1.amazonaws.com", user="cgncgmtvnnnjki", port = "5432",password="9c67b17c47ac756d8b94edf5b9a65dc71f9da48e272a73e77860aa057b20204f")
 conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 cur=conn.cursor()
 mail = Mail(app)
