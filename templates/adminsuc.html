@@ -47,6 +47,16 @@
         text-decoration: none;
         color: tomato;
     }
+    .start{
+        background-color:yellowgreen;
+        border-radius: 5px;
+    }
+    .kill{
+        background-color: tomato;;
+        border-radius: 5px;
+    }
+
+
 </style>
 <div class="header_ad">
     <div>
@@ -60,20 +70,48 @@
 
 <table>
     <tr>
-        <th colspan="3">INSTAGRAM BOT DETAILS</th>
+        <th colspan="2">INSTAGRAM BOT DETAILS</th>
     </tr>
     <tr>
-        <th>REG_USERS</th>
-        <td>{{ reg_users }}</td>
+        <th>REG_USERS: {{ reg_users }}</th>
     </tr>
     <tr>
-        <th>AUTO ATT</th>
-        <td>{{ booked_req }}</td>
+        <th>AUTO ATT : {{ booked_req }}</th>
     </tr>
     <tr>
-        <th style="color: red">ASKING HELP</th>
+        <th style="color: red">ASKING HELP</th></tr>
+    <tr>
         <td>{{ help }}</td>
     </tr>
+</table>
+
+
+<br><br>
+<table>
+    <tr>
+        <th>USERNAME</th>
+        <th>ROLL NO</th>
+        <th>SUBSCRIPTION</th>
+        <th>ACTION</th>
+    </tr>
+    {% for user in insta_data %}
+        <form>
+            <tr>
+                <td>{{ user[0] }}</td>
+                <td>{{ user[1] }}</td>
+                <td>{{ user[2] }}</td>
+                {% elif data[3]=='false' %}
+                    <td>
+                        <button class="start" formaction="{{url_for('activate')}}">Start</button>
+                    </td>
+                {% else %}
+                    <td>
+                        <button class="kill" formaction="{{url_for('dactivate')}}">Kill</button>
+                    </td>
+                {% endif %}
+            </tr>
+        </form>
+                {% endfor %}
 </table>
 
 <br><br>
@@ -95,30 +133,25 @@
     </tr>
     <tr>
         <th>First Year</th>
-        <td>Total: {{ fsize }}</td>
-        <td>{{ sdata }}</td>
+        <td>{{ first_y }}</td>
     </tr>
 
     
     <tr>
         <th>Second Year</th>
-        <td>Total: {{ ssize }}</td>
-        <td>{{ sdata }}</td>
+        <td>{{ second_y }}</td>
     </tr>
 
     
     <tr>
         <th>Third Year</th>
-        <td>Total: {{ tsize }}</td>
-
-        <td>{{ tdata }}</td>
+        <td>{{ third_y }}</td>
     </tr>
 
     
     <tr>
         <th>Fourth Year</th>
-        <td>Total: {{ frsize }}</td>
-        <td>{{ frdata }}</td>
+        <td>{{ fourth_y }}</td>
     </tr>
 </table>
 </body>
