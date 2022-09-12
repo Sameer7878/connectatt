@@ -2314,10 +2314,10 @@ def get_data(rollno, year, bran, sec):
               '11': '23'}
     section = {'1': '-', '2': 'A', '3': 'B', '4': 'C'}'''
     att=None
-    tot_cal_65=None
-    tot_cal=None
-    tot_safe_bunks=None
-    inc=dec=None
+    tot_cal_65=0
+    tot_cal=0
+    tot_safe_bunks=0
+    inc=dec=0
     sub=[]
     datt=datt2=[]
     try:
@@ -2341,8 +2341,8 @@ def get_data(rollno, year, bran, sec):
         data=requests.get(f'https://att.nbkrist.org/attendance/Apps_ren/getSubwiseAttAsJSONGivenRollNo.php?q={rollno}')
         data=data.json()
         att=data.get('percent')
-        nr=data.json().get('percent_breakup').split('/')[0]
-        dr=data.json().get('percent_breakup').split('/')[1]
+        nr=data.get('percent_breakup').split('/')[0]
+        dr=data.get('percent_breakup').split('/')[1]
         if float(att) < 65.00:
             tot_cal_65=cal_to_attend_65(nr, dr)
             tot_cal=cal_to_attend(nr, dr)
