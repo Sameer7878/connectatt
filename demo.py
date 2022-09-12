@@ -61,7 +61,19 @@ cur.execute("select * from instad where active_status=false ")
 print(cur.fetchall())
 con.close()'''
 data=requests.get('https://att.nbkrist.org/attendance/Apps_ren/getSubwiseAttAsJSONGivenRollNo.php?q=19kb1a1244')
-print(int(data.json().get('percent_breakup').split('/')[1]))
+print(float(data.json().get('percent'))<75.00)
 
-
+def cal_to_attend(attend, total):
+    tol_class=3 * (int(total))-4 * (int(attend))
+    return tol_class
+def cal_dec_inc(attend, total):
+    inc=(((int(attend)+1) / (int(total)+1))-(int(attend) / int(total))) * 100
+    dec=((int(attend) / int(total))-((int(attend)) / (int(total)+1))) * 100
+    inc=round(inc, 2)
+    dec=round(dec, 2)
+    return inc, dec
+nr=data.json().get('percent_breakup').split('/')[0]
+dr=data.json().get('percent_breakup').split('/')[1]
+if float(data.json().get('percent'))<75.00:
+    print(cal_dec_inc(nr,dr))
 
