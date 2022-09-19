@@ -19,19 +19,19 @@ import psycopg2
 msg=None
 pass1=None
 app=Flask(__name__)
-app.config['MAIL_SERVER']='smtp.gmail.com'
-app.config['MAIL_PORT']=465
-app.config['MAIL_USERNAME']='attnbkrist@gmail.com'
-app.config['MAIL_PASSWORD']=''
-app.config['MAIL_USE_TLS']=False
-app.config['MAIL_USE_SSL']=True
-#DATABASE_URL=os.environ['DATABASE_URL']
+app.config ['MAIL_SERVER']='smtp.gmail.com'
+app.config ['MAIL_PORT']=465
+app.config ['MAIL_USERNAME']='attnbkrist@gmail.com'
+app.config ['MAIL_PASSWORD']=os.environ['MAIL_PASS']
+app.config ['MAIL_USE_TLS']=False
+app.config ['MAIL_USE_SSL']=True
+DATABASE_URL=os.environ['DATABASE_URL']
 # conn = psycopg2.connect(database = "dqe54aoft23do", host = "ec2-34-199-68-114.compute-1.amazonaws.com", user="cgncgmtvnnnjki", port = "5432",password="9c67b17c47ac756d8b94edf5b9a65dc71f9da48e272a73e77860aa057b20204f")
-#conn=psycopg2.connect(DATABASE_URL, sslmode='require')
-#cur=conn.cursor()
-#conn.close()
+# conn=psycopg2.connect(DATABASE_URL, sslmode='require')
+# cur=conn.cursor()
+# conn.close()
 mail=Mail(app)
-app.extensions['mail'].debug=0
+app.extensions ['mail'].debug=0
 app.secret_key='thisismysiteforattendance12121@#2143432543645732432@!@42mlkdnvkjdsnvdsdskjbgkjdsb'
 
 '''DER_BASE64_ENCODED_PRIVATE_KEY_FILE_PATH = os.path.join(os.getcwd(),"private_key.txt")
@@ -2224,7 +2224,7 @@ def ttable(y, b, s):
             if i.get('language') == 'JavaScript':
                 for j in str(i).strip('</script><script language="JavaScript">').split(';'):
                     if 'innerHTML' in j:
-                        ttjson[j[25:30].strip("'")]=j[43:].strip('"')
+                        ttjson [j [25:30].strip("'")]=j [43:].strip('"')
         return value, ttjson
     except Exception as error:
         print(error)
@@ -2237,22 +2237,23 @@ def midMarks(roll, year, bran, sec, reqy='0'):
             '11': '23'}
     section={'1': '-', '2': 'A', '3': 'B', '4': 'C'}
     if reqy == '0':
-        reqy=yearSem[str(year)]
+        reqy=yearSem [str(year)]
         acay='2022-23'
     else:
         acay='-'.join(
-            [str(2022-(int(yearSem[str(year)][0])-int(reqy[0]))), str(23-(int(yearSem[str(year)][0])-int(reqy[0])))])
+            [str(2022-(int(yearSem [str(year)] [0])-int(reqy [0]))),
+             str(23-(int(yearSem [str(year)] [0])-int(reqy [0])))])
     data1={
         "acadYear": acay,
         "yearSem": reqy,
-        "branch": branch[str(bran)],
-        "section": section[str(sec)],
+        "branch": branch [str(bran)],
+        "section": section [str(sec)],
         "midsChosen": "mid1, mid2, mid3"
 
     }
     cookie={'PHPSESSID': 'i2usp8sbj39o60lcflt7g2pqf4'}
     try:
-        d=requests.post('http://182.66.240.229/mid_marks/marksConsolidateReport.php',cookies=cookie, data=data1)
+        d=requests.post('http://182.66.240.229/mid_marks/marksConsolidateReport.php', cookies=cookie, data=data1)
         soup=sp(d.content, 'html.parser')
         dat={i.text: j.text for i, j in zip(soup.findAll('td', attrs={'valign': 'top'}),
                                             soup.find('tr', attrs={'id': roll}).findAll('td',
@@ -2312,10 +2313,10 @@ def cal_dec_inc(attend, total):
 
 
 def get_data(rollno, year, bran, sec):
-    yearSem = {'1': '11', '2': '12', '3': '21', '4': '22', '5': '31', '6': '32', '7': '41', '8': '42'}
-    branch = {'1': '7', '2': '5', '3': '4', '4': '2', '5': '12', '6': '11', '7': '17', '8': '18', '9': '19', '10': '22',
-              '11': '23'}
-    section = {'1': '-', '2': 'A', '3': 'B', '4': 'C'}
+    yearSem={'1': '11', '2': '12', '3': '21', '4': '22', '5': '31', '6': '32', '7': '41', '8': '42'}
+    branch={'1': '7', '2': '5', '3': '4', '4': '2', '5': '12', '6': '11', '7': '17', '8': '18', '9': '19', '10': '22',
+            '11': '23'}
+    section={'1': '-', '2': 'A', '3': 'B', '4': 'C'}
     att=None
     tot_cal_65=0
     tot_cal=0
@@ -2325,22 +2326,22 @@ def get_data(rollno, year, bran, sec):
     datt=datt2=[]
     try:
 
-        payload = {
+        payload={
             "acadYear": "2022-23",
-            "yearSem": yearSem[str(year)],
-            "branch": branch[str(bran)],
-            "section": section[str(sec)],
+            "yearSem": yearSem [str(year)],
+            "branch": branch [str(bran)],
+            "section": section [str(sec)],
             'dateOfAttendance': time.strftime('%d-%m-%Y')
         }
         cookie={'PHPSESSID': 'i2usp8sbj39o60lcflt7g2pqf4'}
-        a = requests.post('http://182.66.240.229/attendance/attendanceTillTodayReport.php', cookies=cookie,data=payload)
-        data1 = sp(a.content, 'html5lib')
-        att1 = data1.find('tr', attrs={'id': rollno}).find('td', attrs={'class': 'tdPercent'})
-        data = att1.text.split('(')
-        att = data[0]
-    
-        #nr = data[1].strip(')').split('/')[0]
-        #dr = data[1].strip(')').split('/')[1]
+        a=requests.post('http://182.66.240.229/attendance/attendanceTillTodayReport.php', cookies=cookie, data=payload)
+        data1=sp(a.content, 'html5lib')
+        att1=data1.find('tr', attrs={'id': rollno}).find('td', attrs={'class': 'tdPercent'})
+        data=att1.text.split('(')
+        att=data [0]
+
+        # nr = data[1].strip(')').split('/')[0]
+        # dr = data[1].strip(')').split('/')[1]
         '''
         data=requests.get(f'https://att.nbkrist.org/attendance/Apps_ren/getSubwiseAttAsJSONGivenRollNo.php?q={rollno}')
         data=data.json()
@@ -2355,10 +2356,10 @@ def get_data(rollno, year, bran, sec):
         else:
             tot_safe_bunks=cal_safe_bunks(nr, dr)
         inc, dec=cal_dec_inc(nr, dr)'''
-        return att #tot_cal, tot_cal_65, tot_safe_bunks, inc, dec   sub,datt,datt2
+        return att  # tot_cal, tot_cal_65, tot_safe_bunks, inc, dec   sub,datt,datt2
     except Exception as error:
         print(error)
-        return att #tot_cal, tot_cal_65, tot_safe_bunks, inc, dec   sub,datt,datt2
+        return att  # tot_cal, tot_cal_65, tot_safe_bunks, inc, dec   sub,datt,datt2
 
 
 @app.route('/')
@@ -2372,19 +2373,19 @@ def home():
 @app.route('/attshow', methods=['POST', 'GET'])
 def attshow():
     try:
-        #conn=psycopg2.connect(DATABASE_URL, sslmode='require')
-        conn=psycopg2.connect(database="d72d6o86q9nf0a", host="ec2-54-163-34-107.compute-1.amazonaws.com",
+        conn=psycopg2.connect(DATABASE_URL, sslmode='require')
+        '''conn=psycopg2.connect(database="d72d6o86q9nf0a", host="ec2-54-163-34-107.compute-1.amazonaws.com",
                               user="mdokinlxttnxge", port="5432",
-                              password="2a9b586eef17956845c000859dc09060b87648f44fff87a911b46ee983508dc0")
+                              password="2a9b586eef17956845c000859dc09060b87648f44fff87a911b46ee983508dc0")'''
         cur=conn.cursor()
         global att, msg
         if request.method == 'POST':
-            rollno=request.form['rollno']
+            rollno=request.form ['rollno']
             rollno=rollno.upper()
             if not rollno in student_data or rollno == '':
                 flash('Check Your Roll No.')
                 return redirect('/')
-            session['rollno']=rollno
+            session ['rollno']=rollno
 
             # data = [(rollno[i:i + 2]) for i in range(0, len(rollno), 2)]
             month1=datetime.datetime.today().month
@@ -2392,14 +2393,14 @@ def attshow():
             data=cur.fetchone()
             if data:
                 print('db1')
-                roll_data=data[1].split(' ')
+                roll_data=data [1].split(' ')
                 print(roll_data)
-                name=data[0]
+                name=data [0]
                 print(name)
             else:
-                roll_data=student_data[rollno].split(' ')
-                name=student_names[rollno]
-            adyear=int(roll_data[0])
+                roll_data=student_data [rollno].split(' ')
+                name=student_names [rollno]
+            adyear=int(roll_data [0])
             if adyear == 4 and month1 <= 11:
                 adyear-=1
             elif adyear == 6 and month1 <= 11:
@@ -2410,17 +2411,17 @@ def attshow():
             # adyear = adyear + 1
             else:
                 pass
-            branch=int(roll_data[1])
-            section=int(roll_data[2])
+            branch=int(roll_data [1])
+            section=int(roll_data [2])
             # sub,datt,datt2
             print('before attendance')
             att=get_data(rollno, adyear, branch, section)
             cur.execute(f"select count(*) from main where rollno='{rollno}';")
             count_data=cur.fetchone()
-            print(count_data[0])
-            if count_data[0] == 0:
+            print(count_data [0])
+            if count_data [0] == 0:
                 cur.execute(
-                    f"insert into main(rollno,name,count,sec_det) values('{rollno}','{student_names[rollno]}',1,'{student_data[rollno]}');")
+                    f"insert into main(rollno,name,count,sec_det) values('{rollno}','{student_names [rollno]}',1,'{student_data [rollno]}');")
                 conn.commit()
                 print('db done')
             else:
@@ -2428,7 +2429,7 @@ def attshow():
                 cur.execute(f"update main set count=count+1 ,recent_t=current_timestamp where rollno='{rollno}';")
                 conn.commit()
             cur.execute(f"select count from main where rollno='{rollno}';")
-            count=cur.fetchone()[0]
+            count=cur.fetchone() [0]
             if att is not None:
                 if float(att) == 100.0:
                     color='#663399'
@@ -2446,19 +2447,19 @@ def attshow():
             cur.execute(f"select syllabi from main where rollno='{rollno}'")
             syl=cur.fetchone()
             if adyear >= 7:
-                cur_sem='19'+yearSem[str(adyear)]
+                cur_sem='19'+yearSem [str(adyear)]
             else:
-                cur_sem='20'+yearSem[str(adyear)]
-            if syl[0] and not syl[0] == 'null':
+                cur_sem='20'+yearSem [str(adyear)]
+            if syl [0] and not syl [0] == 'null':
                 print('dbs')
-                syllabus_t=syl[0]
+                syllabus_t=syl [0]
                 syllabus_t=ast.literal_eval(syllabus_t)
             else:
                 print('else2')
-                syllabus_t=syllabus[branch_in_alpha[branch_s[str(branch)]]]
+                syllabus_t=syllabus [branch_in_alpha [branch_s [str(branch)]]]
                 syllabus_t=ast.literal_eval(syllabus_t)
                 if cur_sem in syllabus_t:
-                    syllabus_t=syllabus_t[cur_sem]
+                    syllabus_t=syllabus_t [cur_sem]
                 else:
                     syllabus_t=None
                 print(len(json.dumps(syllabus_t)))
@@ -2475,26 +2476,26 @@ def attshow():
                         h-=12
                 else:
                     for i, j in timeno.items():
-                        if int(str(h)+str(m)) in range(int(i.split('-')[0]), int(i.split('-')[1])):
-                            cur_prd=ttjson[weekday[str(datetime.datetime.today().weekday()+1)]+j]
+                        if int(str(h)+str(m)) in range(int(i.split('-') [0]), int(i.split('-') [1])):
+                            cur_prd=ttjson [weekday [str(datetime.datetime.today().weekday()+1)]+j]
                             break
                     else:
                         cur_prd='No Class'
             except:
                 cur_prd='No Class'
-            reqs=yearSem[str(adyear)]
-            if int(reqs[1]) == 1:
-                reqs=reqs[0]+str(int(reqs[1])+1)
+            reqs=yearSem [str(adyear)]
+            if int(reqs [1]) == 1:
+                reqs=reqs [0]+str(int(reqs [1])+1)
             else:
-                reqs=str(int(reqs[0])+1)+str(int(reqs[1])-1)
+                reqs=str(int(reqs [0])+1)+str(int(reqs [1])-1)
             conn.commit()
             conn.close()
             rasp=make_response(
-                render_template('index.html', att=att, rollno=session['rollno'], name=name, color=color,
-                                count=count,bdata=True, syllabi=syllabus_t, class1=yearSem[str(adyear)],
-                                section=section_s[str(section)], cur_prd=cur_prd, ttvalue=value, cur_sem=cur_sem,
+                render_template('index.html', att=att, rollno=session ['rollno'], name=name, color=color,
+                                count=count, bdata=True, syllabi=syllabus_t, class1=yearSem [str(adyear)],
+                                section=section_s [str(section)], cur_prd=cur_prd, ttvalue=value, cur_sem=cur_sem,
                                 reqs=reqs, msg=msg, adyear=adyear, bra=branch, sect=section,
-                                branch_alpha=branch_in_alpha[branch_s[
+                                branch_alpha=branch_in_alpha [branch_s [
                                     str(branch)]]))  # sub=sub,sub2=datt,datt2=datt2,subsize=len(datt)-1)#data=data
             if request.form.get('rememberme'):
                 rasp.set_cookie('rollno', rollno, max_age=COOKIE_TIME_OUT)
@@ -2510,10 +2511,10 @@ def attshow():
 @app.route('/api/<roll>/')
 def api(roll):
     try:
-        #conn=psycopg2.connect(DATABASE_URL, sslmode='require')
-        conn=psycopg2.connect(database="d72d6o86q9nf0a", host="ec2-54-163-34-107.compute-1.amazonaws.com",
+        conn=psycopg2.connect(DATABASE_URL, sslmode='require')
+        '''conn=psycopg2.connect(database="d72d6o86q9nf0a", host="ec2-54-163-34-107.compute-1.amazonaws.com",
                               user="mdokinlxttnxge", port="5432",
-                              password="2a9b586eef17956845c000859dc09060b87648f44fff87a911b46ee983508dc0")
+                              password="2a9b586eef17956845c000859dc09060b87648f44fff87a911b46ee983508dc0")'''
         cur=conn.cursor()
         rollno=roll.upper()
         month1=datetime.datetime.today().month
@@ -2521,12 +2522,12 @@ def api(roll):
         d=cur.fetchone()
         if d:
             print('db')
-            roll_data=d[1].split(' ')
-            name=d[0]
+            roll_data=d [1].split(' ')
+            name=d [0]
         else:
-            roll_data=student_data[rollno].split(' ')
-            name=student_names[rollno]
-        adyear=int(roll_data[0])
+            roll_data=student_data [rollno].split(' ')
+            name=student_names [rollno]
+        adyear=int(roll_data [0])
         if adyear == 4 and month1 <= 11:
             adyear-=1
         elif adyear == 6 and month1 <= 11:
@@ -2537,8 +2538,8 @@ def api(roll):
         # adyear = adyear + 1
         else:
             pass
-        branch=int(roll_data[1])
-        section=int(roll_data[2])
+        branch=int(roll_data [1])
+        section=int(roll_data [2])
         conn.close()
         att, tot_cal, tot_cal_65, tot_safe_bunks, inc, dec=get_data(rollno, adyear, branch, section)
         json_data=jsonify(name=name, attendance=att, incRate=inc, decRate=dec, to75=tot_cal, to65=tot_cal_65,
@@ -2555,18 +2556,18 @@ def midapi():
     if request.method == 'POST':
         reqd=request.data
         reqd=json.loads(reqd)
-        #conn=psycopg2.connect(DATABASE_URL, sslmode='require')
-        conn=psycopg2.connect(database="d72d6o86q9nf0a", host="ec2-54-163-34-107.compute-1.amazonaws.com",
+        conn=psycopg2.connect(DATABASE_URL, sslmode='require')
+        '''conn=psycopg2.connect(database="d72d6o86q9nf0a", host="ec2-54-163-34-107.compute-1.amazonaws.com",
                               user="mdokinlxttnxge", port="5432",
-                              password="2a9b586eef17956845c000859dc09060b87648f44fff87a911b46ee983508dc0")
+                              password="2a9b586eef17956845c000859dc09060b87648f44fff87a911b46ee983508dc0")'''
         cur=conn.cursor()
-        cur.execute(f"select password from main where rollno='{reqd['roll']}'")
+        cur.execute(f"select password from main where rollno='{reqd ['roll']}'")
         pass1=cur.fetchone()
         conn.close()
         if pass1:
-            pass1=pass1[0]
-        if pass1 and pass1 == reqd['passw']:
-            midjson=midMarks(reqd['roll'], reqd['year'], reqd['bra'], reqd['sec'], reqd['reqy'])
+            pass1=pass1 [0]
+        if pass1 and pass1 == reqd ['passw']:
+            midjson=midMarks(reqd ['roll'], reqd ['year'], reqd ['bra'], reqd ['sec'], reqd ['reqy'])
             if not midjson:
                 midjson={'Nodata': 'Success'}
         else:
@@ -2577,10 +2578,10 @@ def midapi():
 @app.route('/attapi/', methods=["GET"])  # api for AttNbkrist
 def attapi():
     try:
-        #conn=psycopg2.connect(DATABASE_URL, sslmode='require')
-        conn=psycopg2.connect(database="d72d6o86q9nf0a", host="ec2-54-163-34-107.compute-1.amazonaws.com",
+        conn=psycopg2.connect(DATABASE_URL, sslmode='require')
+        '''conn=psycopg2.connect(database="d72d6o86q9nf0a", host="ec2-54-163-34-107.compute-1.amazonaws.com",
                               user="mdokinlxttnxge", port="5432",
-                              password="2a9b586eef17956845c000859dc09060b87648f44fff87a911b46ee983508dc0")
+                              password="2a9b586eef17956845c000859dc09060b87648f44fff87a911b46ee983508dc0")'''
         cur=conn.cursor()
         roll=request.args.get('roll')
         rollno=roll.upper()
@@ -2590,12 +2591,12 @@ def attapi():
         conn.close()
         if d:
             print('db')
-            roll_data=d[1].split(' ')
-            name=d[0]
+            roll_data=d [1].split(' ')
+            name=d [0]
         else:
-            roll_data=student_data[rollno].split(' ')
-            name=student_names[rollno]
-        adyear=int(roll_data[0])
+            roll_data=student_data [rollno].split(' ')
+            name=student_names [rollno]
+        adyear=int(roll_data [0])
         if adyear == 4 and month1 <= 11:
             adyear-=1
         elif adyear == 6 and month1 <= 11:
@@ -2606,8 +2607,8 @@ def attapi():
         # adyear = adyear + 1
         else:
             pass
-        branch=int(roll_data[1])
-        section=int(roll_data[2])
+        branch=int(roll_data [1])
+        section=int(roll_data [2])
         conn.close()
         att, tot_cal, tot_cal_65, tot_safe_bunks, inc, dec=get_data(rollno, adyear, branch, section)
         json_data=jsonify(name=name, attendance=att, incRate=inc, decRate=dec, to75=tot_cal, to65=tot_cal_65,
@@ -2619,10 +2620,10 @@ def attapi():
 
 @app.route('/otpapi/', methods=['POST', 'GET'])
 def send_otp():
-    #conn=psycopg2.connect(DATABASE_URL, sslmode='require')
-    conn=psycopg2.connect(database="d72d6o86q9nf0a", host="ec2-54-163-34-107.compute-1.amazonaws.com",
+    conn=psycopg2.connect(DATABASE_URL, sslmode='require')
+    '''conn=psycopg2.connect(database="d72d6o86q9nf0a", host="ec2-54-163-34-107.compute-1.amazonaws.com",
                           user="mdokinlxttnxge", port="5432",
-                          password="2a9b586eef17956845c000859dc09060b87648f44fff87a911b46ee983508dc0")
+                          password="2a9b586eef17956845c000859dc09060b87648f44fff87a911b46ee983508dc0")'''
 
     cur=conn.cursor()
     if request.method == 'POST':
@@ -2635,9 +2636,10 @@ def send_otp():
         msg=Message(
             'OTP for Key Setting',
             sender='attnbkrist@gmail.com',
-            recipients=[jsond['email']]
+            recipients=[jsond ['email']]
         )
-        msg.html=render_template('otpemail.html', rollno=jsond['rollno'], name=student_names[jsond['rollno']], otp=otp)
+        msg.html=render_template('otpemail.html', rollno=jsond ['rollno'], name=student_names [jsond ['rollno']],
+                                 otp=otp)
         mail.send(msg)
         print(jsond.get('rollno'), otp)
         return {'status': 'success'}
@@ -2645,21 +2647,21 @@ def send_otp():
 
 @app.route('/otpverify/', methods=['POST', 'GET'])
 def otp_verify():
-    #conn=psycopg2.connect(DATABASE_URL, sslmode='require')
-    conn=psycopg2.connect(database="d72d6o86q9nf0a", host="ec2-54-163-34-107.compute-1.amazonaws.com",
+    conn=psycopg2.connect(DATABASE_URL, sslmode='require')
+    '''conn=psycopg2.connect(database="d72d6o86q9nf0a", host="ec2-54-163-34-107.compute-1.amazonaws.com",
                           user="mdokinlxttnxge", port="5432",
-                          password="2a9b586eef17956845c000859dc09060b87648f44fff87a911b46ee983508dc0")
+                          password="2a9b586eef17956845c000859dc09060b87648f44fff87a911b46ee983508dc0")'''
 
     cur=conn.cursor()
     if request.method == 'POST':
         jsont=request.data
         jsont=json.loads(jsont)
-        cur.execute(f"select otp from main where rollno='{jsont['rollno']}';")
+        cur.execute(f"select otp from main where rollno='{jsont ['rollno']}';")
         otp=cur.fetchone()
         if otp:
-            otp=otp[0]
-        if otp == int(jsont['otp']):
-            cur.execute(f"update main set password='{jsont['key']}' where rollno='{jsont['rollno']}';")
+            otp=otp [0]
+        if otp == int(jsont ['otp']):
+            cur.execute(f"update main set password='{jsont ['key']}' where rollno='{jsont ['rollno']}';")
             conn.commit()
             conn.close()
             return {'status': 1}
@@ -2669,21 +2671,21 @@ def otp_verify():
 
 @app.route('/checkkey/', methods=['GET', 'POST'])
 def checkkey():
-    #conn=psycopg2.connect(DATABASE_URL, sslmode='require')
-    conn=psycopg2.connect(database="d72d6o86q9nf0a", host="ec2-54-163-34-107.compute-1.amazonaws.com",
+    conn=psycopg2.connect(DATABASE_URL, sslmode='require')
+    '''conn=psycopg2.connect(database="d72d6o86q9nf0a", host="ec2-54-163-34-107.compute-1.amazonaws.com",
                           user="mdokinlxttnxge", port="5432",
-                          password="2a9b586eef17956845c000859dc09060b87648f44fff87a911b46ee983508dc0")
+                          password="2a9b586eef17956845c000859dc09060b87648f44fff87a911b46ee983508dc0")'''
 
     cur=conn.cursor()
     if request.method == 'POST':
         cdata=request.data
         cdata=json.loads(cdata)
-        cur.execute(f"select password from main where rollno='{cdata['roll'].upper()}';")
+        cur.execute(f"select password from main where rollno='{cdata ['roll'].upper()}';")
         pass1=cur.fetchone()
         conn.close()
         print('ch', pass1)
         if pass1:
-            pass1=pass1[0]
+            pass1=pass1 [0]
         if pass1:
             return {'status': 1}
         else:
@@ -2692,24 +2694,24 @@ def checkkey():
 
 @app.route('/checkpass/', methods=['POST'])
 def checkpass():
-    #conn=psycopg2.connect(DATABASE_URL, sslmode='require')
-    conn=psycopg2.connect(database="d72d6o86q9nf0a", host="ec2-54-163-34-107.compute-1.amazonaws.com",
+    conn=psycopg2.connect(DATABASE_URL, sslmode='require')
+    '''conn=psycopg2.connect(database="d72d6o86q9nf0a", host="ec2-54-163-34-107.compute-1.amazonaws.com",
                           user="mdokinlxttnxge", port="5432",
-                          password="2a9b586eef17956845c000859dc09060b87648f44fff87a911b46ee983508dc0")
+                          password="2a9b586eef17956845c000859dc09060b87648f44fff87a911b46ee983508dc0")'''
     cur=conn.cursor()
     if request.method == 'POST':
         kdata=request.data
         kdata=json.loads(kdata)
-        cur.execute(f"select password from main where rollno='{kdata['rollno'].upper()}' ")
+        cur.execute(f"select password from main where rollno='{kdata ['rollno'].upper()}' ")
         pass1=cur.fetchone()
         conn.close()
-        if pass1[0] == kdata['key']:
+        if pass1 [0] == kdata ['key']:
             return {'status': 1}
         else:
             return {'status': 2}
 
 
-@app.route('/adminsuccess/', methods=['POST', 'GET'])
+'''@app.route('/adminsuccess/', methods=['POST', 'GET'])
 def adminsuccess():
     # conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     # cur=conn.cursor()
@@ -2749,7 +2751,7 @@ def adminadata():
     return render_template('adminsuc.html', reg_users=reg_users, booked_req=booked_req, help=help, keyset=keyset)
     # return render_template('adminsuc.html', reg_users=', booked_req='2', help='h')
 
-
+'''
 # push notifications
 '''def send_web_push(subscription_information, message_body):
     return webpush(
