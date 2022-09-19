@@ -10,9 +10,13 @@ djson={
     'branch': '22',
     'section': '-'
 }
-'''r=session.post('http://182.66.240.229/TimeTables/viewTTByClass.php',data=djson)
-r.html.render()
-print(r.text)'''
+headers={
+'Cookie': 'PHPSESSID=i2usp8sbj39o60lcflt7g2pqf4'
+}
+ses=requests.Session()
+cookie={'PHPSESSID':'i2usp8sbj39o60lcflt7g2pqf4'}
+r=requests.post('http://182.66.240.229/attendance/attendanceTillTodayReport.php',cookies=cookie,data=djson)
+print(r.text)
 '''data=requests.post('http://182.66.240.229/TimeTables/viewTTByClass.php',data=djson)
 soup=sp(data.content,'html.parser')
 value=''
@@ -60,7 +64,7 @@ cur.execute("select * from instad where active_status=false ")
 #con.commit()
 print(cur.fetchall())
 con.close()'''
-data=requests.get('https://att.nbkrist.org/attendance/Apps_ren/getSubwiseAttAsJSONGivenRollNo.php?q=19kb1a1244')
+'''data=requests.get('https://att.nbkrist.org/attendance/Apps_ren/getSubwiseAttAsJSONGivenRollNo.php?q=19kb1a1244')
 print(float(data.json().get('percent'))<75.00)
 
 def cal_to_attend(attend, total):
@@ -75,5 +79,47 @@ def cal_dec_inc(attend, total):
 nr=data.json().get('percent_breakup').split('/')[0]
 dr=data.json().get('percent_breakup').split('/')[1]
 if float(data.json().get('percent'))<75.00:
-    print(cal_dec_inc(nr,dr))
+    print(cal_dec_inc(nr,dr))'''
 
+'''     <tr>
+                <th style="text-align: left">
+                    Attendance Increase Rate Per One Class :
+                </th>
+                <td style="text-align: left">
+                    {{ inc }}
+                </td>
+            </tr>
+            <tr>
+                <th style="text-align: left">
+                    Attendance Decrease Rate Per One Class :
+                </th>
+                <td style="text-align: left">
+                    {{ dec }}
+                </td>
+            </tr>
+            <tr>
+                <th style="text-align: left">
+                    Classes Need To Be Attend To Get 65% :
+                </th>
+                <td style="text-align: left">
+                    {{ tot_cal_65 }}
+                </td>
+            </tr>
+            <tr>
+                <th style="text-align: left">
+                    Classes Need To Be Attend To Get 75% :
+                </th>
+                <td style="text-align: left">
+                    {{ tot_cal }}
+                </td>
+            </tr>
+                <tr>
+                <th style="text-align: left">
+                    Safe Bunks :
+                </th>
+                <td style="text-align: left">
+                    {{ tot_safe_bunks }}
+                </td>
+                </tr>
+            <tr>
+'''
