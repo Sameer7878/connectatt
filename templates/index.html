@@ -326,7 +326,7 @@
     <div class="container">
         <div class="collapsible" id="admin">Admin Login</div>
         <div class="content">
-        <form action="{{ url_for('adminsuccess') }}" method="post">
+        <form>
     {% with messages = get_flashed_messages(warning) %}
          {% if messages %}
                {% for message in messages %}
