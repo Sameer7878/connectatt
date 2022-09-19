@@ -2541,9 +2541,8 @@ def api(roll):
         branch=int(roll_data [1])
         section=int(roll_data [2])
         conn.close()
-        att, tot_cal, tot_cal_65, tot_safe_bunks, inc, dec=get_data(rollno, adyear, branch, section)
-        json_data=jsonify(name=name, attendance=att, incRate=inc, decRate=dec, to75=tot_cal, to65=tot_cal_65,
-                          safe_bunks=tot_safe_bunks)
+        att=get_data(rollno, adyear, branch, section)
+        json_data=jsonify(name=name, attendance=att)
         json_data.headers.add("Access-Control-Allow-Origin", "*")
         return json_data
     except:
@@ -2610,9 +2609,8 @@ def attapi():
         branch=int(roll_data [1])
         section=int(roll_data [2])
         conn.close()
-        att, tot_cal, tot_cal_65, tot_safe_bunks, inc, dec=get_data(rollno, adyear, branch, section)
-        json_data=jsonify(name=name, attendance=att, incRate=inc, decRate=dec, to75=tot_cal, to65=tot_cal_65,
-                          safe_bunks=tot_safe_bunks)
+        att=get_data(rollno, adyear, branch, section)
+        json_data=jsonify(name=name, attendance=att)
         return json_data
     except:
         return {"status": "Error"}
