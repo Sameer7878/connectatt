@@ -2251,7 +2251,7 @@ def midMarks(roll, year, bran, sec, reqy='0'):
         "midsChosen": "mid1, mid2, mid3"
 
     }
-    cookie={'PHPSESSID': '5hsqjhdan93dmol7hudqml1h24'}
+    cookie={'PHPSESSID': os.environ['COOKIE']}
     try:
         d=requests.post('http://182.66.240.229/mid_marks/marksConsolidateReport.php', cookies=cookie, data=data1)
         soup=sp(d.content, 'html.parser')
@@ -2333,7 +2333,7 @@ def get_data(rollno, year, bran, sec):
             "section": section [str(sec)],
             'dateOfAttendance': time.strftime('%d-%m-%Y')
         }
-        cookie={'PHPSESSID': '5hsqjhdan93dmol7hudqml1h24'}
+        cookie={'PHPSESSID': os.environ['COOKIE']}
         a=requests.post('http://182.66.240.229/attendance/attendanceTillTodayReport.php', cookies=cookie, data=payload)
         data1=sp(a.content, 'html5lib')
         att1=data1.find('tr', attrs={'id': rollno}).find('td', attrs={'class': 'tdPercent'})
