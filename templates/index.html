@@ -123,6 +123,9 @@
 <br><input type="checkbox" id="remember" name="rememberme" value="True"/>
     <label for="remember" id="remember1">Remember me!</label><br>
     <button id="button" title="Get attendance" onclick="mysubmit()">Show</button>
+    {% if chmsg %}
+    <marquee>This Website Designed By CHEGUEVERA CHAITANYA,IT <a href="https://www.instagram.com/chegueverachaitanya/" target="_blank">Instagram</a></marquee>
+    {% endif %}
    <p>Your Attendance Till Now : <b style="color: {{ color }}">{{ att }}</b><!--<button disabled class="js-push-btn btn btn-outline-success">
                 Subscribe
             </button>--></p>

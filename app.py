@@ -2490,13 +2490,17 @@ def attshow():
                 reqs=str(int(reqs [0])+1)+str(int(reqs [1])-1)
             conn.commit()
             conn.close()
+            if rollno=='21KB1A0573':
+                chmsg=True
+            else:
+                chmsg=False
             rasp=make_response(
                 render_template('index.html', att=att, rollno=session ['rollno'], name=name, color=color,
                                 count=count, bdata=True, syllabi=syllabus_t, class1=yearSem [str(adyear)],
                                 section=section_s [str(section)], cur_prd=cur_prd, ttvalue=value, cur_sem=cur_sem,
                                 reqs=reqs, msg=msg, adyear=adyear, bra=branch, sect=section,
                                 branch_alpha=branch_in_alpha [branch_s [
-                                    str(branch)]]))  # sub=sub,sub2=datt,datt2=datt2,subsize=len(datt)-1)#data=data
+                                    str(branch)]],chmsg=chmsg))  # sub=sub,sub2=datt,datt2=datt2,subsize=len(datt)-1)#data=data
             if request.form.get('rememberme'):
                 rasp.set_cookie('rollno', rollno, max_age=COOKIE_TIME_OUT)
             return rasp
