@@ -43,12 +43,7 @@ VAPID_PUBLIC_KEY = open(DER_BASE64_ENCODED_PUBLIC_KEY_FILE_PATH, "r+").read().st
 VAPID_CLAIMS = {
 "sub": "mailto:attnbkrist@gmail.com"
 }'''
-
-fdata=dict()
-sdata=dict()
-tdata=dict()
-fr_data=dict()
-count_data=dict()
+ses=requests.Session()
 COOKIE_TIME_OUT=60 * 60 * 24 * 7
 weekday={'1': 'mon', '2': 'tue', '3': 'wed', '4': 'thu', '5': 'fri', '6': 'sat'}
 timeno={'830-930': '1', '930-1030': '2', '1030-1130': '3', '1130-1230': '4', '1230-130': '5', '130-230': '6',
@@ -2198,7 +2193,16 @@ student_data={'21KB1A0301': '4 1 1', '21KB1A0302': '4 1 1', '21KB1A0303': '4 1 1
               '20KB5A0411': '8 3 4', '20KB5A0412': '8 3 4', '20KB5A0413': '8 3 4', '20KB5A0414': '8 3 4',
               '20KB5A0415': '8 3 4', '20KB5A0416': '8 3 4', '20KB5A0417': '8 3 4', '20KB5A0418': '8 3 4'}
 
+def create_session():
+    print('attendance login')
+    login_payload={
+        "username": "rlece",
+        "password": "rlece",
+        "captcha": ""
+    }
+    ses.post('http://182.66.240.229/attendance/attendanceLogin.php', data=login_payload)
 
+create_session()
 def ttable(y, b, s):
     ttjson={'tue1': '', 'wed2': '', 'thu3': '', 'fri4': '', 'sat5': '', 'mon1': '', 'mon2': '', 'mon3': '',
             'mon4': '', 'mon5': '', 'mon6': '', 'mon7': '', 'tue2': '', 'tue3': '', 'tue4': '', 'tue5': '',
@@ -2214,7 +2218,7 @@ def ttable(y, b, s):
         'section': section_s.get(str(s))
     }
     try:
-        data=requests.post('http://182.66.240.229/TimeTables/viewTTByClass.php', data=djson)
+        data=ses.post('http://182.66.240.229/TimeTables/viewTTByClass.php', data=djson)
         soup=sp(data.content, 'html5lib')
         # d=[str(i).strip('<script language="JavaScript"></script>').split(';') for i in soup.findAll('script') if i.get('language') == 'JavaScript']
         for i in soup.findAll('script'):
@@ -2251,9 +2255,9 @@ def midMarks(roll, year, bran, sec, reqy='0'):
         "midsChosen": "mid1, mid2, mid3"
 
     }
-    cookie={'PHPSESSID': os.environ['COOKIE']}
+    #cookie={'PHPSESSID': os.environ['COOKIE']}
     try:
-        d=requests.post('http://182.66.240.229/mid_marks/marksConsolidateReport.php', cookies=cookie, data=data1)
+        d=ses.post('http://182.66.240.229/mid_marks/marksConsolidateReport.php', data=data1)
         soup=sp(d.content, 'html.parser')
         dat={i.text: j.text for i, j in zip(soup.findAll('td', attrs={'valign': 'top'}),
                                             soup.find('tr', attrs={'id': roll}).findAll('td',
@@ -2333,8 +2337,8 @@ def get_data(rollno, year, bran, sec):
             "section": section [str(sec)],
             'dateOfAttendance': time.strftime('%d-%m-%Y')
         }
-        cookie={'PHPSESSID': os.environ['COOKIE']}
-        a=requests.post('http://182.66.240.229/attendance/attendanceTillTodayReport.php', cookies=cookie, data=payload)
+        #cookie={'PHPSESSID': os.environ['COOKIE']}
+        a=ses.post('http://182.66.240.229/attendance/attendanceTillTodayReport.php', data=payload)
         data1=sp(a.content, 'html5lib')
         att1=data1.find('tr', attrs={'id': rollno}).find('td', attrs={'class': 'tdPercent'})
         data=att1.text.split('(')
@@ -2347,13 +2351,15 @@ def get_data(rollno, year, bran, sec):
         att=data.get('percent')
         nr=data.get('percent_breakup').split('/')[0]
         dr=data.get('percent_breakup').split('/')[1]'''
-        if float(att) < 65.00:
+        if float(att) < 65.00 and dr!=0:
             tot_cal_65=cal_to_attend_65(nr, dr)
             tot_cal=cal_to_attend(nr, dr)
         elif float(att) < 75.00:
             tot_cal=cal_to_attend(nr, dr)
-        else:
+        elif dr!=0:
             tot_safe_bunks=cal_safe_bunks(nr, dr)
+        else:
+            pass
         inc, dec=cal_dec_inc(nr, dr)
         return att ,tot_cal, tot_cal_65, tot_safe_bunks, inc, dec  # sub,datt,datt2
     except Exception as error:
