@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup as sp
 from markupsafe import Markup
 import json
 import re,ast
-djson={
+'''djson={
     'acadYear':'2022-23',
     'yearSem': '41',
     'branch': '22',
@@ -16,7 +16,7 @@ headers={
 ses=requests.Session()
 cookie={'PHPSESSID':'i2usp8sbj39o60lcflt7g2pqf4'}
 r=requests.post('http://182.66.240.229/attendance/attendanceTillTodayReport.php',cookies=cookie,data=djson)
-print(r.text)
+print(r.text)'''
 '''data=requests.post('http://182.66.240.229/TimeTables/viewTTByClass.php',data=djson)
 soup=sp(data.content,'html.parser')
 value=''
@@ -123,3 +123,6 @@ if float(data.json().get('percent'))<75.00:
                 </tr>
             <tr>
 '''
+def nn():
+    return 1,3
+print(a)

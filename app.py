@@ -2339,27 +2339,26 @@ def get_data(rollno, year, bran, sec):
         att1=data1.find('tr', attrs={'id': rollno}).find('td', attrs={'class': 'tdPercent'})
         data=att1.text.split('(')
         att=data [0]
-
-        # nr = data[1].strip(')').split('/')[0]
-        # dr = data[1].strip(')').split('/')[1]
+        nr = data[1].strip(')').split('/')[0]
+        dr = data[1].strip(')').split('/')[1]
         '''
         data=requests.get(f'https://att.nbkrist.org/attendance/Apps_ren/getSubwiseAttAsJSONGivenRollNo.php?q={rollno}')
         data=data.json()
         att=data.get('percent')
         nr=data.get('percent_breakup').split('/')[0]
         dr=data.get('percent_breakup').split('/')[1]'''
-        '''if float(att) < 65.00:
+        if float(att) < 65.00:
             tot_cal_65=cal_to_attend_65(nr, dr)
             tot_cal=cal_to_attend(nr, dr)
         elif float(att) < 75.00:
             tot_cal=cal_to_attend(nr, dr)
         else:
             tot_safe_bunks=cal_safe_bunks(nr, dr)
-        inc, dec=cal_dec_inc(nr, dr)'''
-        return att  # tot_cal, tot_cal_65, tot_safe_bunks, inc, dec   sub,datt,datt2
+        inc, dec=cal_dec_inc(nr, dr)
+        return att ,tot_cal, tot_cal_65, tot_safe_bunks, inc, dec  # sub,datt,datt2
     except Exception as error:
         print(error)
-        return att  # tot_cal, tot_cal_65, tot_safe_bunks, inc, dec   sub,datt,datt2
+        return att  ,tot_cal, tot_cal_65, tot_safe_bunks, inc, dec   #sub,datt,datt2
 
 
 @app.route('/')
@@ -2415,7 +2414,7 @@ def attshow():
             section=int(roll_data [2])
             # sub,datt,datt2
             print('before attendance')
-            att=get_data(rollno, adyear, branch, section)
+            att,tot_cal, tot_cal_65, tot_safe_bunks, inc, dec=get_data(rollno, adyear, branch, section)
             cur.execute(f"select count(*) from main where rollno='{rollno}';")
             count_data=cur.fetchone()
             print(count_data [0])
@@ -2545,8 +2544,8 @@ def api(roll):
         branch=int(roll_data [1])
         section=int(roll_data [2])
         conn.close()
-        att=get_data(rollno, adyear, branch, section)
-        json_data=jsonify(name=name, attendance=att)
+        att,tot_cal, tot_cal_65, tot_safe_bunks, inc, dec=get_data(rollno, adyear, branch, section)
+        json_data=jsonify(name=name, attendance=att,tot_cal_75=tot_cal, tot_cal_65=tot_cal_65, tot_safe_bunks=tot_safe_bunks, inc_rate=inc, dec_rate=dec)
         json_data.headers.add("Access-Control-Allow-Origin", "*")
         return json_data
     except:
@@ -2613,8 +2612,8 @@ def attapi():
         branch=int(roll_data [1])
         section=int(roll_data [2])
         conn.close()
-        att=get_data(rollno, adyear, branch, section)
-        json_data=jsonify(name=name, attendance=att)
+        att,tot_cal, tot_cal_65, tot_safe_bunks, inc, dec=get_data(rollno, adyear, branch, section)
+        json_data=jsonify(name=name, attendance=att,tot_cal_75=tot_cal, tot_cal_65=tot_cal_65, tot_safe_bunks=tot_safe_bunks, inc_rate=inc, dec_rate=dec)
         return json_data
     except:
         return {"status": "Error"}
