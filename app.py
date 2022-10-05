@@ -2363,6 +2363,7 @@ def get_data(rollno, year, bran, sec):
         inc, dec=cal_dec_inc(nr, dr)
         return att ,tot_cal, tot_cal_65, tot_safe_bunks, inc, dec  # sub,datt,datt2
     except Exception as error:
+        create_session()
         print(error)
         return att  ,tot_cal, tot_cal_65, tot_safe_bunks, inc, dec   #sub,datt,datt2
 
