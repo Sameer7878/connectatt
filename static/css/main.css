@@ -29,6 +29,13 @@ table .tdSideHead{
 #notice{
     padding: 5px; border: #4b4c4d solid 2px;
 }
+
+#notice img{
+            width: 90%;
+            height: auto;
+            border-radius: 20px;
+            padding: 10px;
+}
 #navbarSupportedContent .dropdown-toggle{
     color: tomato;
     font-size: 20px;

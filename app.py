@@ -2202,7 +2202,7 @@ def create_session():
     }
     ses.post('http://182.66.240.229/attendance/attendanceLogin.php', data=login_payload)
 
-create_session()
+#create_session()
 def ttable(y, b, s):
     ttjson={'tue1': '', 'wed2': '', 'thu3': '', 'fri4': '', 'sat5': '', 'mon1': '', 'mon2': '', 'mon3': '',
             'mon4': '', 'mon5': '', 'mon6': '', 'mon7': '', 'tue2': '', 'tue3': '', 'tue4': '', 'tue5': '',
@@ -2279,7 +2279,7 @@ def handle_500(e):
     return redirect('/')
 
 
-#@app.before_request
+@app.before_request
 def before_request():
     if not request.is_secure:
         url=request.url.replace('http://', 'https://', 1)
