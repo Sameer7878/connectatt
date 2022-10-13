@@ -2279,7 +2279,7 @@ def handle_500(e):
     return redirect('/')
 
 
-# @app.before_request
+#@app.before_request
 def before_request():
     if not request.is_secure:
         url=request.url.replace('http://', 'https://', 1)
@@ -2330,21 +2330,27 @@ def get_data(rollno, year, bran, sec):
     datt=datt2=[]
     try:
 
-        payload={
+        '''payload={
             "acadYear": "2022-23",
             "yearSem": yearSem [str(year)],
             "branch": branch [str(bran)],
             "section": section [str(sec)],
             'dateOfAttendance': time.strftime('%d-%m-%Y')
-        }
+        }'''
         #cookie={'PHPSESSID': os.environ['COOKIE']}
-        a=ses.post('http://182.66.240.229/attendance/attendanceTillTodayReport.php', data=payload)
+        '''a=ses.post('http://182.66.240.229/attendance/attendanceTillTodayReport.php', data=payload)
         data1=sp(a.content, 'html5lib')
         att1=data1.find('tr', attrs={'id': rollno}).find('td', attrs={'class': 'tdPercent'})
         data=att1.text.split('(')
-        att=data [0]
-        nr = data[1].strip(')').split('/')[0]
-        dr = data[1].strip(')').split('/')[1]
+        att=data [0]'''
+        data=requests.get(f'http://182.66.240.229/attendance/Apps_ren/getSubwiseAttAsJSONGivenRollNo.php?q={rollno}').json()
+        att=data.get('percent')
+
+        #nr = data[1].strip(')').split('/')[0]
+        #dr = data[1].strip(')').split('/')[1]
+        frac=data.get('percent_breakup')
+        nr=frac.split('/')[0]
+        dr=frac.split('/')[1]
         '''
         data=requests.get(f'https://att.nbkrist.org/attendance/Apps_ren/getSubwiseAttAsJSONGivenRollNo.php?q={rollno}')
         data=data.json()
@@ -2363,7 +2369,7 @@ def get_data(rollno, year, bran, sec):
         inc, dec=cal_dec_inc(nr, dr)
         return att ,tot_cal, tot_cal_65, tot_safe_bunks, inc, dec  # sub,datt,datt2
     except Exception as error:
-        create_session()
+        #create_session()
         print(error)
         return att  ,tot_cal, tot_cal_65, tot_safe_bunks, inc, dec   #sub,datt,datt2
 
