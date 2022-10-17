@@ -207,13 +207,14 @@
                     {{ branch_alpha }} ({{ class1[0] }} - {{ class1[1] }})
                 </td>
             </tr>
+                {% if section != '-' %}
              <tr>
                 <th style="text-align: left">
                     Section:
                 </th>
                 <td style="text-align: left">
                     {{ section }}
-                </td>
+                </td></tr>{% endif %}
             <tr>
                 <th style="text-align: left">
                     Attendance Till Now:
@@ -247,7 +248,7 @@
         {{ ttvalue }}
         </div>
     </div>
-    <div class="container" style="display: none">
+    <div class="container">
         <div class="collapsible" id="midmarks">Mid Marks</div>
         <div class="content" id="marksco">
         <span id="ermsg" hidden></span>

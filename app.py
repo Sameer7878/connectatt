@@ -2196,13 +2196,13 @@ student_data={'21KB1A0301': '4 1 1', '21KB1A0302': '4 1 1', '21KB1A0303': '4 1 1
 def create_session():
     print('attendance login')
     login_payload={
-        "username": "rlece",
-        "password": "rlece",
+        "username": "yamuna",
+        "password": "yamuna",
         "captcha": ""
     }
     ses.post('http://182.66.240.229/attendance/attendanceLogin.php', data=login_payload)
 
-#create_session()
+create_session()
 def ttable(y, b, s):
     ttjson={'tue1': '', 'wed2': '', 'thu3': '', 'fri4': '', 'sat5': '', 'mon1': '', 'mon2': '', 'mon3': '',
             'mon4': '', 'mon5': '', 'mon6': '', 'mon7': '', 'tue2': '', 'tue3': '', 'tue4': '', 'tue5': '',
@@ -2330,27 +2330,27 @@ def get_data(rollno, year, bran, sec):
     datt=datt2=[]
     try:
 
-        '''payload={
+        payload={
             "acadYear": "2022-23",
             "yearSem": yearSem [str(year)],
             "branch": branch [str(bran)],
             "section": section [str(sec)],
             'dateOfAttendance': time.strftime('%d-%m-%Y')
-        }'''
+        }
         #cookie={'PHPSESSID': os.environ['COOKIE']}
-        '''a=ses.post('http://182.66.240.229/attendance/attendanceTillTodayReport.php', data=payload)
+        a=ses.post('http://182.66.240.229/attendance/attendanceTillTodayReport.php', data=payload)
         data1=sp(a.content, 'html5lib')
         att1=data1.find('tr', attrs={'id': rollno}).find('td', attrs={'class': 'tdPercent'})
         data=att1.text.split('(')
-        att=data [0]'''
-        data=requests.get(f'http://182.66.240.229/attendance/Apps_ren/getSubwiseAttAsJSONGivenRollNo.php?q={rollno}').json()
-        att=data.get('percent')
+        att=data [0]
+        #data=requests.get(f'http://182.66.240.229/attendance/Apps_ren/getSubwiseAttAsJSONGivenRollNo.php?q={rollno}').json()
+        #att=data.get('percent')
 
-        #nr = data[1].strip(')').split('/')[0]
-        #dr = data[1].strip(')').split('/')[1]
-        frac=data.get('percent_breakup')
-        nr=frac.split('/')[0]
-        dr=frac.split('/')[1]
+        nr = data[1].strip(')').split('/')[0]
+        dr = data[1].strip(')').split('/')[1]
+        #frac=data.get('percent_breakup')
+        #nr=frac.split('/')[0]
+        #dr=frac.split('/')[1]
         '''
         data=requests.get(f'https://att.nbkrist.org/attendance/Apps_ren/getSubwiseAttAsJSONGivenRollNo.php?q={rollno}')
         data=data.json()
