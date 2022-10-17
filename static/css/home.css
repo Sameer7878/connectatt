@@ -13,11 +13,11 @@ html{
           width: 150px;
           height: 150px;
           border-radius: 50%;
-          border-top: 14px dotted white;
-            border-left: 5px dotted #b3d7ff;
-            border-right: 8px dotted #b3d7ff;
-            border-bottom: 11px dotted white;
-          -webkit-animation: spin 5s linear infinite;
+          border-top: 10px dashed white;
+            border-left: 10px dashed #b3d7ff;
+            border-right: 10px dashed #b3d7ff;
+            border-bottom: 10px dashed white;
+          -webkit-animation: spin 2s linear infinite;
           animation: spin 0.575s infinite linear;
 }
     #remember{
