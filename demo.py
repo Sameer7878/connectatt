@@ -781,6 +781,9 @@ student_data={'21KB1A0301': '4 1 1', '21KB1A0302': '4 1 1', '21KB1A0303': '4 1 1
               '20KB5A0411': '8 3 4', '20KB5A0412': '8 3 4', '20KB5A0413': '8 3 4', '20KB5A0414': '8 3 4',
               '20KB5A0415': '8 3 4', '20KB5A0416': '8 3 4', '20KB5A0417': '8 3 4', '20KB5A0418': '8 3 4'}
 
+22KB5A0505
+22KB5A0506
+
 '''login=ses.post('http://182.66.240.229/attendance/attendanceLogin.php',data=login_payload)
 html_data=ses.post('http://182.66.240.229/mid_marks/marksConsolidateReport.php',data=payload_data)
 soup=sp(html_data.text,'html.parser')
