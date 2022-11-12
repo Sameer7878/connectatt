@@ -2228,7 +2228,7 @@ def create_session():
     }
     ses.post('http://182.66.240.229/attendance/attendanceLogin.php', data=login_payload)
 
-create_session()
+#create_session()
 def ttable(y, b, s):
     ttjson={'tue1': '', 'wed2': '', 'thu3': '', 'fri4': '', 'sat5': '', 'mon1': '', 'mon2': '', 'mon3': '',
             'mon4': '', 'mon5': '', 'mon6': '', 'mon7': '', 'tue2': '', 'tue3': '', 'tue4': '', 'tue5': '',
@@ -2355,7 +2355,7 @@ def get_data(rollno, year, bran, sec):
     datt=datt2=[]
     try:
 
-        payload={
+        '''payload={
             "acadYear": "2022-23",
             "yearSem": yearSem [str(year)],
             "branch": branch [str(bran)],
@@ -2365,9 +2365,18 @@ def get_data(rollno, year, bran, sec):
         #cookie={'PHPSESSID': os.environ['COOKIE']}
         a=ses.post('http://182.66.240.229/attendance/attendanceTillTodayReport.php', data=payload)
         data1=sp(a.content, 'html5lib')
-        att1=data1.find('tr', attrs={'id': rollno}).find('td', attrs={'class': 'tdPercent'})
-        data=att1.text.split('(')
-        att=data [0]
+        att1=data1.find('tr', attrs={'id': rollno}).find('td', attrs={'class': 'tdPercent'})'''
+        con=psycopg2.connect(DATABASE_URL, sslmode='require')
+        cur=con.cursor()
+        cur.execute(f"select att_list from main where rollno='{rollno}'")
+        data=cur.fetchone()
+        con.close()
+        data=data[0]
+        if not data:
+            return att,tot_cal, tot_cal_65, tot_safe_bunks, inc, dec
+        data=ast.literal_eval(data)[0]
+        data=data.split('(')
+        att=data[0]
         #data=requests.get(f'http://182.66.240.229/attendance/Apps_ren/getSubwiseAttAsJSONGivenRollNo.php?q={rollno}').json()
         #att=data.get('percent')
 
@@ -2394,7 +2403,7 @@ def get_data(rollno, year, bran, sec):
         inc, dec=cal_dec_inc(nr, dr)
         return att ,tot_cal, tot_cal_65, tot_safe_bunks, inc, dec  # sub,datt,datt2
     except Exception as error:
-        create_session()
+        #create_session()
         print(error)
         return att  ,tot_cal, tot_cal_65, tot_safe_bunks, inc, dec   #sub,datt,datt2
 
@@ -2429,11 +2438,8 @@ def attshow():
             cur.execute(f"select name,sec_det from main where rollno='{rollno}'")
             data=cur.fetchone()
             if data:
-                print('db1')
                 roll_data=data [1].split(' ')
-                print(roll_data)
                 name=data [0]
-                print(name)
             else:
                 roll_data=student_data [rollno].split(' ')
                 name=student_names [rollno]
@@ -2451,18 +2457,14 @@ def attshow():
             branch=int(roll_data [1])
             section=int(roll_data [2])
             # sub,datt,datt2
-            print('before attendance')
             att,tot_cal, tot_cal_65, tot_safe_bunks, inc, dec=get_data(rollno, adyear, branch, section)
             cur.execute(f"select count(*) from main where rollno='{rollno}';")
             count_data=cur.fetchone()
-            print(count_data [0])
             if count_data [0] == 0:
                 cur.execute(
                     f"insert into main(rollno,name,count,sec_det) values('{rollno}','{student_names [rollno]}',1,'{student_data [rollno]}');")
                 conn.commit()
-                print('db done')
             else:
-                print('else')
                 cur.execute(f"update main set count=count+1 ,recent_t=current_timestamp where rollno='{rollno}';")
                 conn.commit()
             cur.execute(f"select count from main where rollno='{rollno}';")
@@ -2478,8 +2480,10 @@ def attshow():
                     color='#BC2765'
             else:
                 color='#C49BF9'
-                att=inc=tot_cal=tot_cal_65=tot_safe_bunks=dec=0
-                msg='Error Occured Please Try Some Time'
+                #att=inc=tot_cal=tot_cal_65=tot_safe_bunks=dec=0
+                #msg='Error Occured Please Try Some Time'
+                return render_template('index.html', att='Not Updated Yet', rollno=session ['rollno'], color=color,
+                                chmsg=False)
             # data=ttime(adyear,branch,section)
             cur.execute(f"select syllabi from main where rollno='{rollno}'")
             syl=cur.fetchone()
@@ -2488,24 +2492,20 @@ def attshow():
             else:
                 cur_sem='20'+yearSem [str(adyear)]
             if syl [0] and not syl [0] == 'null':
-                print('dbs')
                 syllabus_t=syl [0]
                 syllabus_t=ast.literal_eval(syllabus_t)
             else:
-                print('else2')
                 syllabus_t=syllabus [branch_in_alpha [branch_s [str(branch)]]]
                 syllabus_t=ast.literal_eval(syllabus_t)
                 if cur_sem in syllabus_t:
                     syllabus_t=syllabus_t [cur_sem]
                 else:
                     syllabus_t=None
-                print(len(json.dumps(syllabus_t)))
                 cur.execute(f"update main set syllabi='{json.dumps(syllabus_t)}' where rollno='{rollno}'")
                 conn.commit()
             h=datetime.datetime.now(pytz.timezone('Asia/Kolkata')).hour
             m=datetime.datetime.now(pytz.timezone('Asia/Kolkata')).minute
-            print('realtime')
-            value, ttjson=ttable(adyear, branch, section)
+            '''value, ttjson=ttable(adyear, branch, section)
             try:
                 if h > 17:
                     cur_prd='No Class'
@@ -2519,7 +2519,7 @@ def attshow():
                     else:
                         cur_prd='No Class'
             except:
-                cur_prd='No Class'
+                cur_prd='No Class' '''
             reqs=yearSem [str(adyear)]
             if int(reqs [1]) == 1:
                 reqs=reqs [0]+str(int(reqs [1])+1)
@@ -2534,10 +2534,10 @@ def attshow():
             rasp=make_response(
                 render_template('index.html', att=att, rollno=session ['rollno'], name=name, color=color,
                                 count=count, bdata=True, syllabi=syllabus_t, class1=yearSem [str(adyear)],
-                                section=section_s [str(section)], cur_prd=cur_prd, ttvalue=value, cur_sem=cur_sem,
+                                section=section_s [str(section)], cur_sem=cur_sem,
                                 reqs=reqs, msg=msg, adyear=adyear, bra=branch, sect=section,
                                 branch_alpha=branch_in_alpha [branch_s [
-                                    str(branch)]],chmsg=chmsg))  # sub=sub,sub2=datt,datt2=datt2,subsize=len(datt)-1)#data=data
+                                    str(branch)]],chmsg=chmsg))  #ttvalue=valuecur_prd=cur_prd sub=sub,sub2=datt,datt2=datt2,subsize=len(datt)-1)#data=data
             if request.form.get('rememberme'):
                 rasp.set_cookie('rollno', rollno, max_age=COOKIE_TIME_OUT)
             return rasp
@@ -2562,7 +2562,6 @@ def api(roll):
         cur.execute(f"select name , sec_det from main where rollno='{rollno}'")
         d=cur.fetchone()
         if d:
-            print('db')
             roll_data=d [1].split(' ')
             name=d [0]
         else:
@@ -2630,7 +2629,6 @@ def attapi():
         d=cur.fetchone()
         conn.close()
         if d:
-            print('db')
             roll_data=d [1].split(' ')
             name=d [0]
         else:
@@ -2680,7 +2678,6 @@ def send_otp():
         msg.html=render_template('otpemail.html', rollno=jsond ['rollno'], name=student_names [jsond ['rollno']],
                                  otp=otp)
         mail.send(msg)
-        print(jsond.get('rollno'), otp)
         return {'status': 'success'}
 
 
@@ -2722,7 +2719,6 @@ def checkkey():
         cur.execute(f"select password from main where rollno='{cdata ['roll'].upper()}';")
         pass1=cur.fetchone()
         conn.close()
-        print('ch', pass1)
         if pass1:
             pass1=pass1 [0]
         if pass1:

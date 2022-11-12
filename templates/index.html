@@ -64,8 +64,10 @@
     <h4>Notice Board</h4>
 
     <h5>Alert</h5>
-    <p id="p1">Second Year Lateral Entry Students Roll Numbers are added </p>
-        <p id="p2">Now They Can Also Check Their Attendance On Our Site & AttBot (Instagram Bot) </p>
+    <p id="p1">Basic Version</p>
+        <p id="p2">Our site unable connect to college attendance portal So, we enable a basic version which let you know your attendance(Updated once a day) only.</p>
+        <p id="p3">Special Thanks To:<br> <strong>Yaswanth Reddy and Naveen Reddy</strong>
+        </p>
     <!--<p id="p1">We Added AttAPI For Our Att Site.It Is Open For All Web Developers, You Can Use Our API To Get Our Site Data.</p>
     <p id="p2"><b>API-</b><span style="cursor: pointer">  https://attnbkrist1.herokuapp.com/attapi?roll=EnterRollNO</span></p>
     <p id="p1">For Slow Internet Connections Use This Link <br><br> <b>Note: </b><span id="p2">Just click the link to copy and paste on browser, add your RollNo at end of url.</span> </p>
@@ -242,7 +244,7 @@
             </table>
         </div>
     </div>
-    <div class="container">
+    <div class="container" style="display: none">
         <div class="collapsible" id="ttable">Time Table</div>
         <div class="content">
         <table name='tblTT' id='tblTT' class="table table-responsive-lg table-bordered">
@@ -250,7 +252,7 @@
         {{ ttvalue }}
         </div>
     </div>
-    <div class="container">
+    <div class="container" style="display: none">
         <div class="collapsible" id="midmarks">Mid Marks</div>
         <div class="content" id="marksco">
         <span id="ermsg" hidden></span>
@@ -278,7 +280,7 @@
         </div>
 
     </div>
-    <div class="container">
+    <div class="container" style="display: none">
         <div class="collapsible" id="syllabus">Syllabus</div>
         <div class="content" id="parent">
         {%  if syllabi %}
@@ -295,7 +297,7 @@
         {% endif %}
         </div>
     </div>
-    <div class="container">
+    <div class="container" style="display: none">
         <div class="collapsible" id="formc">Set Key</div>
         {% if rollno %}
         <div class="content" id="formcon">
@@ -331,7 +333,7 @@
         </div>
         </div>
     </div>
-    <div class="container">
+    <div class="container" style="display: none">
         <div class="collapsible" id="admin">Admin Login</div>
         <div class="content">
         <form>
@@ -348,7 +350,7 @@
 </form>
         </div>
     </div>
-    <div class="container" style="text-align: inherit" id="aboutus">
+    <div class="container" style="text-align: inherit; display: none" id="aboutus">
         <h3>
             About Us
         </h3>
@@ -396,7 +398,7 @@
         <li><p>When coming to web hosting we have choosen Heroku as the cloud where we have deployed our website because It is a free cloud provider maintained by salesforce.</p></li>
         </ul>
     </div>
-    <div class="container" id="aboutclg">
+    <!--<div class="container" id="aboutclg">
     <h3>ABOUT NBKRIST</h3>
     <img src="../static/img/NBKRIST_logo.png" alt="LOGO"/>
     <p><b>NBKR Institute of Science and Technology (<a href="http://nbkrist.co.in/" target="_blank" >NBKRIST</a>)</b> is an autonomous engineering college established in 1979 located at Vidyanagar,Kota, Nellore, Andhra Pradesh. It is the aamdest private institution in Andhra Pradesh.
@@ -427,7 +429,7 @@ I Gopal Reddy, Founder Principal, Former Vice Chancellor<p>V Vijaya Kumar Reddy 
     <p>There are four boys hostels (Venus, Jupiter, Mercury, and Neptune) and two girls hostels and 72 residential quarters for the staff.
 </p>
     <p><b>Source from </b><a href="https://en.wikipedia.org/wiki/N.B.K.R._Institute_of_Science_and_Technology" target="_blank" style="color: #3498db; text-decoration: underline;">WIKIPEDIA.</a></p>
-</div>
+</div>-->
     <div class="container" id="contact">
         <h3>Contact</h3>
         <div class="form-group">
@@ -461,8 +463,8 @@ I Gopal Reddy, Founder Principal, Former Vice Chancellor<p>V Vijaya Kumar Reddy 
                     return [currenttop];
                 }
             }
-    document.body.addEventListener('load',scrolldiv('main-container'));
-    var prev=document.getElementById('presem')
+    //document.body.addEventListener('load',scrolldiv('main-container'));
+    /*var prev=document.getElementById('presem')
     prev.style.display='none';
     var nxt=document.getElementById('nextsem');
     var rentry=document.getElementById('rolno');
@@ -538,7 +540,7 @@ I Gopal Reddy, Founder Principal, Former Vice Chancellor<p>V Vijaya Kumar Reddy 
                     }
                 });
         }
-    }
+    }*/
     function checkpass(){
             document.getElementById('ermsg').hidden=true;
             var key1=document.getElementById('ekey').value;

@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup as sp
 from markupsafe import Markup
 import json
 import re,ast
+import time
 '''djson={
     'acadYear':'2022-23',
     'yearSem': '41',
@@ -132,6 +133,7 @@ import requests
 from bs4 import BeautifulSoup as sp
 import psycopg2
 import json
+import time
 ses=requests.Session()
 
 payload_data={
@@ -146,8 +148,8 @@ payload_data={
 }
 
 login_payload={
-"username": "rlece",
-"password": "rlece",
+"username": "yamuna",
+"password": "yamuna",
 "captcha": ""
 }
 student_data={'21KB1A0301': '4 1 1', '21KB1A0302': '4 1 1', '21KB1A0303': '4 1 1', '21KB1A0304': '4 1 1',
@@ -781,9 +783,6 @@ student_data={'21KB1A0301': '4 1 1', '21KB1A0302': '4 1 1', '21KB1A0303': '4 1 1
               '20KB5A0411': '8 3 4', '20KB5A0412': '8 3 4', '20KB5A0413': '8 3 4', '20KB5A0414': '8 3 4',
               '20KB5A0415': '8 3 4', '20KB5A0416': '8 3 4', '20KB5A0417': '8 3 4', '20KB5A0418': '8 3 4'}
 
-22KB5A0505
-22KB5A0506
-
 '''login=ses.post('http://182.66.240.229/attendance/attendanceLogin.php',data=login_payload)
 html_data=ses.post('http://182.66.240.229/mid_marks/marksConsolidateReport.php',data=payload_data)
 soup=sp(html_data.text,'html.parser')
@@ -851,11 +850,57 @@ for i in student_data.keys():
 '''
 
 
-'''conn=psycopg2.connect(database="d72d6o86q9nf0a", host="ec2-54-163-34-107.compute-1.amazonaws.com",
-                              user="mdokinlxttnxge", port="5432",
-                              password="2a9b586eef17956845c000859dc09060b87648f44fff87a911b46ee983508dc0")
+conn=psycopg2.connect('postgres://scylfjyygeactf:4a059e54ad264651837df64a3a7248a11225b7b75571db39590c37d7b8e4a6fa@ec2-23-20-140-229.compute-1.amazonaws.com:5432/de14p785paocd3')
 cur=conn.cursor()
-cur.execute("update instad set active_status=true where rolid='21KB5A0413'")
+cur.execute("select att_list from main where rollno='21KB1A0504'")
+print(cur.fetchone()[0])
+#conn.commit()
+conn.close()
+'''conn=psycopg2.connect('postgres://scylfjyygeactf:4a059e54ad264651837df64a3a7248a11225b7b75571db39590c37d7b8e4a6fa@ec2-23-20-140-229.compute-1.amazonaws.com:5432/de14p785paocd3')
+cur=conn.cursor()
+
+cur.execute("update main set sec_det='4 10 1' where rollno='20KB1A1215'")
 conn.commit()
 conn.close()'''
-print(len(student_data))
+'''def create_session():
+    print('attendance login')
+    login_payload={
+        "username": "yamuna",
+        "password": "yamuna",
+        "captcha": ""
+    }
+    ses.post('http://182.66.240.229/attendance/attendanceLogin.php', data=login_payload)
+
+create_session()
+def get_data( year, bran, sec):
+    yearSem={'1': '11', '2': '12', '3': '21', '4': '22', '5': '31', '6': '32', '7': '41', '8': '42'}
+    branch={'1': '7', '2': '5', '3': '4', '4': '2', '5': '12', '6': '11', '7': '17', '8': '18', '9': '19', '10': '22',
+            '11': '23'}
+    section={'1': '-', '2': 'A', '3': 'B', '4': 'C'}
+    att=None
+    tot_cal_65=0
+    tot_cal=0
+    tot_safe_bunks=0
+    inc=dec=0
+    sub=[]
+    datt=datt2=[]
+    try:
+
+        payload={
+            "acadYear": "2022-23",
+            "yearSem": yearSem [str(year)],
+            "branch": branch [str(bran)],
+            "section": section [str(sec)],
+            'dateOfAttendance': time.strftime('%d-%m-%Y')
+        }
+        #cookie={'PHPSESSID': os.environ['COOKIE']}
+        a=ses.post('http://192.168.7.222/attendance/attendanceTillTodayReport.php', data=payload)
+        data1=sp(a.content, 'html5lib')
+        print(data1)
+        #att1=data1.find('tr', attrs={'id': rollno}).find('td', attrs={'class': 'tdPercent'})
+        #data=att1.text.split('(')
+        #att=data [0]
+    except Exception as e:
+        print('error',e)
+    return 0
+get_data(7,10,1)'''
