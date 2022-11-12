@@ -2226,7 +2226,7 @@ def create_session():
         "password": "yamuna",
         "captcha": ""
     }
-    ses.post('http://182.66.240.229/attendance/attendanceLogin.php', data=login_payload)
+    ses.post('http://103.159.250.196/attendance/attendanceLogin.php', data=login_payload)
 
 create_session()
 def ttable(y, b, s):
@@ -2244,7 +2244,7 @@ def ttable(y, b, s):
         'section': section_s.get(str(s))
     }
     try:
-        data=ses.post('http://182.66.240.229/TimeTables/viewTTByClass.php', data=djson)
+        data=ses.post('http://103.159.250.196/TimeTables/viewTTByClass.php', data=djson)
         soup=sp(data.content, 'html5lib')
         # d=[str(i).strip('<script language="JavaScript"></script>').split(';') for i in soup.findAll('script') if i.get('language') == 'JavaScript']
         for i in soup.findAll('script'):
@@ -2283,7 +2283,7 @@ def midMarks(roll, year, bran, sec, reqy='0'):
     }
     #cookie={'PHPSESSID': os.environ['COOKIE']}
     try:
-        d=ses.post('http://182.66.240.229/mid_marks/marksConsolidateReport.php', data=data1)
+        d=ses.post('http://103.159.250.196/mid_marks/marksConsolidateReport.php', data=data1)
         soup=sp(d.content, 'html.parser')
         dat={i.text: j.text for i, j in zip(soup.findAll('td', attrs={'valign': 'top'}),
                                             soup.find('tr', attrs={'id': roll}).findAll('td',
@@ -2363,7 +2363,7 @@ def get_data(rollno, year, bran, sec):
             'dateOfAttendance': time.strftime('%d-%m-%Y')
         }
         #cookie={'PHPSESSID': os.environ['COOKIE']}
-        a=ses.post('http://182.66.240.229/attendance/attendanceTillTodayReport.php', data=payload)
+        a=ses.post('http://103.159.250.196/attendance/attendanceTillTodayReport.php', data=payload)
         data1=sp(a.content, 'html5lib')
         att1=data1.find('tr', attrs={'id': rollno}).find('td', attrs={'class': 'tdPercent'})
         data=att1.text.split('(')
