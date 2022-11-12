@@ -2419,15 +2419,17 @@ def attshow():
         if request.method == 'POST':
             rollno=request.form ['rollno']
             rollno=rollno.upper()
-            if not rollno in student_data or rollno == '':
+            cur.execute(f"select name,sec_det from main where rollno='{rollno}'")
+            data=cur.fetchone()
+            if not data:
                 flash('Check Your Roll No.')
                 return redirect('/')
             session ['rollno']=rollno
 
             # data = [(rollno[i:i + 2]) for i in range(0, len(rollno), 2)]
             month1=datetime.datetime.today().month
-            cur.execute(f"select name,sec_det from main where rollno='{rollno}'")
-            data=cur.fetchone()
+            #cur.execute(f"select name,sec_det from main where rollno='{rollno}'")
+            #data=cur.fetchone()
             if data:
                 print('db1')
                 roll_data=data [1].split(' ')
