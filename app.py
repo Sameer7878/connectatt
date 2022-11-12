@@ -2374,7 +2374,7 @@ def get_data(rollno, year, bran, sec):
         data=data[0]
         if not data:
             return att,tot_cal, tot_cal_65, tot_safe_bunks, inc, dec
-        data=ast.literal_eval(data)[0]
+        data=ast.literal_eval(data)[-1]
         data=data.split('(')
         att=data[0]
         #data=requests.get(f'http://182.66.240.229/attendance/Apps_ren/getSubwiseAttAsJSONGivenRollNo.php?q={rollno}').json()
