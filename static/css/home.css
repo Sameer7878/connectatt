@@ -173,10 +173,9 @@ button,input[type='submit']{
          #loader{
              left:30%;
              position: fixed;
-        border-left: 4px solid #b3d7ff;
-        border-top: 4px solid aliceblue;
-             border-right: 6px solid aliceblie;
-        border-bottm: 10px solid aliceblue;
+        border-left: 8px solid #b3d7ff;
+        border-top: 8px solid aliceblue;
+             border-right: 8px solid aliceblie;
      }
          button , input[type=submit]{
         font-size: 18px;
