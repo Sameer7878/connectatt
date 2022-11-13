@@ -173,9 +173,9 @@ button,input[type='submit']{
          #loader{
              left:30%;
              position: fixed;
-        border-left: 2px solid #b3d7ff;
+        border-left: 4px solid #b3d7ff;
         border-top: 4px solid aliceblue;
-             border-right: 6px solid #b3d7ff;
+             border-right: 6px solid aliceblie;
         border-bottm: 10px solid aliceblue;
      }
          button , input[type=submit]{
