@@ -175,7 +175,8 @@ button,input[type='submit']{
              position: fixed;
         border-left: 8px solid #b3d7ff;
         border-top: 8px solid aliceblue;
-             border-right: 8px solid aliceblie;
+             border-right: 8px solid aliceblue;
+             border-bottom:8px solid aliceblue;
      }
          button , input[type=submit]{
         font-size: 18px;
