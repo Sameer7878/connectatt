@@ -2306,10 +2306,10 @@ def handle_500(e):
 
 @app.before_request
 def before_request():
-    if not request.is_secure:
-        url=request.url.replace('http://', 'https://', 1)
-        code=301
-        return redirect(url, code=code)
+    url='https://attnbkrist.live'
+        #url=request.url.replace('http://', 'https://', 1)
+    code=301
+    return redirect(url, code=code)
 
 
 # @app.route('/ThankU/')
